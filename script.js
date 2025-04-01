@@ -198,7 +198,7 @@ function loadTattooContent() {
                         option.disabled = true;
                         selectElement.appendChild(option);
                     });
-            }
+         }
 
             // 선택된 폰트를 적용하는 함수
             function applySelectedFont(category, fontName) {
