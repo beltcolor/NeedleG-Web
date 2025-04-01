@@ -1,0 +1,116 @@
+<!-- ContentTattoo.html -->
+<div class="area-container">
+    <!-- Location Section -->
+    <section class="location-section">
+        <h2>Location</h2>
+        <div class="address-input-container">
+            <input type="text" class="input" placeholder="Search location..." />
+            <button class="gps-button">GPS</button>
+        </div>
+    </section>
+
+    <!-- Dimension Section -->
+    <section class="dimension-section">
+        <h2>Dimension</h2>
+        <p class="instruction-text">Please enter your desired size</p>
+        
+        <div class="dimension-input-container">
+            <input id="width" 
+                   class="input-width" 
+                   placeholder="Width (cm)" 
+                   oninput="updatePlaceholder(this, 'width-unit')" />
+            <span class="unit" id="width-unit">cm (Width)</span>
+        </div>
+
+        <div class="dimension-input-container">
+            <input id="height" 
+                   class="input-height" 
+                   placeholder="Height (cm)" 
+                   oninput="updatePlaceholder(this, 'height-unit')" />
+            <span class="unit" id="height-unit">cm (Height)</span>
+        </div>
+
+        <div id="answer"></div>
+        <div id="ratio"></div>
+    </section>
+
+    <!-- Tattoo Style Section -->
+    <section class="style-section">
+        <h2>Tattoo Style</h2>
+        <select id="tattooStyles">
+            <option value="" disabled selected>Please select a style</option>
+            
+            <!-- Traditional Styles -->
+            <option value="traditional">Traditional (Old School)</option>
+            <option value="neo-traditional">Neo-Traditional</option>
+            <option value="japanese">Japanese Traditional (Irezumi)</option>
+            
+            
+            <!-- Realistic Styles -->
+            <option value="realism">Realism</option>
+            <option value="black-grey-realism">Black and Grey Realism</option>
+            <option value="hyperrealism">Hyperrealism</option>
+            
+            <!-- Modern Styles -->
+            <option value="watercolor">Watercolor</option>
+            <option value="geometric">Geometric</option>
+            <option value="minimalism">Minimalism</option>
+            
+            <!-- Artistic Styles -->
+            <option value="illustrative">Illustrative</option>
+            <option value="sketch">Sketch Style</option>
+            <option value="dotwork">Dotwork</option>
+            
+            <!-- Cultural Styles -->
+            <option value="tribal">Tribal</option>
+            <option value="chicano">Chicano</option>
+            
+            <!-- Special Styles -->
+            <option value="anime">Anime Tattoo</option>
+            <option value="biomechanical">Biomechanical</option>
+            <option value="blackwork">Blackwork</option>
+            <option value="glitch">Glitch Tattoo</option>
+            <option value="gothic">Gothic Tattoo</option>
+            <option value="lettering">Lettering</option>
+            <option value="new-school">New School</option>
+            <option value="sticker">Sticker Tattoo</option>
+        </select>
+        
+        <div id="description"></div>
+    </section>
+
+    <!-- Color Section -->
+    <section class="color-section">
+        <h2>Preferred Color</h2>
+
+    </section>
+    
+    <!-- Lettering Section -->
+    <section class="lettering-section">
+        <div class="lettering-header">
+            <h2>Lettering</h2>
+            <label class="checkbox-container">
+                <input type="checkbox" id="useCustomFont">
+                <span class="checkmark"></span>
+                <span>Use Custom Font</span>
+            </label>
+        </div>
+
+        <div id="fontSelectionArea" style="display: none;" class="font-categories-container">
+            <!-- 여기에 JavaScript로 8개의 폰트 카테고리 드롭다운이 동적으로 생성됩니다 -->
+        </div>
+
+        <div class="text-input-container">
+            <input type="text" id="letteringText" class="input" placeholder="Enter text..." oninput="updatePreview()"/>
+            <div id="textPreview" class="text-preview">텍스트를 입력하세요</div>
+        </div>
+    </section>
+
+
+
+
+    <!-- Quote Button Section -->
+    <section class="quote-button-section">
+        <button class="quote-button">Live bidding from nearby artists</button>
+    </section>
+    
