@@ -84,28 +84,46 @@
 
     </section>
     
+    <!-- 간격 추가 -->
+    <div style="margin-bottom: 20px;"></div>
+    
     <!-- Lettering Section -->
     <section class="lettering-section">
         <div class="lettering-header">
             <h2>Lettering</h2>
-            <label class="checkbox-container">
+            <div class="checkbox-container">
                 <input type="checkbox" id="useCustomFont">
                 <span class="checkmark"></span>
-            </label>
+            </div>
+        </div>
+
+        <div class="text-input-container" style="display: none;">
+            <input type="text" id="letteringText" class="input" placeholder="Please enter the preview text" />
+            
+            <div class="skin-tone-selector">
+                <span class="skin-tone-label">피부색 선택:</span>
+                <div class="skin-tone-options">
+                    <div class="skin-color-box" data-color="#000000" style="background-color: #000000;"></div>
+                    <div class="skin-color-box" data-color="#0D0705" style="background-color: #0D0705;"></div>
+                    <div class="skin-color-box" data-color="#241709" style="background-color: #241709;"></div>
+                    <div class="skin-color-box" data-color="#3C280D" style="background-color: #3C280D;"></div>
+                    <div class="skin-color-box" data-color="#4E3520" style="background-color: #4E3520;"></div>
+                    <div class="skin-color-box" data-color="#6F4F37" style="background-color: #6F4F37;"></div>
+                    <div class="skin-color-box" data-color="#8D5524" style="background-color: #8D5524;"></div>
+                    <div class="skin-color-box" data-color="#AA704A" style="background-color: #AA704A;"></div>
+                    <div class="skin-color-box" data-color="#C68642" style="background-color: #C68642;"></div>
+                    <div class="skin-color-box" data-color="#E0AC69" style="background-color: #E0AC69;"></div>
+                    <div class="skin-color-box" data-color="#F1C27D" style="background-color: #F1C27D;"></div>
+                    <div class="skin-color-box" data-color="#FFDBAC" style="background-color: #FFDBAC;"></div>
+                    <div class="skin-color-box" data-color="#FFFFFF" style="background-color: #FFFFFF; border: 1px solid #cccccc;"></div>
+                </div>
+            </div>
         </div>
 
         <div id="fontSelectionArea" style="display: none;" class="font-categories-container">
             <!-- 여기에 JavaScript로 8개의 폰트 카테고리 드롭다운이 동적으로 생성됩니다 -->
         </div>
-
-        <div class="text-input-container">
-            <input type="text" id="letteringText" class="input" placeholder="Enter text..." oninput="updatePreview()"/>
-            <div id="textPreview" class="text-preview">텍스트를 입력하세요</div>
-        </div>
     </section>
-
-
-
 
     <!-- Quote Button Section -->
     <section class="quote-button-section">
