@@ -3,6 +3,12 @@ body {
     background-color: #1a1a1a;
     color: #fff;
     padding: 20px;
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 요소 배치 */
+    justify-content: center; /* 세로축 가운데 정렬 */
+    align-items: center; /* 가로축 가운데 정렬 */
+    min-height: 100vh; /* 최소 높이를 뷰포트 높이로 설정 */
+    margin: 0; /* 기본 마진 제거 */
 }
 
 .color-circle {
@@ -48,9 +54,11 @@ p {
 .dimension-input-container {
     position: relative;
     display: inline-block;
+    flex: 1;
 }
 
 .input-width, .input-height, input {
+    flex: 1;
     width: 250px;
     height: 42px;
     background-color: #212121;
@@ -227,6 +235,7 @@ select {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    flex: 1;
 }
 
 .dimension-input {
@@ -237,6 +246,7 @@ select {
     border-radius: 5px;
     color: #fff;
     background-color: #2a2a2a;
+    flex: 1;
 }
 
 .unit-text {
@@ -291,6 +301,7 @@ select {
     .area-container {
         padding-bottom: 80px; /* 모바일에서 더 큰 여유 공간 */
     }
+    
 }
 
 
@@ -334,6 +345,7 @@ select {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex: 1;
 }
 
 .text-preview {
@@ -376,6 +388,7 @@ select {
     flex-direction: column;
     gap: 15px;
     margin-bottom: 20px;
+    flex: 1;
 }
 
 .input-group input {
@@ -389,6 +402,7 @@ select {
     border-radius: 8px;
     border: 1px solid #666;
     outline: none;
+    flex: 1;
 }
 
 .input-group input:focus {
