@@ -16,7 +16,7 @@
         -ms-overflow-style: none;
     }
     
-    body { padding: 10px; }
+    body { padding: 0px; }
     h1 { font-size: 2rem; }
     .tab-container { padding: 0px 0px; }
     .container, .tattoo-container, .account-container { padding-bottom: 60px; }

@@ -852,6 +852,12 @@ function initTattooPageNavigation() {
                 // 페이지 전환과 동일한 애니메이션으로 숨김
                 prevButton.classList.add('hidden');
             }
+
+            // 리뷰 페이지로 돌아가는 경우 이전 버튼 숨김
+            if (currentPageIndex - 1 === 0) {
+                // 페이지 전환과 동일한 애니메이션으로 숨김
+                prevButton.classList.add('hidden');
+            }         
             
             // requestAnimationFrame 사용하여 렌더링 최적화
             requestAnimationFrame(() => {
@@ -914,13 +920,7 @@ function initTattooPageNavigation() {
             prevButton.classList.remove('hidden');
         }
         
-        // 마지막 페이지에서는 다음 버튼 텍스트 변경
-        if (currentPageIndex === pages.length - 1) {
-            nextButton.innerHTML = 'NEXT';
-        } else {
-            nextButton.innerHTML = 'NEXT';
-        }
-        
+       
         // 현재 페이지 인디케이터 업데이트
         const dotIndicators = document.querySelectorAll('.dot-indicator');
         dotIndicators.forEach((dot, index) => {
