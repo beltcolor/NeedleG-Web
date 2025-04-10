@@ -46,20 +46,99 @@ function initMenuDropdown() {
         menuButton.addEventListener('click', function(e) {
             e.stopPropagation();
             
-            // 드롭다운 위치 조정
-            const buttonRect = menuButton.getBoundingClientRect();
-            menuDropdown.style.position = 'fixed';
-            menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
-            menuDropdown.style.right = '20px';
+            // 화면 크기에 따라 다른 동작 구현
+            const isMobile = window.innerWidth <= 768;
             
-            // 드롭다운 표시/숨김 토글
-            menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+            if (isMobile) {
+                // 모바일 화면: 전체 화면 메뉴
+                
+                // 메뉴 아이콘 변경 (메뉴/닫기)
+                const menuIcon = menuButton.querySelector('i');
+                if (menuIcon) {
+                    menuIcon.textContent = menuIcon.textContent === 'menu' ? 'close' : 'menu';
+                }
+                
+                // 드롭다운을 전체 화면으로 표시
+                menuDropdown.classList.toggle('fullscreen-menu');
+                
+                // 메뉴가 표시되면 스크롤 방지
+                if (menuDropdown.classList.contains('fullscreen-menu')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            } else {
+                // 데스크톱 화면: 일반 드롭다운 메뉴
+                
+                // 드롭다운 위치 조정
+                const buttonRect = menuButton.getBoundingClientRect();
+                menuDropdown.style.position = 'fixed';
+                menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
+                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                menuDropdown.style.left = 'auto';
+                
+                // 드롭다운 표시/숨김 토글
+                menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+            }
         });
         
-        // Close dropdown when clicking elsewhere
+        // 메뉴 항목 클릭 시 메뉴 닫기
+        const menuItems = menuDropdown.querySelectorAll('a');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    menuDropdown.classList.remove('fullscreen-menu');
+                    document.body.style.overflow = '';
+                    
+                    // 메뉴 아이콘 원래대로
+                    const menuIcon = menuButton.querySelector('i');
+                    if (menuIcon) {
+                        menuIcon.textContent = 'menu';
+                    }
+                } else {
+                    menuDropdown.style.display = 'none';
+                }
+            });
+        });
+        
+        // 바깥 영역 클릭 시 메뉴 닫기
         document.addEventListener('click', function(e) {
             if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    menuDropdown.classList.remove('fullscreen-menu');
+                    document.body.style.overflow = '';
+                    
+                    // 메뉴 아이콘 원래대로
+                    const menuIcon = menuButton.querySelector('i');
+                    if (menuIcon) {
+                        menuIcon.textContent = 'menu';
+                    }
+                } else {
+                    menuDropdown.style.display = 'none';
+                }
+            }
+        });
+        
+        // 화면 크기 변경 시 메뉴 스타일 조정
+        window.addEventListener('resize', function() {
+            const isMobile = window.innerWidth <= 768;
+            
+            // 화면 크기 변경 시 열려있는 메뉴 닫기
+            if (isMobile) {
+                menuDropdown.classList.remove('fullscreen-menu');
+                document.body.style.overflow = '';
+            } else {
                 menuDropdown.style.display = 'none';
+            }
+            
+            // 메뉴 아이콘 원래대로
+            const menuIcon = menuButton.querySelector('i');
+            if (menuIcon) {
+                menuIcon.textContent = 'menu';
             }
         });
         
@@ -69,7 +148,20 @@ function initMenuDropdown() {
             darkModeToggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 document.documentElement.classList.toggle('light-mode');
-                menuDropdown.style.display = 'none';
+                
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    menuDropdown.classList.remove('fullscreen-menu');
+                    document.body.style.overflow = '';
+                    
+                    // 메뉴 아이콘 원래대로
+                    const menuIcon = menuButton.querySelector('i');
+                    if (menuIcon) {
+                        menuIcon.textContent = 'menu';
+                    }
+                } else {
+                    menuDropdown.style.display = 'none';
+                }
             });
         }
     }
@@ -321,9 +413,27 @@ function handleLogout() {
     // Clear content
     clearUserContent();
     
-    // Close menu dropdown
+    // Close menu dropdown based on screen size
     const menuDropdown = document.getElementById('menu-dropdown');
-    if (menuDropdown) menuDropdown.style.display = 'none';
+    const menuButton = document.getElementById('menu-button');
+    const isMobile = window.innerWidth <= 768;
+    
+    if (menuDropdown) {
+        if (isMobile) {
+            menuDropdown.classList.remove('fullscreen-menu');
+            document.body.style.overflow = '';
+        } else {
+            menuDropdown.style.display = 'none';
+        }
+    }
+    
+    // 메뉴 아이콘 원래대로
+    if (menuButton) {
+        const menuIcon = menuButton.querySelector('i');
+        if (menuIcon) {
+            menuIcon.textContent = 'menu';
+        }
+    }
 }
 
 // Load user content (posts, saved, liked)
