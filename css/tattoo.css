@@ -748,6 +748,13 @@ body.dark-theme .dot-indicator.active {
     z-index: -1;
 }
 
+/* 레인보우 테두리 애니메이션 */
+@keyframes rainbow-border {
+    0% { background-position: 200% 0%; }
+    100% { background-position: -200% 0%; }
+}
+
+
 .font-name {
     font-size: 1px;
     color: var(--text-secondary);
@@ -1459,3 +1466,4 @@ input[type="checkbox"]:checked::after {
     opacity: 0.7;
     width: 100%;
 }
+
