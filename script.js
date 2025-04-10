@@ -217,6 +217,14 @@ function loadTattooContent() {
                     textInputContainer.classList.remove('fade-out');
                     fontSelectionArea.classList.remove('fade-out');
                     
+                    // 텍스트 입력 필드에 이벤트 리스너 추가
+                    const letteringTextElement = document.getElementById('letteringText');
+                    if (letteringTextElement) {
+                        // 기존 이벤트 리스너 제거 후 다시 추가 (중복 방지)
+                        letteringTextElement.removeEventListener('input', updatePreview);
+                        letteringTextElement.addEventListener('input', updatePreview);
+                    }
+                    
                     // requestAnimationFrame을 사용하여 렌더링 타이밍에 맞춰 애니메이션 클래스 추가
                     requestAnimationFrame(() => {
                         requestAnimationFrame(() => {
@@ -419,6 +427,9 @@ function loadTattooContent() {
                         });
                         
                         fontListContainer.appendChild(fontGrid);
+                        
+                        // 폰트 로드 후 미리보기 업데이트
+                        updatePreview();
                     })
                     .catch(error => {
                         console.error(`폰트 목록 로드 중 오류 (${category}):`, error);
