@@ -1449,3 +1449,13 @@ input[type="checkbox"]:checked::after {
 #suggested-area {
     animation: fadeIn 0.4s ease;
 }
+
+/* 섹션 구분선 스타일 */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: var(--bg-line);
+    margin-top: 20px;
+    opacity: 0.7;
+    width: 100%;
+}
