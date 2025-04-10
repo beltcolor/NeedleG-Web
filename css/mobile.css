@@ -1,5 +1,21 @@
 /* 반응형 디자인 */
 @media (max-width: 768px) {
+    /* 스크롤바 숨기기 */
+    ::-webkit-scrollbar {
+        width: 0;
+        display: none;
+    }
+    
+    /* Firefox */
+    html {
+        scrollbar-width: none;
+    }
+    
+    /* IE and Edge */
+    body {
+        -ms-overflow-style: none;
+    }
+    
     body { padding: 10px; }
     h1 { font-size: 2rem; }
     .tab-container { padding: 0px 0px; }
