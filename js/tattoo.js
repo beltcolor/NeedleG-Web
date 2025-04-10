@@ -241,6 +241,8 @@ function loadTattooContent() {
                 // 폰트 리스트를 표시할 컨테이너와 그라데이션 효과 생성
                 const fontListWrapper = document.createElement('div');
                 fontListWrapper.className = 'font-list-wrapper';
+                fontListWrapper.style.maxHeight = '450px';
+                fontListWrapper.style.overflow = 'hidden';
                 
                 // 상단 그라데이션 요소 추가
                 const topFade = document.createElement('div');
@@ -251,6 +253,8 @@ function loadTattooContent() {
                 const fontListContainer = document.createElement('div');
                 fontListContainer.id = 'font-list-container';
                 fontListContainer.className = 'font-list-container';
+                fontListContainer.style.maxHeight = '400px';
+                fontListContainer.style.overflowY = 'auto';
                 fontListWrapper.appendChild(fontListContainer);
                 
                 // 하단 그라데이션 요소 추가
@@ -260,12 +264,35 @@ function loadTattooContent() {
                 
                 // 전체 래퍼를 폰트 선택 영역에 추가
                 fontSelectionArea.appendChild(fontListWrapper);
+                
+                // 창 크기 변경 이벤트 리스너 추가
+                window.addEventListener('resize', function() {
+                    const container = document.getElementById('font-list-container');
+                    if (container) {
+                        if (window.innerWidth <= 480) {
+                            container.style.maxHeight = '180px';
+                        } else if (window.innerWidth <= 768) {
+                            container.style.maxHeight = '250px';
+                        } else {
+                            container.style.maxHeight = '400px';
+                        }
+                    }
+                });
             }
             
             // 선택한 카테고리의 폰트를 로드하는 함수
             function loadFontsForSelectedCategory(category) {
                 const fontListContainer = document.getElementById('font-list-container');
                 fontListContainer.innerHTML = ''; // 기존 내용 초기화
+                
+                // 반응형 높이 조정 - 모바일 기기에 맞춤
+                if (window.innerWidth <= 768) {
+                    fontListContainer.style.maxHeight = '250px';
+                } else if (window.innerWidth <= 480) {
+                    fontListContainer.style.maxHeight = '180px';
+                } else {
+                    fontListContainer.style.maxHeight = '400px';
+                }
                 
                 // 로딩 메시지 표시
                 const loadingMessage = document.createElement('p');
@@ -544,83 +571,26 @@ function loadTattooContent() {
                         sample.textContent = text || itemFontName.replace(/%20/g, ' ');
                     }
                     
-                    // 텍스트 길이에 따라 글자 크기 자동 조정 (더 크게)
-                    const displayedText = sample.textContent;
-                    if (displayedText.length > 30) {
-                        sample.style.fontSize = '40px';
-                    } else if (displayedText.length > 20) {
-                        sample.style.fontSize = '46px';
-                    } else if (displayedText.length > 10) {
-                        sample.style.fontSize = '52px';
-                    } else {
-                        sample.style.fontSize = '58px';
-                    }
-                    
+                         
                     // 폰트 크기 자동 조정
                     adjustFontSize(sample);
                 });
             }
 
-            // 피부색 선택 상자 기능 초기화
-            function initSkinToneSelector() {
-                const skinColorBoxes = document.querySelectorAll('.skin-color-box');
-                
-                // 마지막 색상(흰색)을 기본으로 선택
-                if (skinColorBoxes.length > 0) {
-                    // 모든 선택 제거
-                    skinColorBoxes.forEach(b => b.classList.remove('selected'));
-                    
-                    // 마지막 색상(흰색)을 선택
-                    const whiteColorBox = skinColorBoxes[skinColorBoxes.length - 1];
-                    whiteColorBox.classList.add('selected');
-                    
-                    // 피부색 선택 이벤트 리스너 추가
-                    skinColorBoxes.forEach(box => {
-                        box.addEventListener('click', function() {
-                            // 기존 선택 제거
-                            skinColorBoxes.forEach(b => b.classList.remove('selected'));
-                            
-                            // 새 선택 추가
-                            this.classList.add('selected');
-                            
-                            // 선택된 배경색 가져오기
-                            const selectedColor = this.getAttribute('data-color');
-                            
-                            // 모든 폰트 샘플 배경색만 업데이트
-                            const fontSamples = document.querySelectorAll('.font-sample');
-                            fontSamples.forEach(sample => {
-                                sample.style.backgroundColor = selectedColor;
-                                // 글자색은 항상 검정색으로 고정
-                                sample.style.color = '#000000';
-                            });
-                            
-                            // 모든 font-item 배경색도 업데이트
-                            const fontItems = document.querySelectorAll('.font-item');
-                            fontItems.forEach(item => {
-                                item.style.backgroundColor = selectedColor;
-                                item.style.border = `1px solid ${selectedColor === '#FFFFFF' ? '#cccccc' : 'transparent'}`;
-                                
-                                // 폰트 이름 색상은 항상 검정색으로 고정
-                                const fontNameElem = item.querySelector('.font-name');
-                                if (fontNameElem) {
-                                    fontNameElem.style.color = '#000000';
-                                }
-                            });
-                            
-                            // 미리보기 업데이트
-                            updatePreview();
-                        });
-                    });
-                    
-                    // 초기에 흰색 배경에 검정색 텍스트 설정을 적용
-                    whiteColorBox.click();
-                }
-                
-                // 폰트 관련 이벤트 리스너 추가
-                const letteringTextElement = document.getElementById('letteringText');
-                if (letteringTextElement) {
-                    letteringTextElement.addEventListener('input', updatePreview);
-                }
+            // 페이지 초기화 시 필요한 함수들 호출
+            createCategorySelector();
+            updatePreview();
+            
+            // 이벤트 리스너 등록
+            const letteringText = document.getElementById('lettering-text');
+            if (letteringText) {
+                letteringText.addEventListener('input', updatePreview);
+            }
+
+            // 폰트 선택 영역 토글 버튼 이벤트 리스너
+            const toggleFontSelectionBtn = document.getElementById('toggle-font-selection');
+            if (toggleFontSelectionBtn) {
+                toggleFontSelectionBtn.addEventListener('click', toggleFontSelection);
             }
         })
         .catch(error => {
@@ -1563,21 +1533,51 @@ function initTattooPageNavigation() {
     function adjustReviewFontSize(element) {
         // 텍스트 길이에 따라 글자 크기 조정
         const text = element.textContent || '';
+        const isMobile = window.innerWidth <= 768; // 모바일 디바이스 체크
         
-        if (text.length > 30) {
-            element.style.fontSize = '20px';
-        } else if (text.length > 20) {
-            element.style.fontSize = '24px';
-        } else if (text.length > 10) {
-            element.style.fontSize = '28px';
+        if (isMobile) {
+            // 모바일에서는 폰트 크기 설정 (더 크게 조정)
+            if (text.length > 30) {
+                element.style.fontSize = '20px';
+            } else if (text.length > 20) {
+                element.style.fontSize = '22px';
+            } else if (text.length > 10) {
+                element.style.fontSize = '24px';
+            } else {
+                element.style.fontSize = '26px';
+            }
         } else {
-            element.style.fontSize = '32px';
+            // 데스크톱에서는 기존 크기 유지
+            if (text.length > 30) {
+                element.style.fontSize = '20px';
+            } else if (text.length > 20) {
+                element.style.fontSize = '24px';
+            } else if (text.length > 10) {
+                element.style.fontSize = '28px';
+            } else {
+                element.style.fontSize = '32px';
+            }
         }
         
-        // 최소 높이 설정
-        if (element.clientHeight < 60) {
-            element.style.minHeight = '60px';
-        }
+    }
+    
+    // 폰트 샘플 크기를 모바일에서 조정하는 함수
+    function adjustFontSampleSize() {
+        const fontSampleElements = document.querySelectorAll('.font-sample');
+        const isMobile = window.innerWidth <= 768;
+        
+        fontSampleElements.forEach(fontSample => {
+            if(isMobile) {
+                // 모바일에서는 폰트 샘플 크기 조정 (더 크게)
+                fontSample.style.fontSize = '18px';
+            } else {
+                // 데스크톱에서는 기본 크기 사용
+                fontSample.style.fontSize = '18px';
+            }
+            
+            // 한 줄에 표시되도록 추가 조정
+            adjustFontToSingleLine(fontSample);
+        });
     }
     
     // 타투 신청 처리 함수
@@ -1776,7 +1776,7 @@ function calculateArea() {
             const minSuggestedArea = (area * 1.1).toFixed(1);
             const maxSuggestedArea = (area * 1.2).toFixed(1);
             
-            // 추천 면적 표시
+            // 추정 면적 표시
             if (suggestedAreaElement) {
                 suggestedAreaElement.innerText = `✔︎ Estimated total area: ${minSuggestedArea} ~ ${maxSuggestedArea} cm²`;
                 suggestedAreaElement.style.display = 'block';
@@ -2109,3 +2109,67 @@ function updateDimensionPage() {
         }
     }
 }
+
+// 폰트 미리보기가 한 줄에 표시되도록 글자 크기 자동 조절
+function adjustFontToSingleLine(element) {
+    if (!element) return;
+    
+    // 원래 텍스트 내용 저장
+    const text = element.textContent || '';
+    if (!text.trim()) return;
+    
+    // 강제로 한 줄 표시 스타일 적용
+    const forceSingleLineStyle = `
+        white-space: nowrap !important; 
+        overflow: hidden !important; 
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
+        display: block !important;
+    `;
+    
+    // 기존 스타일 저장 후 새 스타일 적용
+    const originalStyle = element.getAttribute('style') || '';
+    element.setAttribute('style', originalStyle + forceSingleLineStyle);
+    
+    // 현재 폰트 크기 (기본값 또는 현재 설정된 값)
+    let fontSize = parseInt(window.getComputedStyle(element).fontSize);
+    const originalFontSize = fontSize;
+    const minFontSize = 10; // 최소 폰트 크기
+    
+    // 부모 컨테이너의 너비 가져오기 (여백 고려)
+    const parentWidth = element.parentElement.clientWidth - 10; // 약간의 여백
+    
+    // 빠른 폰트 크기 조절을 위한 변수
+    let step = 8; // 처음에는 4px씩 줄임
+    let previousWidth = Infinity;
+    
+    // 미리보기 요소가 부모 너비를 초과하는지 확인
+    while (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+        // 폰트 크기를 step px씩 줄임
+        fontSize -= step;
+        
+        // 최소 크기보다 작아질 경우 방지
+        if (fontSize < minFontSize) fontSize = minFontSize;
+        
+        element.style.fontSize = fontSize + 'px';
+        
+        // 변화가 거의 없으면 step 크기 줄임
+        if (Math.abs(previousWidth - element.scrollWidth) < 10) {
+            step = 1;
+        }
+        previousWidth = element.scrollWidth;
+        
+        // 무한 루프 방지
+        if (fontSize <= minFontSize) break;
+    }
+    
+    // 최종 확인: 여전히 너무 크면 최소 크기로 강제 조정
+    if (element.scrollWidth > parentWidth && fontSize > minFontSize) {
+        fontSize = minFontSize;
+        element.style.fontSize = fontSize + 'px';
+    }
+    
+    console.log(`[폰트 자동 조절] ${text.substring(0, 15)}${text.length > 15 ? '...' : ''}: ${originalFontSize}px → ${fontSize}px (${Math.round((fontSize/originalFontSize)*100)}%)`);
+}
+
+    

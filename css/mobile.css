@@ -33,6 +33,10 @@
         background-color: var(--bg-color) !important;
         box-shadow: none !important;
     }
+
+    .font-list-container {
+        max-height: 400px !important;
+    }
     
     /* 모바일에서 페이지 인디케이터 위치 변경 */
     .navigation-buttons {
@@ -86,25 +90,8 @@
     
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
+    }   
     
-    .font-list-container {
-        max-height: 400px;
-    }
-    
-    .font-list-wrapper {
-        max-height: 400px;
-    }
-    
-    .font-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .font-sample {
-        font-size: 28px;
-        min-height: 100px;
-    }
-
 }
 
 
@@ -120,14 +107,5 @@
     .gallery-tab .material-icons {
         margin-right: 2px;
         font-size: 18px;
-    }
-
-    .font-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .font-sample {
-        font-size: 24px;
-        min-height: 80px;
     }
 }

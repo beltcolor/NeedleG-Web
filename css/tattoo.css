@@ -622,7 +622,7 @@ body.dark-theme .dot-indicator.active {
     width: 100%;
     padding-top: 15px;
     padding-bottom: 15px;
-    max-height: 600px;
+    max-height: 500px !important;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) var(--bg-secondary);
 }
@@ -637,8 +637,8 @@ body.dark-theme .dot-indicator.active {
 .font-list-wrapper {
     position: relative;
     width: 100%;
-    max-height: 600px;
     overflow: hidden;
+    max-height: 555px !important;
 }
 
 /* 상단 그라데이션 */
@@ -761,7 +761,7 @@ body.dark-theme .dot-indicator.active {
 }
 
 .font-sample {
-    font-size: 32px;
+    font-size: 10px;
     line-height: 1.2;
     color: var(--text-primary);
     min-height: auto;

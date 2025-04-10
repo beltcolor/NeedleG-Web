@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <base href="https://beltcolor.github.io/NeedleG-Web/">
+    <base href="https://beltcolor.github.io/NeedleG-Web/" id="base-tag"> <!-- 버전 관리를 위한 기본 URL -->
     <title>NeedleG</title>
+    
+    <script>
+    // 로컬 환경인지 확인하는 스크립트
+    (function() {
+        // 로컬 호스트 확인 (localhost, 127.0.0.1, 파일 프로토콜, 또는 IP 주소인 경우)
+        const isLocal = window.location.hostname === 'localhost' || 
+                       window.location.hostname === '127.0.0.1' || 
+                       window.location.protocol === 'file:' ||
+                       /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(window.location.hostname);
+        
+        // 로컬 환경이면 base 태그 비활성화
+        if (isLocal) {
+            const baseTag = document.getElementById('base-tag');
+            if (baseTag) {
+                baseTag.remove();
+                console.log('로컬 환경 감지: base 태그 비활성화됨');
+            }
+        }
+    })();
+    </script>
+    
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/navi.css">
-    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/tattoo.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/account.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
