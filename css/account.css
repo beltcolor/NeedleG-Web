@@ -3,7 +3,9 @@
     width: 100%;
     max-width: var(--content-width);
     margin: 0 auto;
-    padding: 10px 0;
+    padding-top: 3rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
 }
 
 /* Login Modal */
@@ -220,7 +222,7 @@
 
 .menu-btn {
     position: fixed;
-    top: 20px;
+    top: 66px;
     right: 20px;
     z-index: 1003;
     background-color: transparent;
@@ -442,7 +444,7 @@
     }
     
     .menu-btn {
-        top: 15px;
+        top: 3rem;
         right: 15px;
         background-color: transparent;
     }
@@ -527,7 +529,7 @@
     }
     
     .menu-btn {
-        top: 10px;
+        top: 66px;
         right: 10px;
         background-color: transparent;
     }
