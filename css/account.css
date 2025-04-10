@@ -286,9 +286,6 @@
     padding: 0;
 }
 
-.menu-dropdown li:last-child {
-}
-
 .menu-dropdown a {
     display: flex;
     align-items: center;
