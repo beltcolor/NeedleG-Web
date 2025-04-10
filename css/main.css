@@ -1,0 +1,222 @@
+/* 기본 변수 */
+:root {
+    --bg-color: #1a1a1a;
+    --bg-color-rgb: 26, 26, 26; /* 배경색 RGB 값 추가 */
+    --bg-secondary: #252525;
+    --bg-tertiary: #363636;
+    --bg-line: #494949;
+    --text-primary: #ffffff;
+    --text-secondary: #b1b1b1;
+    --text-tertiary: #ccb5de;
+    --accent-color: #8DA593;
+    --accent-secondary: #B8AB7F;
+    --border-color: none;
+    --input-height: 42px;
+    --border-radius: 20px;
+    --content-width: 600px;
+    --button-color: #1a1a1a;
+}
+
+/* 라이트 모드 변수 */
+:root.light-mode {
+    --bg-color: #f5f5f5;
+    --bg-color-rgb: 245, 245, 245; /* 라이트 모드 배경색 RGB 값 추가 */
+    --bg-secondary: #e0e0e0;
+    --bg-tertiary: #c4c4c4;
+    --bg-line: #bcbcbc;
+    --text-primary: #000000;
+    --text-secondary: #555555;
+    --text-tertiary: #6b4c7a;
+    --border-color: #999;
+    --accent-secondary: #a16ae0;
+    --button-color: #f5f5f5;
+    --border-color: none;
+}
+
+/* 기본 리셋 및 공통 스타일 --------------------------------------------------------------------------------------*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* 부드러운 스크롤 제거 */
+html {
+    scroll-behavior: auto;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* 컨텐츠 패딩 */
+.area-container {
+    padding-bottom: 70px;
+}
+
+/* 유틸리티 클래스 */
+.text-center {
+    text-align: center;
+}
+
+/* 레이아웃 컨테이너 ------------------------------------------------------------------------*/
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    padding-bottom: 60px;
+}
+
+.tattoo-container, .account-container {
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 1rem;
+    padding-bottom: 60px;
+}
+
+/* 타이포그래피 --------------------------------------------------------------------------------------*/
+h1, h2, h3 {
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: left;
+}
+
+h2 {
+    margin-top: 2rem;
+    color: var(--accent-secondary);
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+h3 {
+    margin-top: 1rem;
+    color: var(--accent-color);
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* 입력 요소 공통 스타일 --------------------------------------------------------------------------------------*/
+input, select {
+    width: 100%;
+    height: var(--input-height);
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+}
+
+input:focus {
+    border-color: var(--accent-color);
+}
+
+
+/* 페이드 인/아웃 애니메이션 --------------------------------------------------------------------------------------*/
+.fade-in {
+    animation: fadeIn 0.3s ease-in forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 다크모드/라이트모드 전환 버튼 -----------------------------------------------------------------------------------*/
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1001;
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-tertiary);
+    transform: scale(1.1);
+}
+
+.theme-toggle .icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+
+/* VONCU 로고 ------------------------------------------------------------------------------------------------*/
+.voncu {
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #8a2be2, #f8bdff, #8a2be2);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shineEffect 2s ease-in-out infinite;
+    margin-bottom: 1rem;
+}
