@@ -71,9 +71,9 @@
         text-align: center;
     }
     
-    .profile-avatar {
-        margin-right: 0;
-        margin-bottom: 20px;
+    .profile-info-container {
+        flex-direction: column;
+        text-align: left;
     }
     
     .profile-stats {
@@ -89,7 +89,8 @@
     }
     
     .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
     }   
     
 }
@@ -107,5 +108,21 @@
     .gallery-tab .material-icons {
         margin-right: 2px;
         font-size: 18px;
+    }
+
+    .tab-btn {
+        padding: 12px 5px;
+        font-size: 12px;
+    }
+    
+    .tab-btn i {
+        font-size: 16px;
+        margin-right: 4px;
+    }
+    
+    /* 작은 화면에서도 갤러리 3분할 유지 */
+    .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
     }
 }

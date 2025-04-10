@@ -441,12 +441,12 @@ function loadTattooContent() {
             // 폰트 크기를 자동으로 조정하는 함수
             function adjustFontSize(element) {
                 // 기본 크기 설정 (더 크게)
-                element.style.fontSize = '50px';
+                element.style.fontSize = '45px';
                 
                 // 폰트가 로드된 후 크기 조정
                 setTimeout(() => {
                     // 기준 높이 (대부분의 폰트가 이 높이에 맞춰지도록)
-                    const targetHeight = 70;
+                    const targetHeight = 50;
                     
                     // 현재 높이 측정
                     const currentHeight = element.offsetHeight;
@@ -1527,58 +1527,8 @@ function initTattooPageNavigation() {
         }
         
         console.log('리뷰 데이터 업데이트 완료');
-    }
+    }}
     
-    // 리뷰 페이지의 폰트 크기를 자동으로 조정하는 함수
-    function adjustReviewFontSize(element) {
-        // 텍스트 길이에 따라 글자 크기 조정
-        const text = element.textContent || '';
-        const isMobile = window.innerWidth <= 768; // 모바일 디바이스 체크
-        
-        if (isMobile) {
-            // 모바일에서는 폰트 크기 설정 (더 크게 조정)
-            if (text.length > 30) {
-                element.style.fontSize = '20px';
-            } else if (text.length > 20) {
-                element.style.fontSize = '22px';
-            } else if (text.length > 10) {
-                element.style.fontSize = '24px';
-            } else {
-                element.style.fontSize = '26px';
-            }
-        } else {
-            // 데스크톱에서는 기존 크기 유지
-            if (text.length > 30) {
-                element.style.fontSize = '20px';
-            } else if (text.length > 20) {
-                element.style.fontSize = '24px';
-            } else if (text.length > 10) {
-                element.style.fontSize = '28px';
-            } else {
-                element.style.fontSize = '32px';
-            }
-        }
-        
-    }
-    
-    // 폰트 샘플 크기를 모바일에서 조정하는 함수
-    function adjustFontSampleSize() {
-        const fontSampleElements = document.querySelectorAll('.font-sample');
-        const isMobile = window.innerWidth <= 768;
-        
-        fontSampleElements.forEach(fontSample => {
-            if(isMobile) {
-                // 모바일에서는 폰트 샘플 크기 조정 (더 크게)
-                fontSample.style.fontSize = '18px';
-            } else {
-                // 데스크톱에서는 기본 크기 사용
-                fontSample.style.fontSize = '18px';
-            }
-            
-            // 한 줄에 표시되도록 추가 조정
-            adjustFontToSingleLine(fontSample);
-        });
-    }
     
     // 타투 신청 처리 함수
     function handleTattooSubmit() {
@@ -1586,7 +1536,7 @@ function initTattooPageNavigation() {
         alert('타투 요청이 성공적으로 제출되었습니다!');
         // 여기에 실제 제출 처리 로직을 추가할 수 있습니다.
     }
-}
+
 
 // 이미지리 스타일 토글 함수
 function toggleImageryStyle() {

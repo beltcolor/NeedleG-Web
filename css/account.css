@@ -152,20 +152,6 @@
     gap: 30px;
 }
 
-.profile-avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    overflow: hidden;
-    background-color: var(--bg-secondary);
-}
-
-.profile-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 .profile-details {
     flex: 1;
 }
@@ -308,14 +294,15 @@
 /* Content Tabs */
 .content-tabs {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     margin-bottom: 20px;
+    width: 100%;
 }
 
 .tab-btn {
     background: transparent;
     border: none;
-    padding: 16px 32px;
+    padding: 16px 10px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -324,6 +311,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1;
 }
 
 .tab-btn i {
@@ -431,20 +419,16 @@
         width: 100%;
     }
     
-    .profile-avatar {
-        width: 100px;
-        height: 100px;
-    }
-    
     .profile-details {
-        text-align: center;
+        text-align: left;
+        width: 100%;
     }
     
     .profile-name-section {
-        flex-direction: column;
+        flex-direction: row;
         gap: 10px;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
     }
     
     .profile-stats {
@@ -457,7 +441,8 @@
     }
     
     .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
     }
 }
 
@@ -478,6 +463,7 @@
     }
     
     .gallery-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
     }
 }
