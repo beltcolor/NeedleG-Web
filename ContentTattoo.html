@@ -1,0 +1,445 @@
+<!-- ContentTattoo.html -->
+<div class="tattoo-container">
+    <!-- Page Navigation Container -->
+    <div id="tattoo-pages-container">
+
+        
+        <!-- Page 1: Experience Level Section -->
+        <div class="tattoo-page" id="page-experience">
+            <section class="experience-section">
+                <h2>Experience Level</h2>
+                <p class="instruction-text">Please tell us about your tattoo experience</p>
+                <div class="experience-container">
+                    <h3>Is this your first tattoo?</h3>
+                    <div class="radio-options">
+                        <div class="radio-option">
+                            <input type="radio" id="first-yes" name="first-tattoo" value="yes">
+                            <label for="first-yes">Yes, this is my first tattoo</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="first-no" name="first-tattoo" value="no">
+                            <label for="first-no">No, I have tattoo(s) already</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="first-no-many" name="first-tattoo" value="no">
+                            <label for="first-no-many">I've lost count. My body is the canvas now</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="first-no-extreme" name="first-tattoo" value="no">
+                            <label for="first-no-extreme">Even my tattoos have tattoos</label>
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+        </div>
+        
+        <!-- Page 2: Location Section -->
+        <div class="tattoo-page" id="page-location" style="display: none;">
+            <section class="location-section">
+                <h2>Location</h2>
+                <p class="instruction-text">Please enter your location</p>
+                
+                <div class="location-input-container">
+                    <input type="text" class="input" id="location-input" placeholder="Enter your address">
+                    
+                    <!-- 현재 위치 자동 감지 버튼 추가 -->
+                    <div class="auto-detect-container">
+                        <button id="detect-location-btn" class="location-btn">
+                            <span class="icon">location_on</span>
+                            <span>Detect Current Location</span>
+                        </button>
+                        <p id="location-status" class="location-status"></p>
+                    </div>
+                    
+                    <!-- 방문 가능 거리 설정 슬라이더 추가 -->
+                    <div class="travel-distance-container">
+                        <div class="distance-label-container">
+                            <label for="travel-distance">Maximum travel distance :</label>
+                            <div class="slider-value-container">
+                                <span><span id="travel-distance-value">20</span>km</span>
+                            </div>
+                        </div>
+                        <div class="slider-container">
+                            <input type="range" id="travel-distance" min="1" max="100" value="20" class="slider">
+                        </div>
+                    </div>
+                    
+                    <!-- 출장 서비스 옵션 추가 -->
+                    <div class="mobile-service-container">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="request-mobile-service" name="request-mobile-service">
+                            <label for="request-mobile-service">Request mobile tattooing service</label>
+                        </div>
+                        <div id="mobile-service-info" class="mobile-service-info" style="display: none;">
+                            <p>Mobile tattooing services are available for selected areas with an additional fee:</p>
+                            <ul>
+                                <li>Within 10km: +₩50,000</li>
+                                <li>10-30km: +₩100,000</li>
+                                <li>30-50km: +₩150,000</li>
+                                <li>Over 50km: Available upon discussion</li>
+                            </ul>
+                            <div class="note">Note: Mobile services depend on artist availability and local regulations.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 3: Tattoo Style + Lettering Section -->
+        <div class="tattoo-page" id="page-style" style="display: none;">
+            <!-- Tattoo Style Section -->
+            <section class="style-section">
+                <h2>Tattoo Type</h2>
+                <div class="style-header">
+                    <h3>Artwork</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="useImageryStyle">
+                        <span class="checkmark"></span>
+                    </div>
+                </div>
+                
+                <div class="style-selector-container" style="display: none;">
+                     <select id="tattooStyles">
+                        <option value="" disabled selected>Type</option>
+                        
+                        <!-- Traditional Styles -->
+                        <option value="oldschool">Old School</option>
+                        <option value="new-school">New School</option>
+                        <option value="japanese">Japanese Traditional (Irezumi)</option>
+                        
+                        
+                        <!-- Realistic Styles -->
+                        <option value="realism">Realism</option>
+                        <option value="black-grey">Black and Grey</option>
+                        <option value="hyperrealism">Hyperrealism</option>
+                        
+                        <!-- Modern Styles -->
+                        <option value="watercolor">Watercolor</option>
+                        <option value="geometric">Geometric</option>
+                        <option value="minimalism">Minimalism</option>
+                        
+                        <!-- Artistic Styles -->
+                        <option value="illustrative">Illustrative</option>
+                        <option value="sketch">Sketch Style</option>
+                        <option value="dotwork">Dotwork</option>
+                        
+                        <!-- Cultural Styles -->
+                        <option value="tribal">Tribal</option>
+                        <option value="chicano">Chicano</option>
+                        
+                        <!-- Special Styles -->
+                        <option value="anime">Anime Tattoo</option>
+                        <option value="biomechanical">Biomechanical</option>
+                        <option value="glitch">Glitch Tattoo</option>
+                        <option value="gothic">Gothic Tattoo</option>
+                        <option value="sticker">Sticker Tattoo</option>
+                    </select>
+                    <div id="description"></div>
+
+                    <h3>Color vibe</h3>
+                <select id="colorStyles">
+                    <option value="" disabled selected>Color vibe</option>
+                    <option value="black-grey">Black & Grey</option>
+                    <option value="bold-vibrant">Bold & Vibrant</option>
+                    <option value="cold-icy">Cold & Icy</option>
+                    <option value="dark-moody">Dark & Moody</option>
+                    <option value="earthy-natural">Earthy & Natural</option>
+                    <option value="grunge-dirty">Grunge & Dirty</option>
+                    <option value="minimal-monochrome">Minimal & Monochrome</option>
+                    <option value="mystic-cosmic">Mystic & Cosmic</option>
+                    <option value="neon-cyberpunk">Neon & Cyberpunk</option>
+                    <option value="retro-vintage">Retro & Vintage</option>
+                    <option value="soft-pastel">Soft & Pastel</option>
+                    <option value="tropical-fun">Tropical & Fun</option>
+                    <option value="watercolor-dreamy">Watercolor & Dreamy</option>
+                    <option value="others">Others...</option>
+                </select>
+                
+                <div id="otherColorContainer" style="display: none;">
+                    <input type="text" id="otherColorInput" class="input" placeholder="Please describe your color preference" />
+                </div>
+                
+                <div id="colorDescription"></div>
+
+                    
+                    <!-- 레퍼런스 이미지 업로드 영역 -->
+                    <div class="reference-image-section">
+                        <div class="image-upload-container">
+                            <div class="image-preview-area" id="imagePreviewArea">
+                                <div class="upload-icon">
+                                    <span class="upload-icon-text">+</span>
+                                </div>
+                                <p class="upload-text">Reference image(optional)</p>
+                                <button type="button" id="removeImageBtn" class="remove-image-btn" style="display: none;">×</button>
+                            </div>
+                            <input type="file" id="referenceImageUpload" accept="image/*" class="image-upload-input" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Lettering Section -->
+            <section class="lettering-section">
+                <div class="style-header">
+                    <h3>Lettering</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="useCustomFont">
+                        <span class="checkmark"></span>
+                    </div>
+                </div>
+
+                <div class="text-input-container" style="display: none;">
+                    <input type="text" id="letteringText" class="input" placeholder="Please enter the preview text" />
+                </div>
+
+                <div id="fontSelectionArea" style="display: none;" class="font-categories-container">
+                    <!-- 여기에 JavaScript로 8개의 폰트 카테고리 드롭다운이 동적으로 생성됩니다 -->
+                </div>
+            </section>
+            
+            <!-- Cover-up 섹션 추가 -->
+            <section class="coverup-section">
+                <div class="style-header">
+                    <h3>Cover-up</h3>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="useCoverup">
+                        <span class="checkmark"></span>
+                    </div>
+                </div>
+
+                <div class="coverup-container" style="display: none;">
+                    <p class="instruction-text">Upload an image of the tattoo you want to cover</p>
+                    <div class="image-upload-container">
+                        <div class="image-preview-area" id="coverupImagePreviewArea">
+                            <div class="upload-icon">
+                                <span class="upload-icon-text">+</span>
+                            </div>
+                            <p class="upload-text">Upload existing tattoo image</p>
+                            <button type="button" id="removeCoverupBtn" class="remove-image-btn" style="display: none;">×</button>
+                        </div>
+                        <input type="file" id="coverupImageUpload" accept="image/*" class="image-upload-input" />
+                    </div>
+                    
+                    <div class="coverup-notes-container">
+                        <textarea id="coverup-notes" 
+                                class="notes-textarea" 
+                                placeholder="Add any notes about your cover-up (e.g. why you want to cover it, any specific concerns, etc.)"></textarea>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 4: Dimension Section -->
+        <div class="tattoo-page" id="page-dimension" style="display: none;">
+            <section class="dimension-section">
+                <h2>Dimension</h2>
+                <p class="instruction-text">Please enter your desired size</p>
+                
+                <!-- Cover-up 체크 시 표시될 추가 설명 -->
+                <div id="coverup-dimension-info" class="coverup-dimension-info" style="display: none;">
+                    <div class="info-box">
+                        <p class="info-text"><strong>Cover-up Tip:</strong> For a successful cover-up, your new tattoo will need to be about 10-20% larger than the existing one. After entering the current size, we'll suggest an appropriate size for your new design.</p>
+                    </div>
+                </div>
+                
+                <div class="dimension-input-container">
+                    <input id="width" 
+                           class="input-width" 
+                           placeholder="Width (cm)" 
+                           oninput="updatePlaceholder(this, 'width-unit')" />
+                    <span class="unit" id="width-unit">cm (Width)</span>
+                </div>
+
+                <div class="dimension-input-container">
+                    <input id="height" 
+                           class="input-height" 
+                           placeholder="Height (cm)" 
+                           oninput="updatePlaceholder(this, 'height-unit')" />
+                    <span class="unit" id="height-unit">cm (Height)</span>
+                </div>
+
+                <div id="answer"></div>
+                <div id="suggested-area" style="display: none;"></div>
+                <div id="ratio"></div>
+            </section>
+        </div>
+
+        <!-- Page 5: Skin Profile Section -->
+        <div class="tattoo-page" id="page-notes" style="display: none;">
+            <section class="notes-section">
+                <h2>Skin Profile</h2>
+                <p class="instruction-text">These details help our artists select the right techniques and inks for your skin</p>
+                
+                <div class="notes-container">
+                    <!-- 피부 상태 체크박스 영역 -->
+                    <div class="skin-condition-container">
+                        <h3>Skin Condition</h3>
+                        <p class="sub-instruction">Your skin information ensures a safe and successful tattooing experience.</p>
+                        <div class="checkbox-options">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="sensitive-skin" name="skin-condition">
+                                <label for="sensitive-skin">I have sensitive skin</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="skin-allergy" name="skin-condition">
+                                <label for="skin-allergy">I have allergies to certain inks</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="skin-keloid" name="skin-condition">
+                                <label for="skin-keloid">I have a history of keloid scarring</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="skin-eczema" name="skin-condition">
+                                <label for="skin-eczema">I have eczema or psoriasis</label>
+                            </div>
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="skin-medication" name="skin-condition">
+                                <label for="skin-medication">I am currently taking skin-related medication (e.g. Accutane)</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 피부색 및 선탠 상태 영역 -->
+                    <div class="skin-tone-container">
+                        <h3>Skin Tone & Tanning Status</h3>
+                        <p class="sub-instruction">This information helps the artist select appropriate ink colors for your skin.</p>
+                        <div class="skin-tone-input-container">
+                            <div class="skin-tone-select-container">
+                                <label for="skin-tone-slider">Current skin tone:</label>
+                                <div class="skin-tone-slider-container">
+                                    <div class="skin-tone-slider-wrapper">
+                                        <input type="range" id="skin-tone-slider" min="1" max="9" step="1" value="5" class="skin-tone-slider">
+                                        <div class="skin-tone-preview-container">
+                                            <div id="skin-tone-preview" class="skin-tone-preview"></div>
+                                            <span id="skin-tone-text" class="skin-tone-text"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 기존 드롭다운 메뉴를 숨김 처리 (JavaScript에서 값 동기화를 위해 유지) -->
+                                <select id="skin-tone" class="skin-tone-select" style="display: none;">
+                                    <option value="" disabled>Select your skin tone</option>
+                                    <option value="extremely-light">Extremely Light</option>
+                                    <option value="very-light">Very light</option>
+                                    <option value="light">Light</option>
+                                    <option value="medium-light">Medium light</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="medium-deep">Medium deep</option>
+                                    <option value="deep">Deep</option>
+                                    <option value="very-deep">Very deep</option>
+                                    <option value="extremely-deep">Extremely Deep</option>
+                                </select>
+                            </div>
+                            
+                            <div class="tanning-status-container">
+                                <label for="tanning-status">Current tanning status:</label>
+                                <select id="tanning-status" class="tanning-status-select">
+                                    <option value="" disabled selected>Select your tanning status</option>
+                                    <option value="no-tan">No tan / Natural skin tone</option>
+                                    <option value="light-tan">Light tan</option>
+                                    <option value="moderate-tan">Moderate tan</option>
+                                    <option value="deep-tan">Deep tan</option>
+                                    <option value="recent-sunburn">Recently sunburned</option>
+                                </select>
+                            </div>
+                            
+                            <textarea id="skin-tone-notes" 
+                                      class="notes-textarea" 
+                                      placeholder="Any additional notes about your skin tone or tanning habits that may affect your tattoo (e.g., 'I tan easily', 'I burn easily', etc.)"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Page 6: Review Section -->
+        <div class="tattoo-page" id="page-review" style="display: none;">
+            <section class="review-section">
+                <h2>Review</h2>
+                <p class="instruction-text">Please review your selections</p>
+                
+                <div class="review-card">
+                    <!-- Experience Level section -->
+                    <div class="review-item">
+                        <h3>Experience Level</h3>
+                        <div id="review-experience" class="review-content">
+                            <div class="review-detail">Experience level not selected</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Location section -->
+                    <div class="review-item">
+                        <h3>Location</h3>
+                        <div id="review-location" class="review-content">
+                            <div class="review-detail">Location not selected</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dimension section -->
+                    <div class="review-item">
+                        <h3>Dimension</h3>
+                        <div class="review-content">
+                            <div id="review-width" class="review-detail">Width: -</div>
+                            <div id="review-height" class="review-detail">Height: -</div>
+                            <div id="review-area" class="review-detail">Total Area: -</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Style section -->
+                    <div class="review-item">
+                        <h3 class="style-heading">Tattoo Type</h3>
+                        <div class="review-content">
+                            <!-- Artwork (표시 여부는 JS로 제어) -->
+                            <div id="review-artwork-enabled" class="review-status" style="display: none;">Artwork</div>
+                            <div id="review-artwork-style" class="review-detail" style="display: none;">Type: Not Selected</div>
+                            <div id="review-artwork-colorvibe" class="review-detail" style="display: none;">Color Vibe: Not Selected</div>
+                            <div id="review-reference-image" class="review-detail" style="display: none;">Reference Image: Not Uploaded</div>
+                            <div id="review-reference-image-container" class="review-image-container" style="display: none;"></div>
+                            
+                            <!-- Lettering (표시 여부는 JS로 제어) -->
+                            <div class="review-lettering-section">
+                                <div id="review-lettering-enabled" class="review-status" style="display: none;">Lettering</div>
+                                <div id="review-lettering-text" class="review-detail" style="display: none;">Text: Not Entered</div>
+                                <div id="review-lettering-font" class="review-detail" style="display: none;">Font: Not Selected</div>
+                                <div id="review-font-preview-container" class="review-font-preview-container" style="display: none;">
+                                    <div id="review-font-preview" class="review-font-preview"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Cover-up (표시 여부는 JS로 제어) -->
+                            <div class="review-coverup-section">
+                                <div id="review-coverup-enabled" class="review-status" style="display: none;">Cover-up</div>
+                                <div id="review-coverup-notes" class="review-detail" style="display: none;">Notes: Not provided</div>
+                                <div id="review-coverup-image" class="review-detail" style="display: none;">Cover-up Image: Not Uploaded</div>
+                                <div id="review-coverup-image-container" class="review-image-container" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-container">
+                    <button id="submit-request" class="submit-button">REQUEST TATTOO</button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <section class="navigation-buttons">
+        <div class="nav-left">
+            <button id="prev-button" class="navigation-button">PREVIOUS</button>
+        </div>
+        <div id="page-indicator" class="page-indicator">
+            <div class="dot-indicator" data-page="1"></div>
+            <div class="dot-indicator" data-page="2"></div>
+            <div class="dot-indicator" data-page="3"></div>
+            <div class="dot-indicator" data-page="4"></div>
+            <div class="dot-indicator" data-page="5"></div>
+            <div class="dot-indicator" data-page="6"></div>
+        </div>
+        <div class="nav-right">
+            <button id="next-button" class="navigation-button">NEXT</button>
+        </div>
+    </section>
+</div>
+    
