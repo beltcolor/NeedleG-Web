@@ -1,6 +1,6 @@
-// Account 페이지 로드 함수
+// Load Account page content
 function loadAccountContent() {
-    fetch('ContentAccount.html') // HTML 파일 경로
+    fetch('ContentAccount.html')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -8,139 +8,122 @@ function loadAccountContent() {
             return response.text();
         })
         .then(data => {
-            document.getElementById('main-content').innerHTML = data; // HTML 내용 삽입
-            initAccountPage(); // 계정 페이지 초기화
-            initLoginModal(); // 로그인 모달 초기화
+            document.getElementById('main-content').innerHTML = data;
+            initAccountPage();
         })
         .catch(error => console.error('Error loading content:', error));
 }
 
-// 계정 페이지 초기화 함수 (모든 사용자에게 동일한 UI 표시)
+// Initialize Account page
 function initAccountPage() {
-    // 사용자 로그인 상태 확인
+    // Check login status
     const isLoggedIn = localStorage.getItem('needleG_login') === 'true';
     
-    // 로그인 상태에 따라 UI 업데이트
-    updateUIBasedOnLoginStatus(isLoggedIn);
+    // Initialize menu dropdown
+    initMenuDropdown();
     
-    // 갤러리 탭 초기화
-    initGalleryTabs();
-}
-
-// 로그인 상태에 따라 UI 업데이트
-function updateUIBasedOnLoginStatus(isLoggedIn) {
-    // 프로필 영역 업데이트
-    const profileActions = document.getElementById('profile-actions');
+    // Initialize content tabs
+    initContentTabs();
     
+    // Initialize login modal
+    initLoginModal();
+    
+    // Update UI based on login status
+    updateUserProfile(isLoggedIn);
+    
+    // Load content based on login status
     if (isLoggedIn) {
-        // 로그인된 경우 - 사용자 정보 표시
-        const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
-        
-        // 프로필 정보 업데이트
-        document.getElementById('user-name').textContent = userData.name || 'User';
-        document.getElementById('tattoo-count').textContent = userData.tattoos || 0;
-        document.getElementById('appointment-count').textContent = userData.appointments || 0;
-        document.getElementById('artist-count').textContent = userData.artists || 0;
-        
-        // 혜택 정보 업데이트
-        document.getElementById('user-tier').textContent = userData.tier || 'Bronze';
-        document.getElementById('user-points').textContent = `${userData.points || 0} P`;
-        document.getElementById('user-coupons').textContent = userData.coupons || 0;
-        
-        // 프로필 이미지 업데이트 (만약 있다면)
-        if (userData.avatar) {
-            document.getElementById('user-avatar').src = userData.avatar;
-        }
-        
-        // 등급에 따른 혜택 정보 업데이트
-        updateTierBenefits(userData.tier || 'Bronze');
-        
-        // 프로필 액션 버튼 업데이트 (로그아웃 버튼 추가)
-        profileActions.innerHTML = `
-            <button class="edit-profile-btn">Edit Profile</button>
-            <button class="logout-btn" onclick="handleLogout()">Logout</button>
-        `;
-        
-        // 갤러리 메시지 및 버튼 업데이트
-        document.getElementById('tattoos-message').textContent = 'No tattoos added yet';
-        document.getElementById('tattoos-action-btn').textContent = 'Start Designing';
-        document.getElementById('tattoos-action-btn').onclick = null;
-        
-        document.getElementById('saved-message').textContent = 'No saved designs';
-        document.getElementById('saved-action-btn').textContent = 'Browse Tattoos';
-        document.getElementById('saved-action-btn').onclick = null;
-        
-        document.getElementById('appointments-message').textContent = 'No scheduled appointments';
-        document.getElementById('appointments-action-btn').textContent = 'Schedule Appointment';
-        document.getElementById('appointments-action-btn').onclick = null;
-        
-        // 콘텐츠 로드
-        loadGridContent('tattoos');
-    } else {
-        // 로그인되지 않은 경우 - 게스트 정보 표시
-        document.getElementById('user-name').textContent = 'Guest';
-        document.getElementById('tattoo-count').textContent = '0';
-        document.getElementById('appointment-count').textContent = '0';
-        document.getElementById('artist-count').textContent = '0';
-        
-        // 혜택 정보 업데이트 (게스트 상태)
-        document.getElementById('user-tier').textContent = 'Guest';
-        document.getElementById('user-points').textContent = '0 P';
-        document.getElementById('user-coupons').textContent = '0';
-        
-        // 기본 프로필 이미지
-        document.getElementById('user-avatar').src = 'assets/default-avatar.png';
-        
-        // 게스트 혜택 안내
-        const benefitsList = document.getElementById('tier-benefits-list');
-        benefitsList.innerHTML = '<li>Login to view membership benefits</li>';
-        
-        // 프로필 액션 버튼 업데이트 (로그인 버튼 표시)
-        profileActions.innerHTML = `
-            <button class="login-profile-btn" onclick="showLoginModal()">Login</button>
-        `;
-        
-        // 갤러리 메시지 및 버튼 업데이트
-        document.getElementById('tattoos-message').textContent = 'Login to start your tattoo gallery';
-        document.getElementById('tattoos-action-btn').textContent = 'Login';
-        document.getElementById('tattoos-action-btn').onclick = showLoginModal;
-        
-        document.getElementById('saved-message').textContent = 'Login to save your favorite designs';
-        document.getElementById('saved-action-btn').textContent = 'Login';
-        document.getElementById('saved-action-btn').onclick = showLoginModal;
-        
-        document.getElementById('appointments-message').textContent = 'Login to schedule appointments';
-        document.getElementById('appointments-action-btn').textContent = 'Login';
-        document.getElementById('appointments-action-btn').onclick = showLoginModal;
+        loadUserContent();
     }
 }
 
-// 로그인 모달 초기화
+// Initialize menu dropdown
+function initMenuDropdown() {
+    const menuButton = document.getElementById('menu-button');
+    const menuDropdown = document.getElementById('menu-dropdown');
+    
+    if (menuButton && menuDropdown) {
+        menuButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            // 드롭다운 위치 조정
+            const buttonRect = menuButton.getBoundingClientRect();
+            menuDropdown.style.position = 'fixed';
+            menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
+            menuDropdown.style.right = '20px';
+            
+            // 드롭다운 표시/숨김 토글
+            menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Close dropdown when clicking elsewhere
+        document.addEventListener('click', function(e) {
+            if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
+                menuDropdown.style.display = 'none';
+            }
+        });
+        
+        // Dark/Light mode toggle
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.documentElement.classList.toggle('light-mode');
+                menuDropdown.style.display = 'none';
+            });
+        }
+    }
+}
+
+// Initialize content tabs
+function initContentTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const contentSections = document.querySelectorAll('.content-section');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Hide all content sections
+            contentSections.forEach(section => section.classList.remove('active'));
+            
+            // Show the selected content section
+            const tabName = this.getAttribute('data-tab');
+            document.getElementById(`${tabName}-section`).classList.add('active');
+        });
+    });
+}
+
+// Initialize login modal
 function initLoginModal() {
     const modal = document.getElementById('login-modal');
     const closeBtn = document.querySelector('.close-modal');
     
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', function() {
             modal.style.display = 'none';
         });
+        
+        // Close when clicking outside the modal
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
-    
-    // 모달 외부 클릭 시 닫기
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
 }
 
-// 로그인 모달 표시 함수
+// Show login modal
 function showLoginModal() {
     const modal = document.getElementById('login-modal');
     if (modal) {
         modal.style.display = 'block';
         
-        // 사용자명 입력 필드에 포커스
+        // Focus on username input
         setTimeout(() => {
             const usernameInput = document.getElementById('username');
             if (usernameInput) {
@@ -150,243 +133,343 @@ function showLoginModal() {
     }
 }
 
-// 로그인 처리 함수
+// Update user profile based on login status
+function updateUserProfile(isLoggedIn) {
+    // Elements that need to be updated
+    const usernameDisplay = document.getElementById('username-display');
+    const userBio = document.getElementById('user-bio');
+    const membershipLevel = document.getElementById('membership-level');
+    const collectionCount = document.getElementById('collection-count');
+    const reservationCount = document.getElementById('reservation-count');
+    const reservationStat = document.querySelector('.reservation-stat');
+    const userAvatar = document.getElementById('user-avatar');
+    const loginLink = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    
+    // Empty state buttons
+    const addPostBtn = document.getElementById('add-post-btn');
+    const browseDesignsBtn = document.getElementById('browse-designs-btn');
+    const exploreBtn = document.getElementById('explore-btn');
+    
+    // Empty state messages
+    const postsEmptyMessage = document.querySelector('#posts-empty p');
+    const savedEmptyMessage = document.querySelector('#saved-empty p');
+    const likedEmptyMessage = document.querySelector('#liked-empty p');
+    
+    if (isLoggedIn) {
+        // Get user data from localStorage
+        const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
+        
+        // Update profile information
+        if (usernameDisplay) usernameDisplay.textContent = userData.name || 'User';
+        if (userBio) userBio.textContent = userData.bio || 'No bio added yet';
+        if (membershipLevel) membershipLevel.textContent = userData.tier || 'Standard';
+        if (collectionCount) collectionCount.textContent = userData.collections || 0;
+        
+        // Show/hide reservation stats based on if user has reservations
+        if (reservationStat && reservationCount) {
+            if (userData.reservations && userData.reservations > 0) {
+                reservationCount.textContent = userData.reservations;
+                reservationStat.style.display = 'flex';
+            } else {
+                reservationStat.style.display = 'none';
+            }
+        }
+        
+        // Update profile image
+        if (userAvatar && userData.avatar) {
+            userAvatar.src = userData.avatar;
+        }
+        
+        // Show logout, hide login
+        if (loginLink) loginLink.style.display = 'none';
+        if (logoutLink) logoutLink.style.display = 'block';
+        
+        // Show edit profile button
+        if (editProfileBtn) editProfileBtn.style.display = 'block';
+        
+        // Update empty state messages
+        if (postsEmptyMessage) postsEmptyMessage.textContent = 'No posts yet';
+        if (savedEmptyMessage) savedEmptyMessage.textContent = 'No saved items yet';
+        if (likedEmptyMessage) likedEmptyMessage.textContent = 'No liked items yet';
+        
+        // Update empty state buttons
+        if (addPostBtn) {
+            addPostBtn.textContent = 'Add Post';
+            addPostBtn.onclick = function() {
+                console.log('Add post clicked');
+                // Implement post creation functionality
+            };
+        }
+        
+        if (browseDesignsBtn) {
+            browseDesignsBtn.textContent = 'Browse Designs';
+            browseDesignsBtn.onclick = function() {
+                console.log('Browse designs clicked');
+                // Implement design browsing functionality
+            };
+        }
+        
+        if (exploreBtn) {
+            exploreBtn.textContent = 'Explore';
+            exploreBtn.onclick = function() {
+                console.log('Explore clicked');
+                // Implement explore functionality
+            };
+        }
+    } else {
+        // Default guest profile
+        if (usernameDisplay) usernameDisplay.textContent = 'Guest';
+        if (userBio) userBio.textContent = 'Sign in to customize your profile';
+        if (membershipLevel) membershipLevel.textContent = 'Guest';
+        if (collectionCount) collectionCount.textContent = '0';
+        
+        // Hide reservation stats for guests
+        if (reservationStat) reservationStat.style.display = 'none';
+        
+        // Default avatar
+        if (userAvatar) userAvatar.src = 'assets/default-avatar.png';
+        
+        // Show login, hide logout
+        if (loginLink) loginLink.style.display = 'block';
+        if (logoutLink) logoutLink.style.display = 'none';
+        
+        // Hide edit profile button
+        if (editProfileBtn) editProfileBtn.style.display = 'none';
+        
+        // Update empty state messages for guests
+        if (postsEmptyMessage) postsEmptyMessage.textContent = 'Sign in to start sharing your posts';
+        if (savedEmptyMessage) savedEmptyMessage.textContent = 'Sign in to save your favorite designs';
+        if (likedEmptyMessage) likedEmptyMessage.textContent = 'Sign in to like designs';
+        
+        // Update empty state buttons for guests
+        if (addPostBtn) {
+            addPostBtn.textContent = 'Sign In';
+            addPostBtn.onclick = showLoginModal;
+        }
+        
+        if (browseDesignsBtn) {
+            browseDesignsBtn.textContent = 'Sign In';
+            browseDesignsBtn.onclick = showLoginModal;
+        }
+        
+        if (exploreBtn) {
+            exploreBtn.textContent = 'Sign In';
+            exploreBtn.onclick = showLoginModal;
+        }
+    }
+}
+
+// Handle login
 function handleLogin() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     
     if (!username || !password) {
-        alert('사용자 이름과 비밀번호를 입력해주세요.');
+        alert('Please enter username and password');
         return;
     }
     
-    // 실제 환경에서는 서버에 로그인 요청을 보내야 합니다.
-    // 여기서는 데모를 위해 로컬 스토리지에 저장합니다.
+    // Demo login (in a real app, this would be a server request)
     localStorage.setItem('needleG_login', 'true');
-    localStorage.setItem('needleG_username', username);
     
-    // 데모용 사용자 정보 저장
+    // Demo user data
     const demoUserData = {
         name: username,
+        bio: 'Tattoo enthusiast and art lover',
         avatar: 'assets/default-avatar.png',
-        tattoos: 3,
-        appointments: 1,
-        artists: 2,
-        tier: 'Silver',
-        points: '1,200',
-        coupons: '2'
+        tier: 'Gold',
+        collections: 12,
+        reservations: 2,
+        posts: [
+            { id: 1, imageUrl: 'https://picsum.photos/500/500?random=1', caption: 'My first tattoo' },
+            { id: 2, imageUrl: 'https://picsum.photos/500/500?random=2', caption: 'Flower design' },
+            { id: 3, imageUrl: 'https://picsum.photos/500/500?random=3', caption: 'Dragon sketch' }
+        ],
+        saved: [
+            { id: 1, imageUrl: 'https://picsum.photos/500/500?random=4', caption: 'Geometric pattern' }
+        ]
     };
+    
     localStorage.setItem('needleG_userData', JSON.stringify(demoUserData));
     
-    // 로그인 모달 닫기
+    // Close login modal
     const modal = document.getElementById('login-modal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (modal) modal.style.display = 'none';
     
-    // UI 업데이트
-    updateUIBasedOnLoginStatus(true);
+    // Update UI
+    updateUserProfile(true);
     
-    // 로그인 폼 초기화
+    // Load user content
+    loadUserContent();
+    
+    // Reset form
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
 }
 
-// 로그아웃 함수
+// Handle logout
 function handleLogout() {
+    // Clear user data
     localStorage.removeItem('needleG_login');
-    localStorage.removeItem('needleG_username');
     localStorage.removeItem('needleG_userData');
     
-    // UI 업데이트
-    updateUIBasedOnLoginStatus(false);
+    // Update UI
+    updateUserProfile(false);
+    
+    // Clear content
+    clearUserContent();
+    
+    // Close menu dropdown
+    const menuDropdown = document.getElementById('menu-dropdown');
+    if (menuDropdown) menuDropdown.style.display = 'none';
 }
 
-// 사용자 프로필 데이터 로드 함수
-function loadUserProfile() {
-    // 로컬 스토리지에서 사용자 데이터 로드
-    const userDataStr = localStorage.getItem('needleG_userData');
-    if (!userDataStr) return;
-    
-    const userData = JSON.parse(userDataStr);
-    
-    // 프로필 정보 업데이트
-    document.getElementById('user-name').textContent = userData.name;
-    document.getElementById('tattoo-count').textContent = userData.tattoos;
-    document.getElementById('appointment-count').textContent = userData.appointments;
-    document.getElementById('artist-count').textContent = userData.artists;
-    
-    // 혜택 정보 업데이트
-    document.getElementById('user-tier').textContent = userData.tier;
-    document.getElementById('user-points').textContent = `${userData.points} P`;
-    document.getElementById('user-coupons').textContent = `${userData.coupons}장`;
-    
-    // 프로필 이미지 업데이트 (만약 있다면)
-    if (userData.avatar) {
-        document.getElementById('user-avatar').src = userData.avatar;
-    }
-    
-    // 등급에 따른 혜택 정보 업데이트
-    updateTierBenefits(userData.tier);
+// Load user content (posts, saved, liked)
+function loadUserContent() {
+    loadPosts();
+    loadSavedItems();
+    loadLikedItems();
 }
 
-// 등급별 혜택 정보 업데이트 함수
-function updateTierBenefits(tier) {
-    const benefitsList = document.getElementById('tier-benefits-list');
-    if (!benefitsList) return;
+// Load user posts
+function loadPosts() {
+    const isLoggedIn = localStorage.getItem('needleG_login') === 'true';
+    if (!isLoggedIn) return;
     
-    // 등급별 혜택 데이터
-    const tierBenefits = {
-        'Bronze': [
-            'Birthday coupon',
-            'Access to member events'
-        ],
-        'Silver': [
-            '10% discount on services',
-            'Birthday coupon',
-            'Priority booking'
-        ],
-        'Gold': [
-            '15% discount on services',
-            'Birthday coupon',
-            'Priority booking',
-            'Artist consultation'
-        ],
-        'Platinum': [
-            '20% discount on services',
-            'Birthday coupon',
-            'Priority booking',
-            'Artist consultation',
-            'VIP care service'
-        ]
-    };
+    const postsGrid = document.getElementById('posts-grid');
+    const emptyState = document.getElementById('posts-empty');
     
-    // 해당 등급의 혜택 목록 가져오기
-    const benefits = tierBenefits[tier] || tierBenefits['Bronze'];
+    if (!postsGrid || !emptyState) return;
     
-    // 혜택 목록 렌더링
-    benefitsList.innerHTML = '';
-    benefits.forEach(benefit => {
-        const li = document.createElement('li');
-        li.textContent = benefit;
-        benefitsList.appendChild(li);
-    });
-}
-
-// 갤러리 탭 초기화 함수
-function initGalleryTabs() {
-    const galleryTabs = document.querySelectorAll('.gallery-tab');
-    if (!galleryTabs.length) return;
+    // Get user data
+    const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
+    const posts = userData.posts || [];
     
-    galleryTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            // 활성 탭 클래스 제거
-            galleryTabs.forEach(t => t.classList.remove('active'));
-            
-            // 클릭한 탭 활성화
-            this.classList.add('active');
-            
-            // 탭에 해당하는 그리드 표시
-            const tabName = this.getAttribute('data-tab');
-            showGalleryGrid(tabName);
-        });
-    });
+    // Remove existing items except empty state
+    const existingItems = postsGrid.querySelectorAll('.gallery-item');
+    existingItems.forEach(item => item.remove());
     
-    // 기본으로 '내 타투' 탭 활성화
-    showGalleryGrid('tattoos');
-}
-
-// 갤러리 그리드 표시 함수
-function showGalleryGrid(tabName) {
-    // 모든 그리드 숨기기
-    const allGrids = document.querySelectorAll('.gallery-grid');
-    allGrids.forEach(grid => {
-        grid.style.display = 'none';
-    });
-    
-    // 선택한 그리드만 표시
-    const selectedGrid = document.getElementById(`${tabName}-grid`);
-    if (selectedGrid) {
-        selectedGrid.style.display = 'grid';
+    if (posts.length > 0) {
+        // Hide empty state
+        emptyState.style.display = 'none';
         
-        // 필요한 경우 그리드에 콘텐츠 로드
-        loadGridContent(tabName);
-    }
-}
-
-// 그리드 콘텐츠 로드 함수
-function loadGridContent(gridType) {
-    // 이 함수에서는 실제 데이터를 가져와 그리드에 콘텐츠를 로드합니다.
-    // 현재는 데모 데이터만 표시합니다.
-    
-    const grid = document.getElementById(`${gridType}-grid`);
-    if (!grid) return;
-    
-    // 기존의 empty state가 아닌 항목들 모두 제거
-    const items = grid.querySelectorAll('.gallery-item');
-    items.forEach(item => item.remove());
-    
-    // 데모 데이터 배열 (각 탭 유형에 따라 다른 데이터 사용)
-    let demoData = [];
-    
-    // userDataStr에서 해당 유형의 데이터 수 확인
-    const userDataStr = localStorage.getItem('needleG_userData');
-    if (userDataStr) {
-        const userData = JSON.parse(userDataStr);
-        
-        if (gridType === 'tattoos' && userData.tattoos > 0) {
-            // 타투 데모 데이터
-            demoData = Array(userData.tattoos).fill().map((_, i) => ({
-                id: i + 1,
-                imageUrl: `https://picsum.photos/500/500?random=${i + 10}`,
-                title: `타투 디자인 #${i + 1}`
-            }));
-        } else if (gridType === 'appointments' && userData.appointments > 0) {
-            // 예약 데모 데이터
-            demoData = Array(userData.appointments).fill().map((_, i) => ({
-                id: i + 1,
-                date: new Date(Date.now() + (i + 1) * 86400000).toLocaleDateString(),
-                artist: `아티스트 ${i + 1}`,
-                status: '예약 확정'
-            }));
-        }
-        // saved는 빈 상태로 유지
-    }
-    
-    // 데이터가 있으면 그리드 아이템 생성하고 빈 상태 숨기기
-    if (demoData.length > 0) {
-        // 빈 상태 요소 숨기기
-        const emptyState = grid.querySelector('.empty-state');
-        if (emptyState) {
-            emptyState.style.display = 'none';
-        }
-        
-        // 그리드 아이템 추가
-        demoData.forEach(item => {
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery-item';
+        // Add posts to grid
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'gallery-item';
+            postElement.innerHTML = `<img src="${post.imageUrl}" alt="${post.caption || 'Gallery item'}">`;
             
-            if (gridType === 'tattoos') {
-                // 타투 이미지 표시
-                galleryItem.innerHTML = `<img src="${item.imageUrl}" alt="${item.title}">`;
-            } else if (gridType === 'appointments') {
-                // 예약 정보 표시
-                galleryItem.innerHTML = `
-                    <div class="appointment-item">
-                        <div class="appointment-date">${item.date}</div>
-                        <div class="appointment-artist">${item.artist}</div>
-                        <div class="appointment-status">${item.status}</div>
-                    </div>
-                `;
-            }
-            
-            grid.insertBefore(galleryItem, emptyState);
+            // Insert before empty state
+            postsGrid.insertBefore(postElement, emptyState);
         });
     } else {
-        // 데이터가 없으면 빈 상태 표시
-        const emptyState = grid.querySelector('.empty-state');
-        if (emptyState) {
-            emptyState.style.display = 'flex';
-        }
+        // Show empty state
+        emptyState.style.display = 'flex';
+    }
+}
+
+// Load saved items
+function loadSavedItems() {
+    const isLoggedIn = localStorage.getItem('needleG_login') === 'true';
+    if (!isLoggedIn) return;
+    
+    const savedGrid = document.getElementById('saved-grid');
+    const emptyState = document.getElementById('saved-empty');
+    
+    if (!savedGrid || !emptyState) return;
+    
+    // Get user data
+    const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
+    const saved = userData.saved || [];
+    
+    // Remove existing items except empty state
+    const existingItems = savedGrid.querySelectorAll('.gallery-item');
+    existingItems.forEach(item => item.remove());
+    
+    if (saved.length > 0) {
+        // Hide empty state
+        emptyState.style.display = 'none';
+        
+        // Add saved items to grid
+        saved.forEach(item => {
+            const savedElement = document.createElement('div');
+            savedElement.className = 'gallery-item';
+            savedElement.innerHTML = `<img src="${item.imageUrl}" alt="${item.caption || 'Saved item'}">`;
+            
+            // Insert before empty state
+            savedGrid.insertBefore(savedElement, emptyState);
+        });
+    } else {
+        // Show empty state
+        emptyState.style.display = 'flex';
+    }
+}
+
+// Load liked items
+function loadLikedItems() {
+    const isLoggedIn = localStorage.getItem('needleG_login') === 'true';
+    if (!isLoggedIn) return;
+    
+    const likedGrid = document.getElementById('liked-grid');
+    const emptyState = document.getElementById('liked-empty');
+    
+    if (!likedGrid || !emptyState) return;
+    
+    // Get user data
+    const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
+    const liked = userData.liked || [];
+    
+    // Remove existing items except empty state
+    const existingItems = likedGrid.querySelectorAll('.gallery-item');
+    existingItems.forEach(item => item.remove());
+    
+    if (liked.length > 0) {
+        // Hide empty state
+        emptyState.style.display = 'none';
+        
+        // Add liked items to grid
+        liked.forEach(item => {
+            const likedElement = document.createElement('div');
+            likedElement.className = 'gallery-item';
+            likedElement.innerHTML = `<img src="${item.imageUrl}" alt="${item.caption || 'Liked item'}">`;
+            
+            // Insert before empty state
+            likedGrid.insertBefore(likedElement, emptyState);
+        });
+    } else {
+        // Show empty state
+        emptyState.style.display = 'flex';
+    }
+}
+
+// Clear user content
+function clearUserContent() {
+    // Clear posts
+    const postsGrid = document.getElementById('posts-grid');
+    const postsEmpty = document.getElementById('posts-empty');
+    if (postsGrid && postsEmpty) {
+        const postItems = postsGrid.querySelectorAll('.gallery-item');
+        postItems.forEach(item => item.remove());
+        postsEmpty.style.display = 'flex';
+    }
+    
+    // Clear saved items
+    const savedGrid = document.getElementById('saved-grid');
+    const savedEmpty = document.getElementById('saved-empty');
+    if (savedGrid && savedEmpty) {
+        const savedItems = savedGrid.querySelectorAll('.gallery-item');
+        savedItems.forEach(item => item.remove());
+        savedEmpty.style.display = 'flex';
+    }
+    
+    // Clear liked items
+    const likedGrid = document.getElementById('liked-grid');
+    const likedEmpty = document.getElementById('liked-empty');
+    if (likedGrid && likedEmpty) {
+        const likedItems = likedGrid.querySelectorAll('.gallery-item');
+        likedItems.forEach(item => item.remove());
+        likedEmpty.style.display = 'flex';
     }
 }

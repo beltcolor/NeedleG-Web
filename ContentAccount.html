@@ -1,183 +1,120 @@
 <!-- ContentAccount.html -->
 <div class="account-container">
-    <!-- 로그인 모달 -->
-    <div id="login-modal" class="login-modal" style="display: none;">
+    <!-- Login Modal -->
+    <div id="login-modal" class="login-modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <!-- Login Section -->
-            <section class="login-section">
-                <div class="login-container">
-                    <h3>Login</h3>
-                    <div class="input-group">
-                        <input type="text" 
-                               class="input" 
-                               id="username" 
-                               placeholder="Username or Email" 
-                               autocomplete="username" />
-                        
-                        <input type="password" 
-                               class="input" 
-                               id="password" 
-                               placeholder="Password" 
-                               autocomplete="current-password" />
-                    </div>
-
-                    <div class="login-options">
-                        <label class="remember-me">
-                            <input type="checkbox" id="remember" />
-                            <span>Remember me</span>
-                        </label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
-                    </div>
-
-                    <button class="quote-button login-btn" onclick="handleLogin()">Login</button>
+            <div class="login-section">
+                <h3>Login</h3>
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username or Email" class="input">
+                    <input type="password" id="password" placeholder="Password" class="input">
                 </div>
-            </section>
-
-            <!-- Social Login Section -->
-            <section class="social-login-section">
-                <div class="social-login-container">
-                    <p class="divider">or continue with</p>
-                    <div class="social-buttons">
-                        <button class="social-btn google">
-                            <img src="assets/google-icon.svg" alt="Google" />
-                            Google
-                        </button>
-                        <button class="social-btn kakao">
-                            <img src="assets/kakao-icon.svg" alt="Kakao" />
-                            Kakao
-                        </button>
-                    </div>
+                <button class="login-btn" onclick="handleLogin()">Login</button>
+                <p class="divider">or</p>
+                <div class="social-buttons">
+                    <button class="social-btn google">
+                        <img src="assets/google-icon.svg" alt="Google">
+                        Google
+                    </button>
+                    <button class="social-btn kakao">
+                        <img src="assets/kakao-icon.svg" alt="Kakao">
+                        Kakao
+                    </button>
                 </div>
-            </section>
-
-            <!-- Register Section -->
-            <section class="register-section">
-                <div class="register-container">
-                    <h3>New to NeedleG?</h3>
-                    <button class="quote-button register-btn">Create Account</button>
-                </div>
-            </section>
-
-            <!-- Terms and Privacy -->
-            <section class="terms-section">
-                <p class="terms-text">
-                    By continuing, you agree to NeedleG's 
-                    <a href="#">Terms of Service</a> and 
-                    <a href="#">Privacy Policy</a>
-                </p>
-            </section>
+                <p class="register-text">Don't have an account? <a href="#" class="register-link">Sign Up</a></p>
+            </div>
         </div>
     </div>
 
-    <!-- 인스타그램 피드 스타일 UI (로그인 여부와 관계없이 표시) -->
-    <div id="account-view">
-        <!-- 프로필 헤더 -->
-        <div class="profile-header">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-info-container">
             <div class="profile-avatar">
                 <img src="assets/default-avatar.png" alt="Profile" id="user-avatar">
             </div>
-            <div class="profile-info">
-                <h2 id="user-name">Guest</h2>
+            <div class="profile-details">
+                <div class="profile-name-section">
+                    <h2 id="username-display">Username</h2>
+                    <button class="edit-profile-btn" id="edit-profile-btn">Edit Profile</button>
+                </div>
                 <div class="profile-stats">
                     <div class="stat">
-                        <span class="stat-count" id="tattoo-count">0</span>
-                        <span class="stat-label">Tattoos</span>
+                        <span class="stat-value" id="membership-level">Standard</span>
+                        <span class="stat-label">Membership</span>
                     </div>
                     <div class="stat">
-                        <span class="stat-count" id="appointment-count">0</span>
-                        <span class="stat-label">Appointments</span>
+                        <span class="stat-value" id="collection-count">0</span>
+                        <span class="stat-label">Collections</span>
                     </div>
-                    <div class="stat">
-                        <span class="stat-count" id="artist-count">0</span>
-                        <span class="stat-label">Artists</span>
+                    <div class="stat reservation-stat">
+                        <span class="stat-value" id="reservation-count">0</span>
+                        <span class="stat-label">Reservations</span>
                     </div>
                 </div>
-                <div class="profile-actions" id="profile-actions">
-                    <!-- 로그인 상태에 따라 동적으로 변경됨 -->
-                    <button class="login-profile-btn" id="login-button" onclick="showLoginModal()">Login</button>
-                </div>
+                <p class="profile-bio" id="user-bio">Bio goes here</p>
             </div>
         </div>
-
-        <!-- 사용자 혜택 정보 -->
-        <div class="benefits-section">
-            <h3>My Benefits</h3>
-            <div class="benefits-container">
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <span class="material-icons">military_tech</span>
-                    </div>
-                    <div class="benefit-info">
-                        <h4>Membership Level</h4>
-                        <p id="user-tier">Guest</p>
-                    </div>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <span class="material-icons">redeem</span>
-                    </div>
-                    <div class="benefit-info">
-                        <h4>Points</h4>
-                        <p id="user-points">0 P</p>
-                    </div>
-                </div>
-                <div class="benefit-card">
-                    <div class="benefit-icon">
-                        <span class="material-icons">local_offer</span>
-                    </div>
-                    <div class="benefit-info">
-                        <h4>Available Coupons</h4>
-                        <p id="user-coupons">0</p>
-                    </div>
-                </div>
-            </div>
-            <div class="tier-benefits">
-                <h4>Membership Benefits</h4>
-                <ul id="tier-benefits-list">
-                    <li>Login to view membership benefits</li>
+        <div class="menu-settings">
+            <button id="menu-button" class="menu-btn">
+                <i class="material-icons">menu</i>
+            </button>
+            <div id="menu-dropdown" class="menu-dropdown">
+                <ul>
+                    <li><a href="#"><i class="material-icons">person</i> Profile</a></li>
+                    <li><a href="#"><i class="material-icons">settings</i> Settings</a></li>
+                    <li><a href="#"><i class="material-icons">help_outline</i> Help</a></li>
+                    <li><a href="#" id="dark-mode-toggle"><i class="material-icons">brightness_4</i> Dark/Light Mode</a></li>
+                    <li><a href="#" id="login-link" onclick="showLoginModal()"><i class="material-icons">login</i> Login</a></li>
+                    <li><a href="#" id="logout-link" onclick="handleLogout()"><i class="material-icons">logout</i> Logout</a></li>
                 </ul>
             </div>
         </div>
+    </div>
 
-        <!-- 갤러리 네비게이션 -->
-        <div class="gallery-nav">
-            <button class="gallery-tab active" data-tab="tattoos">
-                <span class="material-icons">grid_on</span> My Tattoos
-            </button>
-            <button class="gallery-tab" data-tab="saved">
-                <span class="material-icons">bookmark_border</span> Saved
-            </button>
-            <button class="gallery-tab" data-tab="appointments">
-                <span class="material-icons">event</span> Appointments
-            </button>
-        </div>
+    <!-- Content Tabs -->
+    <div class="content-tabs">
+        <button class="tab-btn active" data-tab="posts">
+            <i class="material-icons">grid_on</i> Posts
+        </button>
+        <button class="tab-btn" data-tab="saved">
+            <i class="material-icons">bookmark_border</i> Saved
+        </button>
+        <button class="tab-btn" data-tab="liked">
+            <i class="material-icons">favorite_border</i> Liked
+        </button>
+    </div>
 
-        <!-- 갤러리 그리드 -->
-        <div class="gallery-grid" id="tattoos-grid">
-            <!-- 타투 이미지가 여기에 동적으로 추가됨 -->
-            <div class="empty-state">
-                <span class="material-icons">photo_camera</span>
-                <p id="tattoos-message">Login to start your tattoo gallery</p>
-                <button class="quote-button" id="tattoos-action-btn" onclick="showLoginModal()">Login</button>
+    <!-- Content Sections -->
+    <div id="posts-section" class="content-section active">
+        <div class="gallery-grid" id="posts-grid">
+            <!-- Empty state for posts -->
+            <div class="empty-state" id="posts-empty">
+                <i class="material-icons">photo_camera</i>
+                <p>No posts yet</p>
+                <button class="action-btn" id="add-post-btn">Add Post</button>
             </div>
         </div>
+    </div>
 
-        <div class="gallery-grid" id="saved-grid" style="display: none;">
-            <!-- 저장된 타투 이미지가 여기에 동적으로 추가됨 -->
-            <div class="empty-state">
-                <span class="material-icons">bookmark</span>
-                <p id="saved-message">Login to save your favorite designs</p>
-                <button class="quote-button" id="saved-action-btn" onclick="showLoginModal()">Login</button>
+    <div id="saved-section" class="content-section">
+        <div class="gallery-grid" id="saved-grid">
+            <!-- Empty state for saved items -->
+            <div class="empty-state" id="saved-empty">
+                <i class="material-icons">bookmark_border</i>
+                <p>No saved items yet</p>
+                <button class="action-btn" id="browse-designs-btn">Browse Designs</button>
             </div>
         </div>
+    </div>
 
-        <div class="gallery-grid" id="appointments-grid" style="display: none;">
-            <!-- 예약 정보가 여기에 동적으로 추가됨 -->
-            <div class="empty-state">
-                <span class="material-icons">event_busy</span>
-                <p id="appointments-message">Login to schedule appointments</p>
-                <button class="quote-button" id="appointments-action-btn" onclick="showLoginModal()">Login</button>
+    <div id="liked-section" class="content-section">
+        <div class="gallery-grid" id="liked-grid">
+            <!-- Empty state for liked items -->
+            <div class="empty-state" id="liked-empty">
+                <i class="material-icons">favorite_border</i>
+                <p>No liked items yet</p>
+                <button class="action-btn" id="explore-btn">Explore</button>
             </div>
         </div>
     </div>
