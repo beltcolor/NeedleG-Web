@@ -22,10 +22,26 @@
     padding: 10px;
     flex: 1;
     text-align: center;
-    
+    position: relative;
+    /* 모바일 터치 효과 제거 */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* 터치 시 배경색 안 바뀌게 */
+    -webkit-appearance: none;
+    appearance: none;
+    outline: none;
+    /* 스케일 효과 추가 */
+    transition: transform 0.2s ease;
 }
 
-.tab-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 0px;
+/* 클릭 시 스케일 효과 */
+.tab-button:active {
+    transform: scale(0.8);
+}
+
+/* 활성화된 탭 스타일 */
+.tab-button.active {
+    color: var(--accent-color);
 }

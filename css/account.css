@@ -66,8 +66,13 @@
     margin-bottom: 20px;
 }
 
+/* 로그인 모달 입력 필드 간격 수정 */
+.login-section .input-group:first-of-type input {
+    margin-bottom: 20px;
+}
+
 .input-group input {
-    margin-bottom: 12px;
+    margin-bottom: 0;
 }
 
 .divider {
@@ -347,7 +352,7 @@
 /* Gallery Grid */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     gap: 12px;
     padding: 5px;
 }
@@ -533,4 +538,207 @@
         right: 10px;
         background-color: transparent;
     }
+}
+
+/* 인증 탭 스타일 */
+.tab-container {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+.auth-tab.active {
+    border-bottom: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+/* 인증 폼 스타일 */
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+#register-role {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.form-requirements {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+}
+
+.form-requirements ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.form-requirements li {
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+}
+
+.error-message {
+    background-color: rgba(211, 47, 47, 0.1);
+    color: #d32f2f;
+    padding: 12px 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.input-error {
+    color: #d32f2f;
+    font-size: 12px;
+    margin: 4px 0 15px 2px;
+    min-height: 16px;
+    transition: all 0.3s ease;
+}
+
+.input-success {
+    color: #4caf50;
+    font-size: 12px;
+    margin: 4px 0 15px 2px;
+    min-height: 16px;
+    transition: all 0.3s ease;
+}
+
+.input-group input {
+    margin-bottom: 0;
+}
+
+.input.error {
+    border-color: #d32f2f;
+    background-color: rgba(211, 47, 47, 0.05);
+}
+
+.input.success {
+    border-color: #4caf50;
+    background-color: rgba(76, 175, 80, 0.05);
+}
+
+/* 회원가입 버튼 폼 아래 여백 추가 */
+.register-btn {
+    margin-bottom: 15px;
+}
+
+/* 회원가입 성공 알림 스타일 */
+.success-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--accent-color);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.success-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.success-notification i {
+    font-size: 24px;
+}
+
+.success-notification-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.success-notification-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.success-notification-message {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* 이메일 확인 코드 스타일 */
+.verification-group {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.verification-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.verification-input-group .input {
+    flex: 1;
+}
+
+.verification-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+}
+
+.verification-btn:hover {
+    opacity: 0.9;
+}
+
+.verification-btn:disabled {
+    background-color: var(--bg-line);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.verification-btn.sending {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: wait;
+}
+
+.verification-btn.sent {
+    background-color: var(--bg-success);
+    color: var(--text-success);
+}
+
+.countdown {
+    margin-left: 5px;
+    font-size: 12px;
 }

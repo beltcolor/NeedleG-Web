@@ -147,7 +147,7 @@ function initMenuDropdown() {
         if (darkModeToggle) {
             darkModeToggle.addEventListener('click', function(e) {
                 e.preventDefault();
-                document.documentElement.classList.toggle('light-mode');
+                toggleTheme();
                 
                 const isMobile = window.innerWidth <= 768;
                 if (isMobile) {
@@ -194,18 +194,115 @@ function initContentTabs() {
 function initLoginModal() {
     const modal = document.getElementById('login-modal');
     const closeBtn = document.querySelector('.close-modal');
+    const showRegisterBtn = document.getElementById('show-register-btn');
+    const showLoginBtn = document.getElementById('show-login-btn');
+    const loginSection = document.querySelector('.login-section');
+    const registerSection = document.querySelector('.register-section');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const sendCodeBtn = document.getElementById('send-code-btn');
     
     if (closeBtn && modal) {
-        closeBtn.addEventListener('click', function() {
+        // 모달 닫기 및 폼 초기화 함수
+        function resetAndCloseModal() {
+            // 모달 숨기기
             modal.style.display = 'none';
-        });
+            
+            // 로그인 폼을 기본으로 표시
+            loginSection.style.display = 'block';
+            registerSection.style.display = 'none';
+            
+            // 입력 필드 초기화
+            const allInputs = modal.querySelectorAll('input');
+            allInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('error', 'success');
+                
+                // 확인 코드 필드는 비활성화
+                if (input.id === 'verification-code') {
+                    input.disabled = true;
+                }
+            });
+            
+            // 오류 메시지 초기화
+            const allErrorMsgs = modal.querySelectorAll('.input-error, .input-success');
+            allErrorMsgs.forEach(msg => {
+                msg.textContent = '';
+                msg.className = msg.className.includes('input-success') ? 'input-success' : 'input-error';
+            });
+            
+            // 확인 코드 버튼 초기화
+            if (sendCodeBtn) {
+                sendCodeBtn.textContent = 'Send Code';
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.classList.remove('sending', 'sent');
+                
+                // 타이머 중지
+                if (window.verificationTimer) {
+                    clearInterval(window.verificationTimer);
+                    window.verificationTimer = null;
+                }
+                
+                // 코드 확인 상태 초기화
+                window.isEmailVerified = false;
+            }
+        }
         
-        // Close when clicking outside the modal
-        window.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
+        // X 버튼 클릭 시 초기화 및 닫기
+        closeBtn.addEventListener('click', resetAndCloseModal);
+        
+        // 모달 바깥 클릭 시 초기화 및 닫기
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                resetAndCloseModal();
             }
         });
+        
+        // 회원가입 폼 보기
+        if (showRegisterBtn) {
+            showRegisterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginSection.style.display = 'none';
+                registerSection.style.display = 'block';
+                // 실시간 유효성 검사 설정
+                setupRegisterValidation();
+            });
+        }
+        
+        // 로그인 폼 보기
+        if (showLoginBtn) {
+            showLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerSection.style.display = 'none';
+                loginSection.style.display = 'block';
+            });
+        }
+        
+        // 로그인 버튼 이벤트
+        if (loginBtn) {
+            loginBtn.addEventListener('click', handleLogin);
+        }
+        
+        // 회원가입 버튼 이벤트
+        if (registerBtn) {
+            registerBtn.addEventListener('click', handleRegister);
+        }
+        
+        // 이메일 확인 코드 전송 버튼 이벤트
+        if (sendCodeBtn) {
+            sendCodeBtn.addEventListener('click', handleSendVerificationCode);
+        }
+        
+        // 이메일 확인 코드 입력 이벤트
+        const verificationCodeInput = document.getElementById('verification-code');
+        if (verificationCodeInput) {
+            verificationCodeInput.addEventListener('input', function() {
+                validateVerificationCode(this);
+            });
+        }
+        
+        // 실시간 유효성 검사 설정 (모달이 처음 열릴 때를 위함)
+        setupRegisterValidation();
     }
 }
 
@@ -215,13 +312,14 @@ function showLoginModal() {
     if (modal) {
         modal.style.display = 'block';
         
-        // Focus on username input
-        setTimeout(() => {
-            const usernameInput = document.getElementById('username');
-            if (usernameInput) {
-                usernameInput.focus();
-            }
-        }, 300);
+        // 항상 로그인 폼을 기본으로 표시
+        const loginSection = document.querySelector('.login-section');
+        const registerSection = document.querySelector('.register-section');
+        
+        if (loginSection && registerSection) {
+            loginSection.style.display = 'block';
+            registerSection.style.display = 'none';
+        }
     }
 }
 
@@ -250,13 +348,23 @@ function updateUserProfile(isLoggedIn) {
     const likedEmptyMessage = document.querySelector('#liked-empty p');
     
     if (isLoggedIn) {
-        // Get user data from localStorage
+        // 로그인된 상태: localStorage에서 사용자 정보 가져오기
+        const user = JSON.parse(localStorage.getItem('needleG_user') || '{}');
         const userData = JSON.parse(localStorage.getItem('needleG_userData') || '{}');
         
-        // Update profile information
-        if (usernameDisplay) usernameDisplay.textContent = userData.name || 'User';
+        // username-display에 사용자 아이디 표시 (우선순위: username > email > 기본값)
+        if (usernameDisplay) {
+            if (user.username) {
+                usernameDisplay.textContent = user.username;
+            } else if (user.email) {
+                usernameDisplay.textContent = user.email.split('@')[0]; // 이메일의 @ 앞부분만 표시
+            } else {
+                usernameDisplay.textContent = 'User';
+            }
+        }
+        
         if (userBio) userBio.textContent = userData.bio || 'No bio added yet';
-        if (membershipLevel) membershipLevel.textContent = userData.tier || 'Standard';
+        if (membershipLevel) membershipLevel.textContent = user.role || 'Standard';
         if (collectionCount) collectionCount.textContent = userData.collections || 0;
         
         // Show/hide reservation stats based on if user has reservations
@@ -354,86 +462,41 @@ function updateUserProfile(isLoggedIn) {
 }
 
 // Handle login
-function handleLogin() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+async function handleLogin() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
     
-    if (!username || !password) {
-        alert('Please enter username and password');
+    if (!email || !password) {
+        alert('Please enter both email and password');
         return;
     }
     
-    // Demo login (in a real app, this would be a server request)
-    localStorage.setItem('needleG_login', 'true');
-    
-    // Demo user data
-    const demoUserData = {
-        name: username,
-        bio: 'Tattoo enthusiast and art lover',
-        avatar: 'assets/default-avatar.png',
-        tier: 'Gold',
-        collections: 12,
-        reservations: 2,
-        posts: [
-            { id: 1, imageUrl: 'https://picsum.photos/500/500?random=1', caption: 'My first tattoo' },
-            { id: 2, imageUrl: 'https://picsum.photos/500/500?random=2', caption: 'Flower design' },
-            { id: 3, imageUrl: 'https://picsum.photos/500/500?random=3', caption: 'Dragon sketch' }
-        ],
-        saved: [
-            { id: 1, imageUrl: 'https://picsum.photos/500/500?random=4', caption: 'Geometric pattern' }
-        ]
-    };
-    
-    localStorage.setItem('needleG_userData', JSON.stringify(demoUserData));
-    
-    // Close login modal
-    const modal = document.getElementById('login-modal');
-    if (modal) modal.style.display = 'none';
-    
-    // Update UI
-    updateUserProfile(true);
-    
-    // Load user content
-    loadUserContent();
-    
-    // Reset form
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
+    try {
+        const userData = await apiService.login(email, password);
+        
+        // 로그인 성공 처리
+        document.getElementById('login-modal').style.display = 'none';
+        
+        // 사용자 정보 업데이트
+        updateUserProfile(true);
+        
+        // 환영 메시지 표시
+        const username = userData.username || email.split('@')[0];
+        showSuccessNotification(`Welcome back, ${username}!`, 'You have successfully logged in.');
+        
+        // 페이지 새로고침
+        // location.reload();
+    } catch (error) {
+        alert(error.message || 'Login failed. Please try again.');
+    }
 }
 
 // Handle logout
 function handleLogout() {
-    // Clear user data
-    localStorage.removeItem('needleG_login');
-    localStorage.removeItem('needleG_userData');
-    
-    // Update UI
+    apiService.logout();
     updateUserProfile(false);
-    
-    // Clear content
-    clearUserContent();
-    
-    // Close menu dropdown based on screen size
-    const menuDropdown = document.getElementById('menu-dropdown');
-    const menuButton = document.getElementById('menu-button');
-    const isMobile = window.innerWidth <= 768;
-    
-    if (menuDropdown) {
-        if (isMobile) {
-            menuDropdown.classList.remove('fullscreen-menu');
-            document.body.style.overflow = '';
-        } else {
-            menuDropdown.style.display = 'none';
-        }
-    }
-    
-    // 메뉴 아이콘 원래대로
-    if (menuButton) {
-        const menuIcon = menuButton.querySelector('i');
-        if (menuIcon) {
-            menuIcon.textContent = 'menu';
-        }
-    }
+    // 페이지 새로고침
+    // location.reload();
 }
 
 // Load user content (posts, saved, liked)
@@ -581,5 +644,461 @@ function clearUserContent() {
         const likedItems = likedGrid.querySelectorAll('.gallery-item');
         likedItems.forEach(item => item.remove());
         likedEmpty.style.display = 'flex';
+    }
+}
+
+// Handle register
+async function handleRegister() {
+    const username = document.getElementById('register-username');
+    const email = document.getElementById('register-email');
+    const password = document.getElementById('register-password');
+    const confirmPassword = document.getElementById('register-confirm-password');
+    const verificationCode = document.getElementById('verification-code');
+    const role = document.getElementById('register-role').value;
+    
+    // 오류 표시 요소들
+    const usernameError = document.getElementById('username-error');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    const verificationError = document.getElementById('verification-error');
+    const registerError = document.getElementById('register-error');
+    
+    // 빈 필드 체크
+    let isValid = true;
+    
+    // 사용자 이름 검사
+    if (!username.value) {
+        username.classList.add('error');
+        usernameError.textContent = 'Username is required';
+        usernameError.className = 'input-error';
+        isValid = false;
+    } else {
+        // 이미 입력된 경우 유효성 검사
+        isValid = validateUsername(username, usernameError) && isValid;
+    }
+    
+    // 이메일 검사
+    if (!email.value) {
+        email.classList.add('error');
+        emailError.textContent = 'Email is required';
+        emailError.className = 'input-error';
+        isValid = false;
+    } else {
+        // 이미 입력된 경우 유효성 검사
+        isValid = validateEmail(email, emailError) && isValid;
+    }
+    
+    // 확인 코드 검사
+    if (!window.isEmailVerified) {
+        verificationCode.classList.add('error');
+        verificationError.textContent = 'Email verification is required';
+        verificationError.className = 'input-error';
+        isValid = false;
+    }
+    
+    // 비밀번호 검사
+    if (!password.value) {
+        password.classList.add('error');
+        passwordError.textContent = 'Password is required';
+        passwordError.className = 'input-error';
+        isValid = false;
+    } else {
+        // 이미 입력된 경우 유효성 검사
+        isValid = validatePassword(password, passwordError) && isValid;
+    }
+    
+    // 비밀번호 확인 검사
+    if (!confirmPassword.value) {
+        confirmPassword.classList.add('error');
+        confirmPasswordError.textContent = 'Please confirm your password';
+        confirmPasswordError.className = 'input-error';
+        isValid = false;
+    } else {
+        // 이미 입력된 경우 유효성 검사
+        isValid = validateConfirmPassword(confirmPassword, password, confirmPasswordError) && isValid;
+    }
+    
+    // 유효성 검사 실패 시 함수 종료
+    if (!isValid) {
+        return;
+    }
+    
+    try {
+        const userData = await apiService.register({
+            username: username.value,
+            email: email.value,
+            password: password.value,
+            role
+        });
+        
+        // 회원가입 성공 처리
+        document.getElementById('login-modal').style.display = 'none';
+        
+        // 성공 알림 표시
+        showSuccessNotification(`Welcome, ${username.value}!`, 'Your account has been created successfully.');
+        
+        // 사용자 프로필 업데이트
+        updateUserProfile(true);
+    } catch (error) {
+        // 서버 오류 메시지 표시
+        registerError.textContent = error.message || 'Registration failed. Please try again.';
+        registerError.style.display = 'block';
+    }
+}
+
+// 성공 알림 표시 함수
+function showSuccessNotification(title, message) {
+    const notification = document.getElementById('success-notification');
+    const titleElement = notification.querySelector('.success-notification-title');
+    const messageElement = notification.querySelector('.success-notification-message');
+    
+    // 알림 내용 설정
+    titleElement.textContent = title;
+    messageElement.textContent = message;
+    
+    // 알림 표시
+    notification.classList.add('show');
+    
+    // 3초 후 자동으로 사라짐
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
+}
+
+// 회원가입 폼 입력 필드 실시간 유효성 검사 설정
+function setupRegisterValidation() {
+    const username = document.getElementById('register-username');
+    const email = document.getElementById('register-email');
+    const password = document.getElementById('register-password');
+    const confirmPassword = document.getElementById('register-confirm-password');
+    
+    const usernameError = document.getElementById('username-error');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const confirmPasswordError = document.getElementById('confirm-password-error');
+    
+    // 사용자 이름 유효성 검사
+    username.addEventListener('input', function() {
+        validateUsername(this, usernameError);
+    });
+    
+    // 이메일 유효성 검사
+    email.addEventListener('input', function() {
+        validateEmail(this, emailError);
+    });
+    
+    // 비밀번호 유효성 검사
+    password.addEventListener('input', function() {
+        validatePassword(this, passwordError);
+        // 비밀번호가 변경되면 비밀번호 확인도 재검사
+        if (confirmPassword.value) {
+            validateConfirmPassword(confirmPassword, this, confirmPasswordError);
+        }
+    });
+    
+    // 비밀번호 확인 유효성 검사
+    confirmPassword.addEventListener('input', function() {
+        validateConfirmPassword(this, password, confirmPasswordError);
+    });
+}
+
+// 사용자 이름 유효성 검사 함수
+function validateUsername(field, errorElement) {
+    // 초기화
+    field.classList.remove('error', 'success');
+    errorElement.textContent = '';
+    errorElement.className = 'input-error';
+    
+    if (!field.value) {
+        // 빈 값
+        return;
+    }
+    
+    if (field.value.length < 3) {
+        // 오류: 3자 미만
+        field.classList.add('error');
+        errorElement.textContent = 'Username must be at least 3 characters';
+        return false;
+    }
+    
+    // 타이핑 중에 너무 많은 요청을 방지하는 디바운스 설정
+    clearTimeout(field.timer);
+    
+    // 기본 유효성 검사 통과 시 임시 성공 상태 표시
+    field.classList.add('success');
+    errorElement.textContent = 'Checking username...';
+    errorElement.className = 'input-success';
+    
+    // 서버에 사용자 이름 확인 요청 (300ms 딜레이)
+    field.timer = setTimeout(async () => {
+        try {
+            // 3자 이상일 때만 서버에 확인 요청
+            if (field.value.length >= 3) {
+                const result = await apiService.checkUsername(field.value);
+                
+                if (result.exists) {
+                    // 이미 사용 중인 사용자 이름
+                    field.classList.remove('success');
+                    field.classList.add('error');
+                    errorElement.textContent = 'Username is already taken';
+                    errorElement.className = 'input-error';
+                    return false;
+                } else {
+                    // 사용 가능한 사용자 이름
+                    field.classList.add('success');
+                    errorElement.textContent = 'Username is available';
+                    errorElement.className = 'input-success';
+                    return true;
+                }
+            }
+        } catch (error) {
+            console.error('Error checking username:', error);
+            // 에러 발생 시 유효성 검사 통과 (서버 에러는 제출 시 확인)
+            return true;
+        }
+    }, 300);
+    
+    return true; // 초기 반환값 (비동기 검사 결과는 나중에 업데이트)
+}
+
+// 이메일 유효성 검사 함수
+function validateEmail(field, errorElement) {
+    // 초기화
+    field.classList.remove('error', 'success');
+    errorElement.textContent = '';
+    errorElement.className = 'input-error';
+    
+    if (!field.value) {
+        // 빈 값
+        return;
+    }
+    
+    // 이메일 형식 검사
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(field.value)) {
+        field.classList.add('error');
+        errorElement.textContent = 'Please enter a valid email address';
+        return false;
+    }
+    
+    // 타이핑 중에 너무 많은 요청을 방지하는 디바운스 설정
+    clearTimeout(field.timer);
+    
+    // 기본 유효성 검사 통과 시 임시 성공 상태 표시
+    field.classList.add('success');
+    errorElement.textContent = 'Checking email...';
+    errorElement.className = 'input-success';
+    
+    // 서버에 이메일 확인 요청 (300ms 딜레이)
+    field.timer = setTimeout(async () => {
+        try {
+            const result = await apiService.checkEmail(field.value);
+            
+            if (result.exists) {
+                // 이미 사용 중인 이메일
+                field.classList.remove('success');
+                field.classList.add('error');
+                errorElement.textContent = 'Email is already registered';
+                errorElement.className = 'input-error';
+                return false;
+            } else {
+                // 사용 가능한 이메일
+                field.classList.add('success');
+                errorElement.textContent = 'Email is available';
+                errorElement.className = 'input-success';
+                return true;
+            }
+        } catch (error) {
+            console.error('Error checking email:', error);
+            // 에러 발생 시 유효성 검사 통과 (서버 에러는 제출 시 확인)
+            return true;
+        }
+    }, 300);
+    
+    return true; // 초기 반환값 (비동기 검사 결과는 나중에 업데이트)
+}
+
+// 비밀번호 유효성 검사 함수
+function validatePassword(field, errorElement) {
+    // 초기화
+    field.classList.remove('error', 'success');
+    errorElement.textContent = '';
+    errorElement.className = 'input-error';
+    
+    if (!field.value) {
+        // 빈 값
+        return;
+    }
+    
+    if (field.value.length < 6) {
+        // 오류: 6자 미만
+        field.classList.add('error');
+        errorElement.textContent = 'Password must be at least 6 characters';
+        return false;
+    }
+    
+    // 성공
+    field.classList.add('success');
+    errorElement.textContent = 'Valid password';
+    errorElement.className = 'input-success';
+    return true;
+}
+
+// 비밀번호 확인 유효성 검사 함수
+function validateConfirmPassword(field, passwordField, errorElement) {
+    // 초기화
+    field.classList.remove('error', 'success');
+    errorElement.textContent = '';
+    errorElement.className = 'input-error';
+    
+    if (!field.value) {
+        // 빈 값
+        return;
+    }
+    
+    if (field.value !== passwordField.value) {
+        // 오류: 비밀번호 불일치
+        field.classList.add('error');
+        errorElement.textContent = 'Passwords do not match';
+        return false;
+    }
+    
+    // 성공
+    field.classList.add('success');
+    errorElement.textContent = 'Passwords match';
+    errorElement.className = 'input-success';
+    return true;
+}
+
+// 이메일 확인 코드 전송 처리
+async function handleSendVerificationCode() {
+    const email = document.getElementById('register-email');
+    const emailError = document.getElementById('email-error');
+    const verificationCode = document.getElementById('verification-code');
+    const verificationError = document.getElementById('verification-error');
+    const sendCodeBtn = document.getElementById('send-code-btn');
+    
+    // 이메일 유효성 검사
+    const isEmailValid = validateEmail(email, emailError);
+    if (!isEmailValid) {
+        return;
+    }
+    
+    try {
+        // 버튼 상태 변경
+        sendCodeBtn.disabled = true;
+        sendCodeBtn.classList.add('sending');
+        sendCodeBtn.textContent = 'Sending...';
+        
+        // 이메일 확인 코드 전송 API 호출
+        await apiService.sendVerificationCode(email.value);
+        
+        // 버튼 상태 변경
+        sendCodeBtn.classList.remove('sending');
+        sendCodeBtn.classList.add('sent');
+        
+        // 입력 필드 활성화
+        verificationCode.disabled = false;
+        verificationCode.focus();
+        
+        // 성공 메시지 표시
+        verificationError.textContent = 'Verification code sent! Check your email.';
+        verificationError.className = 'input-success';
+        
+        // 1분 타이머 설정
+        let timeLeft = 60;
+        
+        // 이전 타이머 정리
+        if (window.verificationTimer) {
+            clearInterval(window.verificationTimer);
+        }
+        
+        // 타이머 표시 요소 생성
+        let countdownSpan = document.createElement('span');
+        countdownSpan.className = 'countdown';
+        countdownSpan.textContent = `(${timeLeft}s)`;
+        sendCodeBtn.textContent = 'Resend';
+        sendCodeBtn.appendChild(countdownSpan);
+        
+        // 타이머 설정
+        window.verificationTimer = setInterval(() => {
+            timeLeft--;
+            countdownSpan.textContent = `(${timeLeft}s)`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(window.verificationTimer);
+                sendCodeBtn.disabled = false;
+                sendCodeBtn.textContent = 'Resend';
+                sendCodeBtn.classList.remove('sent');
+            }
+        }, 1000);
+        
+    } catch (error) {
+        // 오류 메시지 표시
+        verificationError.textContent = error.message || 'Failed to send verification code. Please try again.';
+        verificationError.className = 'input-error';
+        
+        // 버튼 상태 복원
+        sendCodeBtn.disabled = false;
+        sendCodeBtn.classList.remove('sending');
+        sendCodeBtn.textContent = 'Send Code';
+    }
+}
+
+// 이메일 확인 코드 유효성 검사
+async function validateVerificationCode(field) {
+    const email = document.getElementById('register-email').value;
+    const code = field.value;
+    const verificationError = document.getElementById('verification-error');
+    
+    // 초기화
+    field.classList.remove('error', 'success');
+    
+    if (!code) {
+        return;
+    }
+    
+    // 6자리 숫자 확인
+    if (code.length !== 6 || !/^\d+$/.test(code)) {
+        field.classList.add('error');
+        verificationError.textContent = 'Code must be 6 digits';
+        verificationError.className = 'input-error';
+        window.isEmailVerified = false;
+        return;
+    }
+    
+    try {
+        // 코드 확인 API 호출
+        await apiService.verifyCode(email, code);
+        
+        // 성공 상태 표시
+        field.classList.add('success');
+        verificationError.textContent = 'Email verified successfully!';
+        verificationError.className = 'input-success';
+        
+        // 확인 상태 저장
+        window.isEmailVerified = true;
+        
+        // 코드 전송 버튼 비활성화
+        const sendCodeBtn = document.getElementById('send-code-btn');
+        if (sendCodeBtn) {
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.textContent = 'Verified';
+            sendCodeBtn.classList.add('sent');
+            
+            // 타이머 중지
+            if (window.verificationTimer) {
+                clearInterval(window.verificationTimer);
+                window.verificationTimer = null;
+            }
+        }
+        
+    } catch (error) {
+        // 오류 상태 표시
+        field.classList.add('error');
+        verificationError.textContent = 'Invalid verification code';
+        verificationError.className = 'input-error';
+        window.isEmailVerified = false;
     }
 }

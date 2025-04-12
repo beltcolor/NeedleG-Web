@@ -44,16 +44,25 @@
             
         </div>
         <div class="tab-container"><!-- 탭 네비게이션 -->
-            <button class="tab-button" onclick="navigateTo('get-tattoo')">Get Tattoo</button>
-            <button class="tab-button" onclick="navigateTo('collection')">Collection</button>
-            <button class="tab-button" onclick="navigateTo('account')">Account</button>
+            <button class="tab-button" data-page="home">
+                <span class="material-icons">home</span>
+            </button>
+            <button class="tab-button" data-page="search">
+                <span class="material-icons">search</span>
+            </button>
+            <button class="tab-button" data-page="tattoo">
+                <span class="material-icons">brush</span>
+            </button>
+            <button class="tab-button" data-page="account">
+                <span class="material-icons">person</span>
+            </button>
         </div>
     </div>
+    <script src="js/api.js" defer></script>
     <script src="js/main.js" defer></script>
-    <script src="js/theme.js" defer></script>
-    <script src="js/navi.js" defer></script>
+    <script src="js/home.js" defer></script>
     <script src="js/tattoo.js" defer></script>
-    <script src="js/collection.js" defer></script>
+    <script src="js/search.js" defer></script>
     <script src="js/account.js" defer></script>
 </body>
 </html>

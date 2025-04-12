@@ -13,8 +13,8 @@
     --border-color: none;
     --input-height: 42px;
     --border-radius: 20px;
-    --content-width: 600px;
     --button-color: #1a1a1a;
+    --content-width: 100%;
 }
 
 /* 라이트 모드 변수 */
@@ -40,6 +40,18 @@
     padding: 0;
 }
 
+/* 모바일 터치 효과 제거 */
+html {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button, a {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 /* 부드러운 스크롤 제거 */
 html {
     scroll-behavior: auto;
@@ -58,10 +70,6 @@ body {
     width: 100%;
 }
 
-/* 컨텐츠 패딩 */
-.area-container {
-    padding-bottom: 70px;
-}
 
 /* 유틸리티 클래스 */
 .text-center {
@@ -71,7 +79,7 @@ body {
 /* 레이아웃 컨테이너 ------------------------------------------------------------------------*/
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: var(--content-width);
     margin: 0 auto;
     padding: 0rem;
     padding-bottom: 60px;
@@ -85,6 +93,11 @@ body {
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 60px;
+}
+
+/* 컨텐츠 패딩 */
+.area-container {
+    padding-bottom: 70px;
 }
 
 /* 타이포그래피 --------------------------------------------------------------------------------------*/

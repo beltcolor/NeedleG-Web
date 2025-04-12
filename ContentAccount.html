@@ -1,5 +1,14 @@
 <!-- ContentAccount.html -->
 <div class="account-container">
+    <!-- Success Notification -->
+    <div id="success-notification" class="success-notification">
+        <i class="material-icons">check_circle</i>
+        <div class="success-notification-content">
+            <div class="success-notification-title">Success!</div>
+            <div class="success-notification-message">Your account has been created successfully.</div>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div id="login-modal" class="login-modal">
         <div class="modal-content">
@@ -7,10 +16,10 @@
             <div class="login-section">
                 <h3>Login</h3>
                 <div class="input-group">
-                    <input type="text" id="username" placeholder="Username or Email" class="input">
-                    <input type="password" id="password" placeholder="Password" class="input">
+                    <input type="email" id="login-email" placeholder="Email" class="input" required>
+                    <input type="password" id="login-password" placeholder="Password" class="input" required>
                 </div>
-                <button class="login-btn" onclick="handleLogin()">Login</button>
+                <button class="login-btn" id="login-btn">Login</button>
                 <p class="divider">or</p>
                 <div class="social-buttons">
                     <button class="social-btn google">
@@ -22,7 +31,41 @@
                         Kakao
                     </button>
                 </div>
-                <p class="register-text">Don't have an account? <a href="#" class="register-link">Sign Up</a></p>
+                <p class="register-text">Don't have an account? <a href="#" id="show-register-btn">Sign Up</a></p>
+            </div>
+            
+            <div class="register-section" style="display: none;">
+                <h3>Register</h3>
+                <div class="input-group">
+                    <input type="text" id="register-username" placeholder="Username (min. 3 characters)" class="input" required>
+                    <div id="username-error" class="input-error"></div>
+                    
+                    <input type="email" id="register-email" placeholder="Email (e.g., user@example.com)" class="input" required>
+                    <div id="email-error" class="input-error"></div>
+                    
+                    <div class="verification-group">
+                        <div class="verification-input-group">
+                            <input type="text" id="verification-code" placeholder="Verification Code" class="input" disabled>
+                            <button id="send-code-btn" class="verification-btn">Send Code</button>
+                        </div>
+                        <div id="verification-error" class="input-error"></div>
+                    </div>
+                    
+                    <input type="password" id="register-password" placeholder="Password (min. 6 characters)" class="input" required>
+                    <div id="password-error" class="input-error"></div>
+                    
+                    <input type="password" id="register-confirm-password" placeholder="Confirm Password" class="input" required>
+                    <div id="confirm-password-error" class="input-error"></div>
+                    
+                    <select id="register-role" class="input">
+                        <option value="user">Regular User</option>
+                        <option value="Creator">Creator</option>
+                        <option value="TattooArtist">Tattoo Artist</option>
+                    </select>
+                </div>
+                <button class="register-btn" id="register-btn">Register</button>
+                <p class="register-text">Already have an account? <a href="#" id="show-login-btn">Login</a></p>
+                <div id="register-error" class="error-message" style="display: none;"></div>
             </div>
         </div>
     </div>

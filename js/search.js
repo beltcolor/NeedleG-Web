@@ -1,6 +1,6 @@
 // Collection 페이지 로드 함수
-function loadCollectionContent() {
-    fetch('ContentCollection.html') // HTML 파일 경로
+function loadSearchContent() {
+    fetch('ContentSearch.html') // HTML 파일 경로
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
