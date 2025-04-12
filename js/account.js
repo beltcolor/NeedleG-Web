@@ -383,8 +383,12 @@ function updateUserProfile(isLoggedIn) {
         }
         
         // Show logout, hide login
-        if (loginLink) loginLink.style.display = 'none';
-        if (logoutLink) logoutLink.style.display = 'block';
+        if (loginLink) {
+            loginLink.parentElement.style.display = 'none';
+        }
+        if (logoutLink) {
+            logoutLink.parentElement.style.display = 'block';
+        }
         
         // Show edit profile button
         if (editProfileBtn) editProfileBtn.style.display = 'block';
@@ -432,8 +436,12 @@ function updateUserProfile(isLoggedIn) {
         if (userAvatar) userAvatar.src = 'assets/default-avatar.png';
         
         // Show login, hide logout
-        if (loginLink) loginLink.style.display = 'block';
-        if (logoutLink) logoutLink.style.display = 'none';
+        if (loginLink) {
+            loginLink.parentElement.style.display = 'block';
+        }
+        if (logoutLink) {
+            logoutLink.parentElement.style.display = 'none';
+        }
         
         // Hide edit profile button
         if (editProfileBtn) editProfileBtn.style.display = 'none';
@@ -495,6 +503,10 @@ async function handleLogin() {
 function handleLogout() {
     apiService.logout();
     updateUserProfile(false);
+    
+    // 로그아웃 알림 표시 (빨간색)
+    showLogoutNotification('Logged Out', 'You have successfully logged out.');
+    
     // 페이지 새로고침
     // location.reload();
 }
@@ -654,7 +666,6 @@ async function handleRegister() {
     const password = document.getElementById('register-password');
     const confirmPassword = document.getElementById('register-confirm-password');
     const verificationCode = document.getElementById('verification-code');
-    const role = document.getElementById('register-role').value;
     
     // 오류 표시 요소들
     const usernameError = document.getElementById('username-error');
@@ -729,7 +740,7 @@ async function handleRegister() {
             username: username.value,
             email: email.value,
             password: password.value,
-            role
+            role: 'user' // 기본 역할을 'user'로 설정
         });
         
         // 회원가입 성공 처리
@@ -749,20 +760,43 @@ async function handleRegister() {
 
 // 성공 알림 표시 함수
 function showSuccessNotification(title, message) {
-    const notification = document.getElementById('success-notification');
-    const titleElement = notification.querySelector('.success-notification-title');
-    const messageElement = notification.querySelector('.success-notification-message');
+    // 기존 알림이 있으면 제거
+    const existingNotification = document.getElementById('success-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
     
-    // 알림 내용 설정
-    titleElement.textContent = title;
-    messageElement.textContent = message;
+    // 새 알림 요소 생성
+    const notification = document.createElement('div');
+    notification.id = 'success-notification';
+    notification.className = 'success-notification';
+    
+    // 알림 내용 구성
+    notification.innerHTML = `
+        <i class="material-icons">check_circle</i>
+        <div class="success-notification-content">
+            <div class="success-notification-title">${title}</div>
+            <div class="success-notification-message">${message}</div>
+        </div>
+    `;
+    
+    // 알림을 body에 추가 (account-container 대신 body에 직접 추가)
+    document.body.appendChild(notification);
     
     // 알림 표시
-    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
     
     // 3초 후 자동으로 사라짐
     setTimeout(() => {
         notification.classList.remove('show');
+        // 애니메이션 완료 후 요소 제거
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
     }, 3000);
 }
 
@@ -1101,4 +1135,24 @@ async function validateVerificationCode(field) {
         verificationError.className = 'input-error';
         window.isEmailVerified = false;
     }
+}
+
+// 로그아웃 알림 표시 함수
+function showLogoutNotification(title, message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification logout-notification';
+    notification.innerHTML = `
+        <div class="notification-content">
+            <h3>${title}</h3>
+            <p>${message}</p>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 3초 후 자동으로 사라지게 설정
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
 }

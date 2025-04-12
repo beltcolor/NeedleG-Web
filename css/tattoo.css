@@ -126,7 +126,7 @@ body.dark-theme .dot-indicator.active {
 
 
 /* 버튼 스타일 --------------------------------------------------------------------------------------------*/
-.quote-button, .login-btn, .register-btn {
+.quote-button {
     background-color: var(--button-color);
     color: var(--text-primary);
     font-size: 14px;
@@ -142,7 +142,7 @@ body.dark-theme .dot-indicator.active {
     cursor: pointer;
 }
 
-.quote-button:before, .login-btn:before, .register-btn:before {
+.quote-button:before {
     content: '';
     position: absolute;
     border-radius: var(--border-radius);
@@ -157,7 +157,7 @@ body.dark-theme .dot-indicator.active {
     z-index: -1;
 }
 
-.quote-button:hover, .login-btn:hover, .register-btn:hover {
+.quote-button:hover {
     font-weight: bold;
 }
 

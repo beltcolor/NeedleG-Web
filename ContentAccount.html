@@ -1,14 +1,5 @@
 <!-- ContentAccount.html -->
 <div class="account-container">
-    <!-- Success Notification -->
-    <div id="success-notification" class="success-notification">
-        <i class="material-icons">check_circle</i>
-        <div class="success-notification-content">
-            <div class="success-notification-title">Success!</div>
-            <div class="success-notification-message">Your account has been created successfully.</div>
-        </div>
-    </div>
-
     <!-- Login Modal -->
     <div id="login-modal" class="login-modal">
         <div class="modal-content">
@@ -19,7 +10,7 @@
                     <input type="email" id="login-email" placeholder="Email" class="input" required>
                     <input type="password" id="login-password" placeholder="Password" class="input" required>
                 </div>
-                <button class="login-btn" id="login-btn">Login</button>
+                <button class="login-btn action-btn" id="login-btn">Sign In</button>
                 <p class="divider">or</p>
                 <div class="social-buttons">
                     <button class="social-btn google">
@@ -52,15 +43,9 @@
                     
                     <input type="password" id="register-confirm-password" placeholder="Confirm Password" class="input" required>
                     <div id="confirm-password-error" class="input-error"></div>
-                    
-                    <select id="register-role" class="input">
-                        <option value="user">Regular User</option>
-                        <option value="Creator">Creator</option>
-                        <option value="TattooArtist">Tattoo Artist</option>
-                    </select>
                 </div>
-                <button class="register-btn" id="register-btn">Register</button>
-                <p class="register-text">Already have an account? <a href="#" id="show-login-btn">Login</a></p>
+                <button class="register-btn action-btn" id="register-btn">Sign Up</button>
+                <p class="register-text">Already have an account? <a href="#" id="show-login-btn">Sign In</a></p>
                 <div id="register-error" class="error-message" style="display: none;"></div>
             </div>
         </div>
@@ -101,8 +86,8 @@
                     <li style="--item-index: 1;"><a href="#"><i class="material-icons">settings</i> Settings</a></li>
                     <li style="--item-index: 2;"><a href="#"><i class="material-icons">help_outline</i> Help</a></li>
                     <li style="--item-index: 3;"><a href="#" id="dark-mode-toggle"><i class="material-icons">brightness_4</i> Dark/Light Mode</a></li>
-                    <li style="--item-index: 4;"><a href="#" id="login-link" onclick="showLoginModal()"><i class="material-icons">login</i> Login</a></li>
-                    <li style="--item-index: 5;"><a href="#" id="logout-link" onclick="handleLogout()"><i class="material-icons">logout</i> Logout</a></li>
+                    <li style="--item-index: 4;"><a href="#" id="login-link" onclick="showLoginModal()"><i class="material-icons">login</i> Sign In</a></li>
+                    <li style="--item-index: 5;"><a href="#" id="logout-link" onclick="handleLogout()"><i class="material-icons">logout</i> Sign Out</a></li>
                 </ul>
             </div>
         </div>
