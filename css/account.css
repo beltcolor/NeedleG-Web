@@ -12,7 +12,7 @@
 .login-modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 1010;
     left: 0;
     top: 0;
     width: 100%;
@@ -231,7 +231,6 @@
     position: fixed;
     top: 3rem;
     right: 20px;
-    z-index: 1003;
     background-color: transparent;
     width: 40px;
     height: 40px;
@@ -242,6 +241,7 @@
     border: none;
     outline: none;
     transition: all 0.3s ease;
+    z-index: 1005;
 }
 
 .menu-btn:hover {
@@ -478,24 +478,28 @@
     }
     
     .menu-dropdown {
-        position: fixed;
-        top: 0;
-        left: 0;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
         width: 0;
         height: 0;
         border-radius: 0;
         box-shadow: none;
         margin-top: 0;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
     
     .menu-dropdown.fullscreen-menu {
-        display: flex;
-        width: 100%;
-        height: 100vh;
+        display: flex !important;
+        width: 100% !important;
+        height: 100vh !important;
         opacity: 1;
         padding-top: 80px;
         align-items: flex-start;
         justify-content: center;
+        z-index: 1000;
     }
     
     .menu-dropdown ul {
@@ -530,6 +534,213 @@
         margin-right: 15px;
         font-size: 24px;
         color: var(--accent-color);
+    }
+    
+    .success-notification {
+        width: 95%;
+        max-width: 600px;
+        padding: 20px 24px;
+        margin: 0 10px;
+    }
+    
+    .success-notification i {
+        font-size: 28px;
+    }
+    
+    .success-notification-title {
+        font-size: 18px;
+    }
+    
+    .success-notification-message {
+        font-size: 16px;
+    }
+    
+    .login-modal {
+        background-color: var(--bg-color);
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1010;
+    }
+    
+    .login-modal.fullscreen-menu {
+        display: flex !important;
+        opacity: 1;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 80px;
+    }
+    
+    .modal-content {
+        margin: 50px auto;
+        padding: 30px 20px;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+        height: auto;
+        min-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        z-index: 1002;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .close-modal {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1003;
+    }
+    
+    /* 모바일 로그인/회원가입 버튼 스타일 */
+    .login-btn, .register-btn {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 18px;
+        border-radius: var(--border-radius);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        position: relative;
+        z-index: 1002;
+    }
+    
+    .login-btn:hover, .register-btn:hover {
+        background-color: var(--accent-hover);
+    }
+    
+    /* 모바일 로그인/회원가입 폼 스타일 */
+    .login-section, .register-section {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px 20px;
+        position: relative;
+        z-index: 1002;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .login-section h3, .register-section h3 {
+        font-size: 28px;
+        margin-bottom: 30px;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .input-group {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .input-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+    
+    .input-group input {
+        width: 100%;
+        padding: 12px 15px;
+        font-size: 16px;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        position: relative;
+        z-index: 1002;
+    }
+    
+    .divider {
+        margin: 20px 0;
+        text-align: center;
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .divider::before, .divider::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background-color: var(--border-color);
+    }
+    
+    .divider::before {
+        left: 0;
+    }
+    
+    .divider::after {
+        right: 0;
+    }
+    
+    .social-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    
+    .social-btn {
+        flex: 1;
+        margin: 0 5px;
+        padding: 12px;
+        border-radius: var(--border-radius);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    
+    .social-btn:hover {
+        background-color: var(--bg-hover);
+    }
+    
+    .social-btn img {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+    }
+    
+    .register-text {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    
+    .register-link {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+    
+    .register-link:hover {
+        text-decoration: underline;
+    }
+    
+    /* 모달이 열렸을 때 메뉴 버튼 숨기기 */
+    .login-modal.fullscreen-menu ~ .menu-settings .menu-btn,
+    .login-modal.fullscreen-menu ~ .menu-settings .menu-wrapper {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 }
 
@@ -660,8 +871,9 @@
 /* 회원가입 성공 알림 스타일 */
 .success-notification {
     position: fixed;
-    top: 20px;
-    right: 100px;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
     background-color: var(--accent-color);
     color: white;
     padding: 16px 24px;
@@ -672,13 +884,12 @@
     gap: 12px;
     z-index: 2000;
     opacity: 0;
-    transform: translateY(-20px);
     transition: opacity 0.3s, transform 0.3s;
 }
 
 .success-notification.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .success-notification i {
@@ -815,16 +1026,84 @@
 .logout-notification {
     background-color: #ffebee; /* 연한 빨간색 배경 */
     border-left: 4px solid #f44336; /* 빨간색 테두리 */
+    /* 위치는 .success-notification에서 상속됨 */
 }
 
-.logout-notification h3 {
+.logout-notification i {
+    color: #d32f2f; /* 빨간색 아이콘 */
+}
+
+.logout-notification .success-notification-title {
     color: #d32f2f; /* 진한 빨간색 제목 */
 }
 
-.logout-notification p {
+.logout-notification .success-notification-message {
     color: #b71c1c; /* 더 진한 빨간색 메시지 */
 }
 
-.logout-notification .notification-close {
-    color: #d32f2f; /* 빨간색 닫기 버튼 */
+/* 모달 컨텐츠 가운데 정렬 */
+.login-modal.fullscreen-menu .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+/* 모바일 로그인/회원가입 폼 스타일 */
+.login-section, .register-section {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1002;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 입력 필드 그룹 스타일 */
+.input-group {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 모바일 로그인/회원가입 버튼 스타일 */
+.login-btn, .register-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px 20px;
+    font-size: 18px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+    z-index: 1002;
+}
+
+/* 소셜 로그인 버튼 그룹 가운데 정렬 */
+.social-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 회원가입 텍스트 가운데 정렬 */
+.register-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    width: 100%;
 }

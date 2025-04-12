@@ -43,20 +43,60 @@ function initMenuDropdown() {
     const menuDropdown = document.getElementById('menu-dropdown');
     
     if (menuButton && menuDropdown) {
+        // 창 크기 변경 이벤트 리스너 추가
+        window.addEventListener('resize', function() {
+            // 창 크기가 변경될 때 메뉴 상태 업데이트
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 모바일 화면에서는 메뉴가 열려있지 않도록 설정
+                menuDropdown.style.display = 'none';
+                document.body.style.overflow = '';
+                
+                // 모바일 메뉴의 위치 재설정
+                menuDropdown.style.position = 'fixed';
+                menuDropdown.style.top = '0';
+                menuDropdown.style.left = '0';
+                menuDropdown.style.width = '100%';
+                menuDropdown.style.height = '100vh';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            } else {
+                // 데스크톱 화면에서는 fullscreen-menu 클래스 제거
+                menuDropdown.classList.remove('fullscreen-menu');
+                document.body.style.overflow = '';
+                
+                // 데스크톱 메뉴의 위치 재설정
+                const buttonRect = menuButton.getBoundingClientRect();
+                menuDropdown.style.position = 'fixed';
+                menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
+                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
+                menuDropdown.style.left = 'auto';
+                menuDropdown.style.width = 'auto';
+                menuDropdown.style.height = 'auto';
+            }
+        });
+        
         menuButton.addEventListener('click', function(e) {
             e.stopPropagation();
             
-            // 화면 크기에 따라 다른 동작 구현
+            // 현재 창 크기에 따라 다른 동작 구현
             const isMobile = window.innerWidth <= 768;
             
             if (isMobile) {
                 // 모바일 화면: 전체 화면 메뉴
                 
                 // 메뉴 아이콘 변경 (메뉴/닫기)
-                const menuIcon = menuButton.querySelector('i');
-                if (menuIcon) {
-                    menuIcon.textContent = menuIcon.textContent === 'menu' ? 'close' : 'menu';
-                }
+                const isMenuOpen = menuDropdown.classList.contains('fullscreen-menu');
+                updateMenuIcon(!isMenuOpen);
+                
+                // 모바일 메뉴의 위치 재설정
+                menuDropdown.style.position = 'fixed';
+                menuDropdown.style.top = '0';
+                menuDropdown.style.left = '0';
+                menuDropdown.style.width = '100%';
+                menuDropdown.style.height = '100vh';
                 
                 // 드롭다운을 전체 화면으로 표시
                 menuDropdown.classList.toggle('fullscreen-menu');
@@ -64,8 +104,11 @@ function initMenuDropdown() {
                 // 메뉴가 표시되면 스크롤 방지
                 if (menuDropdown.classList.contains('fullscreen-menu')) {
                     document.body.style.overflow = 'hidden';
+                    // 모바일 메뉴가 표시되면 display 속성 설정
+                    menuDropdown.style.display = 'flex';
                 } else {
                     document.body.style.overflow = '';
+                    menuDropdown.style.display = 'none';
                 }
             } else {
                 // 데스크톱 화면: 일반 드롭다운 메뉴
@@ -78,7 +121,8 @@ function initMenuDropdown() {
                 menuDropdown.style.left = 'auto';
                 
                 // 드롭다운 표시/숨김 토글
-                menuDropdown.style.display = menuDropdown.style.display === 'block' ? 'none' : 'block';
+                const isVisible = menuDropdown.style.display === 'block';
+                menuDropdown.style.display = isVisible ? 'none' : 'block';
             }
         });
         
@@ -93,10 +137,7 @@ function initMenuDropdown() {
                     document.body.style.overflow = '';
                     
                     // 메뉴 아이콘 원래대로
-                    const menuIcon = menuButton.querySelector('i');
-                    if (menuIcon) {
-                        menuIcon.textContent = 'menu';
-                    }
+                    updateMenuIcon(false);
                 } else {
                     menuDropdown.style.display = 'none';
                 }
@@ -113,32 +154,10 @@ function initMenuDropdown() {
                     document.body.style.overflow = '';
                     
                     // 메뉴 아이콘 원래대로
-                    const menuIcon = menuButton.querySelector('i');
-                    if (menuIcon) {
-                        menuIcon.textContent = 'menu';
-                    }
+                    updateMenuIcon(false);
                 } else {
                     menuDropdown.style.display = 'none';
                 }
-            }
-        });
-        
-        // 화면 크기 변경 시 메뉴 스타일 조정
-        window.addEventListener('resize', function() {
-            const isMobile = window.innerWidth <= 768;
-            
-            // 화면 크기 변경 시 열려있는 메뉴 닫기
-            if (isMobile) {
-                menuDropdown.classList.remove('fullscreen-menu');
-                document.body.style.overflow = '';
-            } else {
-                menuDropdown.style.display = 'none';
-            }
-            
-            // 메뉴 아이콘 원래대로
-            const menuIcon = menuButton.querySelector('i');
-            if (menuIcon) {
-                menuIcon.textContent = 'menu';
             }
         });
         
@@ -155,10 +174,7 @@ function initMenuDropdown() {
                     document.body.style.overflow = '';
                     
                     // 메뉴 아이콘 원래대로
-                    const menuIcon = menuButton.querySelector('i');
-                    if (menuIcon) {
-                        menuIcon.textContent = 'menu';
-                    }
+                    updateMenuIcon(false);
                 } else {
                     menuDropdown.style.display = 'none';
                 }
@@ -205,8 +221,28 @@ function initLoginModal() {
     if (closeBtn && modal) {
         // 모달 닫기 및 폼 초기화 함수
         function resetAndCloseModal() {
-            // 모달 숨기기
-            modal.style.display = 'none';
+            // 현재 창 크기에 따라 다른 동작 구현
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 모바일 화면: 전체 화면 메뉴 닫기
+                modal.classList.remove('fullscreen-menu');
+                modal.style.display = 'none';
+                
+                // 스크롤 복원
+                document.body.style.overflow = '';
+                
+                // 메뉴 버튼 다시 표시 (모바일에서 숨겨졌을 수 있음)
+                const menuButton = document.getElementById('menu-button');
+                if (menuButton) {
+                    menuButton.style.opacity = '1';
+                    menuButton.style.visibility = 'visible';
+                    menuButton.style.pointerEvents = 'auto';
+                }
+            } else {
+                // 데스크톱 화면: 일반 모달 닫기
+                modal.style.display = 'none';
+            }
             
             // 로그인 폼을 기본으로 표시
             loginSection.style.display = 'block';
@@ -253,15 +289,41 @@ function initLoginModal() {
         
         // 모달 바깥 클릭 시 초기화 및 닫기
         window.addEventListener('click', function(event) {
-            if (event.target == modal) {
+            // 문제 해결: 모달 바깥 영역 클릭 감지를 위한 조건 수정
+            // 모달 컨텐츠가 아닌 모달 자체를 클릭했을 때만 닫히도록 수정
+            if (event.target === modal) {
                 resetAndCloseModal();
             }
         });
+        
+        // 모달 내부 클릭 시 이벤트 전파 중지 (이미 있지만 명확하게 하기 위해 주석 추가)
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.addEventListener('click', function(e) {
+                e.stopPropagation(); // 이벤트 버블링 방지
+            });
+        }
         
         // 회원가입 폼 보기
         if (showRegisterBtn) {
             showRegisterBtn.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                
+                // 모바일 화면에서 메뉴 드롭다운 닫기
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    const menuDropdown = document.getElementById('menu-dropdown');
+                    if (menuDropdown && menuDropdown.classList.contains('fullscreen-menu')) {
+                        menuDropdown.classList.remove('fullscreen-menu');
+                        menuDropdown.style.display = 'none';
+                        document.body.style.overflow = '';
+                        
+                        // 메뉴 아이콘 원래대로
+                        updateMenuIcon(false);
+                    }
+                }
+                
                 loginSection.style.display = 'none';
                 registerSection.style.display = 'block';
                 // 실시간 유효성 검사 설정
@@ -273,6 +335,22 @@ function initLoginModal() {
         if (showLoginBtn) {
             showLoginBtn.addEventListener('click', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
+                
+                // 모바일 화면에서 메뉴 드롭다운 닫기
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    const menuDropdown = document.getElementById('menu-dropdown');
+                    if (menuDropdown && menuDropdown.classList.contains('fullscreen-menu')) {
+                        menuDropdown.classList.remove('fullscreen-menu');
+                        menuDropdown.style.display = 'none';
+                        document.body.style.overflow = '';
+                        
+                        // 메뉴 아이콘 원래대로
+                        updateMenuIcon(false);
+                    }
+                }
+                
                 registerSection.style.display = 'none';
                 loginSection.style.display = 'block';
             });
@@ -280,29 +358,56 @@ function initLoginModal() {
         
         // 로그인 버튼 이벤트
         if (loginBtn) {
-            loginBtn.addEventListener('click', handleLogin);
+            loginBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                handleLogin();
+            });
         }
         
         // 회원가입 버튼 이벤트
         if (registerBtn) {
-            registerBtn.addEventListener('click', handleRegister);
+            registerBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                handleRegister();
+            });
         }
         
         // 이메일 확인 코드 전송 버튼 이벤트
         if (sendCodeBtn) {
-            sendCodeBtn.addEventListener('click', handleSendVerificationCode);
+            sendCodeBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                handleSendVerificationCode();
+            });
         }
         
         // 이메일 확인 코드 입력 이벤트
         const verificationCodeInput = document.getElementById('verification-code');
         if (verificationCodeInput) {
-            verificationCodeInput.addEventListener('input', function() {
+            verificationCodeInput.addEventListener('input', function(e) {
+                e.stopPropagation();
                 validateVerificationCode(this);
             });
         }
         
         // 실시간 유효성 검사 설정 (모달이 처음 열릴 때를 위함)
         setupRegisterValidation();
+        
+        // 창 크기 변경 이벤트 리스너 추가
+        window.addEventListener('resize', function() {
+            // 창 크기가 변경될 때 모달의 스타일만 업데이트
+            const isMobile = window.innerWidth <= 768;
+            
+            // 모달이 현재 표시되어 있을 때만 스타일 업데이트
+            if (modal.style.display === 'block' || modal.style.display === 'flex') {
+                if (isMobile) {
+                    modal.classList.add('fullscreen-menu');
+                    modal.style.display = 'flex';
+                } else {
+                    modal.classList.remove('fullscreen-menu');
+                    modal.style.display = 'block';
+                }
+            }
+        });
     }
 }
 
@@ -310,7 +415,32 @@ function initLoginModal() {
 function showLoginModal() {
     const modal = document.getElementById('login-modal');
     if (modal) {
-        modal.style.display = 'block';
+        // 현재 창 크기에 따라 다른 동작 구현
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            // 모바일 화면에서 메뉴 드롭다운 닫기
+            const menuDropdown = document.getElementById('menu-dropdown');
+            if (menuDropdown && menuDropdown.classList.contains('fullscreen-menu')) {
+                menuDropdown.classList.remove('fullscreen-menu');
+                menuDropdown.style.display = 'none';
+                document.body.style.overflow = '';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            }
+            
+            // 모바일 화면: 전체 화면 메뉴로 표시
+            modal.classList.add('fullscreen-menu');
+            modal.style.display = 'flex';
+            
+            // 스크롤 방지
+            document.body.style.overflow = 'hidden';
+        } else {
+            // 데스크톱 화면: 일반 모달로 표시
+            modal.classList.remove('fullscreen-menu');
+            modal.style.display = 'block';
+        }
         
         // 항상 로그인 폼을 기본으로 표시
         const loginSection = document.querySelector('.login-section');
@@ -504,7 +634,7 @@ function handleLogout() {
     apiService.logout();
     updateUserProfile(false);
     
-    // 로그아웃 알림 표시 (빨간색)
+    // 로그아웃 알림 표시
     showLogoutNotification('Logged Out', 'You have successfully logged out.');
     
     // 페이지 새로고침
@@ -1139,20 +1269,53 @@ async function validateVerificationCode(field) {
 
 // 로그아웃 알림 표시 함수
 function showLogoutNotification(title, message) {
+    // 기존 알림이 있으면 제거
+    const existingNotification = document.getElementById('logout-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // 새 알림 요소 생성
     const notification = document.createElement('div');
-    notification.className = 'notification logout-notification';
+    notification.id = 'logout-notification';
+    notification.className = 'success-notification logout-notification';
+    
+    // 알림 내용 구성
     notification.innerHTML = `
-        <div class="notification-content">
-            <h3>${title}</h3>
-            <p>${message}</p>
+        <i class="material-icons">logout</i>
+        <div class="success-notification-content">
+            <div class="success-notification-title">${title}</div>
+            <div class="success-notification-message">${message}</div>
         </div>
-        <button class="notification-close" onclick="this.parentElement.remove()">×</button>
     `;
     
+    // 알림을 body에 추가
     document.body.appendChild(notification);
+    
+    // 알림 표시
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
     
     // 3초 후 자동으로 사라지게 설정
     setTimeout(() => {
-        notification.remove();
+        notification.classList.remove('show');
+        // 애니메이션 완료 후 요소 제거
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
     }, 3000);
+}
+
+// 메뉴 아이콘 변경 함수
+function updateMenuIcon(isOpen) {
+    const menuButton = document.getElementById('menu-button');
+    if (menuButton) {
+        const menuIcon = menuButton.querySelector('i');
+        if (menuIcon) {
+            menuIcon.textContent = isOpen ? 'close' : 'menu';
+        }
+    }
 }
