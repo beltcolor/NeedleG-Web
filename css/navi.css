@@ -16,7 +16,7 @@
     border-right: 1px solid var(--border-color);
     justify-content: space-between;
     width: 50px;
-    transition: width 0.3s ease, background-color 0.3s, border-color 0.3s;
+    transition: width 0.3s ease, background-color 0.3s, color 0.3s, border-color 0.3s;
     overflow: hidden;
 }
 
@@ -25,10 +25,140 @@
     width: 200px; /* 확장된 너비 */
 }
 
+/* 사이드바 확장 끄기 설정 시 hover 효과 제거 */
+.sidebar-expand-disabled .sidebar:hover {
+    width: 50px;
+}
+
+/* 사이드바 메뉴 아이템 텍스트 효과 */
+.sidebar-menu-item span,
+.user-info-text,
+.sidebar-header-text {
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transition-delay: 0s;
+}
+
+.sidebar:hover .sidebar-menu-item span,
+.sidebar:hover .user-info-text,
+.sidebar:hover .sidebar-header-text {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.1s;
+}
+
+/* 사이드바 호버 시 배경 효과 */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+}
+
+.sidebar:hover ~ .sidebar-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* 사이드바 확장 끄기 설정 시 오버레이 효과 제거 */
+.sidebar-expand-disabled .sidebar:hover ~ .sidebar-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 사이드바 확장 비활성화 경고 아이콘 */
+.sidebar-expansion-notice {
+    position: relative;
+    display: inline-block;
+}
+
+.sidebar-expansion-notice .tooltip {
+    visibility: hidden;
+    width: 180px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+.sidebar-expansion-notice .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bg-tertiary) transparent transparent transparent;
+}
+
+.sidebar-expansion-notice:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 사이드바 확장 설정 관련 스타일 */
+.sidebar-expand-disabled .sidebar {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.sidebar-expand-disabled .sidebar:hover {
+    width: 50px;
+}
+
+.sidebar-expand-disabled .sidebar:hover .sidebar-menu-item span,
+.sidebar-expand-disabled .sidebar:hover .user-info-text,
+.sidebar-expand-disabled .sidebar:hover .sidebar-header-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* 경고 상태 아이콘 (사이드바 확장이 비활성화됨을 알림) */
+.sidebar-expansion-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--warning-color);
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 50%;
+    background-color: rgba(var(--warning-rgb), 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    z-index: 5;
+}
+
 /* 사이드바 최소화 상태 */
 .sidebar-collapsed {
     width: 50px !important;
-    pointer-events: none; /* 일시적으로 이벤트 비활성화 */
+    pointer-events: auto !important; /* 포인터 이벤트 활성화 */
+    transition: width 0.2s ease !important;
 }
 
 /* 상단 버튼 그룹 */
@@ -37,6 +167,8 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    position: relative;
+    z-index: 1000;
 }
 
 /* 하단 버튼 그룹 */
@@ -47,6 +179,8 @@
     margin-top: auto; /* 상단 버튼과의 간격을 최대화 */
     margin-bottom: 20px; /* 하단 여백 추가 */
     justify-content: flex-end;
+    position: relative;
+    z-index: 1000;
 }
 
 .sidebar-button {
@@ -54,7 +188,7 @@
     background-color: transparent;
     font-size: 16px;
     border: none;
-    cursor: pointer;
+    cursor: pointer !important;
     padding: 25px 10px;
     margin: 5px 0;
     text-align: left; /* 왼쪽 정렬로 변경 */
@@ -72,6 +206,9 @@
     width: 100%;
     height: 5%;
     white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 */
+    position: relative;
+    z-index: 1000;
+    pointer-events: auto !important;
 }
 
 /* 버튼 내 아이콘 설정 */
@@ -123,7 +260,7 @@
     color: #919191;
     background-color: transparent;
     border: none;
-    cursor: pointer;
+    cursor: pointer !important;
     font-size: 18px;
     padding: 10px;
     flex: 1;
@@ -139,11 +276,14 @@
     outline: none;
     /* 스케일 효과 추가 */
     transition: transform 0.2s ease;
+    position: relative;
+    z-index: 1001;
+    pointer-events: auto !important;
 }
 
 /* 클릭 시 스케일 효과 */
 .tab-button:active {
-    transform: scale(0.8);
+    transform: scale(0.9);
 }
 
 /* 활성화된 탭 스타일 */
@@ -161,28 +301,6 @@
     .tab-container {
         display: flex; /* 모바일에서 표시 */
     }
-}
-
-/* 사이드바 오버레이 */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 998; /* 사이드바보다 낮고 다른 콘텐츠보다 높은 z-index */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s;
-    pointer-events: none;
-}
-
-/* 사이드바 호버 시 오버레이 표시 */
-.sidebar:hover ~ .sidebar-overlay {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
 }
 
 .language-section h3 {

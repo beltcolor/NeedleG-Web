@@ -1,0 +1,70 @@
+<div class="createNFT-container">
+    <div class="page-header">
+        <h1 class="page-title">Create NFT</h1>
+        <p class="page-description">Create and mint your own unique NFT artwork</p>
+    </div>
+
+    <div class="createNFT-content">
+        <div class="nft-upload-section">
+            <div class="nft-upload-box">
+                <div class="upload-placeholder">
+                    <span class="material-icons">cloud_upload</span>
+                    <p>Drag & drop your artwork here or click to browse</p>
+                </div>
+                <input type="file" id="nft-artwork-upload" accept="image/*" hidden>
+            </div>
+            <button class="upload-btn" id="upload-artwork-btn">Upload Artwork</button>
+        </div>
+
+        <div class="nft-details-section">
+            <h2>NFT Details</h2>
+            <div class="nft-form">
+                <div class="form-group">
+                    <label for="nft-name">NFT Name</label>
+                    <input type="text" id="nft-name" placeholder="Enter a name for your NFT">
+                </div>
+                <div class="form-group">
+                    <label for="nft-description">Description</label>
+                    <textarea id="nft-description" placeholder="Describe your NFT artwork"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="nft-price">Price (ETH)</label>
+                    <input type="number" id="nft-price" placeholder="0.01" step="0.001" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="nft-collection">Collection</label>
+                    <select id="nft-collection">
+                        <option value="none">None</option>
+                        <option value="new">Create New Collection</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nft-royalty">Royalty (%)</label>
+                    <input type="number" id="nft-royalty" placeholder="10" min="0" max="50">
+                </div>
+            </div>
+        </div>
+
+        <div class="nft-preview-section">
+            <h2>Preview</h2>
+            <div class="nft-preview-card">
+                <div class="nft-preview-image">
+                    <span class="material-icons">image</span>
+                </div>
+                <div class="nft-preview-details">
+                    <h3 class="nft-preview-name">NFT Name</h3>
+                    <p class="nft-preview-creator">Created by You</p>
+                    <div class="nft-preview-price">
+                        <span class="material-icons eth-icon">currency_bitcoin</span>
+                        <span class="price-value">0.01</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nft-actions">
+            <button class="btn-secondary" id="save-draft-btn">Save Draft</button>
+            <button class="btn-primary" id="create-nft-btn">Create NFT</button>
+        </div>
+    </div>
+</div>

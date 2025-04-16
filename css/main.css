@@ -17,6 +17,7 @@
     --content-width: 100%;
     --sidebar-context: #919191;
     --red-color: #d32f2f;
+    --transition: background-color 0.3s, color 0.3s;
 }
 
 /* 라이트 모드 변수 */
@@ -35,6 +36,7 @@
     --border-color: #31313128;
     --sidebar-context: #505050;
     --red-color: #d32f2f;
+    --transition: background-color 0.3s, color 0.3s;
 
 }
 
@@ -43,6 +45,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    transition: var(--transition);
 }
 
 /* 모바일 터치 효과 제거 */

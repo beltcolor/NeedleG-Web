@@ -92,11 +92,28 @@
                 <div class="settings-option-info">
                     <span class="material-icons">brightness_4</span>
                     <div class="settings-option-text">
-                        <h4>Theme</h4>
+                        <h4>Dark Mode</h4>
                         <p>Switch between light and dark mode</p>
                     </div>
                 </div>
-                <button class="settings-btn" onclick="toggleTheme()">Toggle</button>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="dark-mode-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">menu</span>
+                    <div class="settings-option-text">
+                        <h4>Sidebar Expansion</h4>
+                        <p>Allow sidebar to expand on hover</p>
+                    </div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked id="sidebar-expand-toggle">
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
         </div>
         

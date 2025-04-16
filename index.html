@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/account.css">
     <link rel="stylesheet" href="css/setting.css">
+    <link rel="stylesheet" href="css/createNFT.css">
+    <link rel="stylesheet" href="css/browse.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
@@ -51,8 +53,8 @@
         <button class="tab-button" data-page="home">
             <span class="material-icons">home</span>
         </button>
-        <button class="tab-button" data-page="search">
-            <span class="material-icons">search</span>
+        <button class="tab-button" data-page="browse">
+            <span class="material-icons">grid_view</span>
         </button>
         <button class="tab-button" data-page="tattoo">
             <span class="material-icons">brush</span>
@@ -65,23 +67,27 @@
     <!-- 사이드바 -->
     <div class="sidebar">
         <div class="sidebar-top-buttons">
-            <button class="sidebar-button" data-page="home">
+            <button class="sidebar-button" data-page="home" onclick="handleSidebarButtonClick('home'); window.location.hash='home'">
                 <span class="material-icons">home</span>
                 <span class="button-text">Home</span>
             </button>
-            <button class="sidebar-button" data-page="search">
-                <span class="material-icons">search</span>
-                <span class="button-text">Search</span>
+            <button class="sidebar-button" data-page="browse" onclick="handleSidebarButtonClick('browse'); window.location.hash='browse'">
+                <span class="material-icons">grid_view</span>
+                <span class="button-text">Browse</span>
             </button>
-            <button class="sidebar-button" data-page="account">
+            <button class="sidebar-button" data-page="account" onclick="handleSidebarButtonClick('account'); window.location.hash='account'">
                 <span class="material-icons">person</span>
-                <span class="button-text">Profile</span>
+                <span class="button-text">Account</span>
             </button>
-            <button class="sidebar-button" data-page="tattoo">
+            <button class="sidebar-button" data-page="tattoo" onclick="handleSidebarButtonClick('tattoo'); window.location.hash='tattoo'">
                 <span class="material-icons">brush</span>
                 <span class="button-text">Get Tattoo</span>
             </button>
-            <button class="sidebar-button" data-page="help">
+            <button class="sidebar-button" data-page="createNFT" onclick="handleSidebarButtonClick('createNFT'); window.location.hash='createNFT'">
+                <span class="material-icons">toll</span>
+                <span class="button-text">Create NFT</span>
+            </button>
+            <button class="sidebar-button" data-page="help" onclick="handleSidebarButtonClick('help'); window.location.hash='help'">
                 <span class="material-icons">help_outline</span>
                 <span class="button-text">Help</span>
             </button>
@@ -92,11 +98,11 @@
                 <span class="material-icons">brightness_4</span>
                 <span class="button-text">Theme</span>
             </button>
-            <button class="sidebar-button language-toggle" onclick="toggleLanguage()">
+            <button class="sidebar-button language-toggle">
                 <img src="assets/flags/en.png" alt="Language" class="language-icon" id="current-language-icon">
                 <span class="button-text">Language</span>
             </button>
-            <button class="sidebar-button" data-page="settings">
+            <button class="sidebar-button" data-page="settings" onclick="handleSidebarButtonClick('settings'); window.location.hash='settings'">
                 <span class="material-icons">settings</span>
                 <span class="button-text">Settings</span>
             </button>
@@ -108,7 +114,7 @@
         <div class="modal-content">
             <span class="close-modal" id="close-language-popup">&times;</span>
             <div class="language-section">
-                <h3>Language</h3>
+                <h3 class="language-popup-title">Language</h3>
                 <div class="language-options">
                     <div class="language-option" data-lang="en">
                         <img src="assets/flags/en.png" alt="English" class="language-option-flag">
@@ -123,16 +129,19 @@
                         <span>Polski</span>
                     </div>
                 </div>
-            </h3>
+            </div>
         </div>
     </div>
     </div>
     <script src="js/api.js" defer></script>
+    <script src="js/translations.js" defer></script>
+    <script src="js/sidebar.js" defer></script>
     <script src="js/main.js" defer></script>
     <script src="js/home.js" defer></script>
     <script src="js/tattoo.js" defer></script>
-    <script src="js/search.js" defer></script>
+    <script src="js/browse.js" defer></script>
     <script src="js/account.js" defer></script>
     <script src="js/settings.js" defer></script>
+    <script src="js/createNFT.js" defer></script>
 </body>
 </html>
