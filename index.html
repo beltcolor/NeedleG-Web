@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="css/tattoo.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/account.css">
+    <link rel="stylesheet" href="css/setting.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
@@ -38,6 +39,8 @@
         <span class="icon material-icons">light_mode</span>
     </button>
 
+    <!-- 사이드바 오버레이 -->
+    <div class="sidebar-overlay"></div>
     
     <div class="container">
         <div id="main-content"> <!-- tattooContent.html의 내용을 여기에 불러옵니다. -->
@@ -64,33 +67,65 @@
         <div class="sidebar-top-buttons">
             <button class="sidebar-button" data-page="home">
                 <span class="material-icons">home</span>
+                <span class="button-text">Home</span>
             </button>
             <button class="sidebar-button" data-page="search">
                 <span class="material-icons">search</span>
+                <span class="button-text">Search</span>
             </button>
             <button class="sidebar-button" data-page="account">
                 <span class="material-icons">person</span>
+                <span class="button-text">Profile</span>
             </button>
             <button class="sidebar-button" data-page="tattoo">
                 <span class="material-icons">brush</span>
+                <span class="button-text">Get Tattoo</span>
             </button>
             <button class="sidebar-button" data-page="help">
                 <span class="material-icons">help_outline</span>
+                <span class="button-text">Help</span>
             </button>
         </div>
         
         <div class="sidebar-bottom-buttons">
             <button class="sidebar-button theme-toggle-sidebar" onclick="toggleTheme()">
                 <span class="material-icons">brightness_4</span>
+                <span class="button-text">Theme</span>
+            </button>
+            <button class="sidebar-button language-toggle" onclick="toggleLanguage()">
+                <img src="assets/flags/en.png" alt="Language" class="language-icon" id="current-language-icon">
+                <span class="button-text">Language</span>
             </button>
             <button class="sidebar-button" data-page="settings">
                 <span class="material-icons">settings</span>
+                <span class="button-text">Settings</span>
             </button>
         </div>
     </div>
 
-
-
+    <!-- 언어 선택 팝업 -->
+    <div class="modal" id="language-popup">
+        <div class="modal-content">
+            <span class="close-modal" id="close-language-popup">&times;</span>
+            <div class="language-section">
+                <h3>Language</h3>
+                <div class="language-options">
+                    <div class="language-option" data-lang="en">
+                        <img src="assets/flags/en.png" alt="English" class="language-option-flag">
+                        <span>English</span>
+                    </div>
+                    <div class="language-option" data-lang="ko">
+                        <img src="assets/flags/ko.png" alt="Korean" class="language-option-flag">
+                        <span>한국어</span>
+                    </div>
+                    <div class="language-option" data-lang="pl">
+                        <img src="assets/flags/pl.png" alt="Polish" class="language-option-flag">
+                        <span>Polski</span>
+                    </div>
+                </div>
+            </h3>
+        </div>
+    </div>
     </div>
     <script src="js/api.js" defer></script>
     <script src="js/main.js" defer></script>
@@ -98,5 +133,6 @@
     <script src="js/tattoo.js" defer></script>
     <script src="js/search.js" defer></script>
     <script src="js/account.js" defer></script>
+    <script src="js/settings.js" defer></script>
 </body>
 </html>

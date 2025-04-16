@@ -194,7 +194,7 @@ body.dark-theme .dot-indicator.active {
     padding: 12px 15px;
     border-radius: var(--border-radius);
     border: none;
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-secondary);
     color: var(--text-primary);
     font-size: 14px;
 }
@@ -217,7 +217,7 @@ body.dark-theme .dot-indicator.active {
     align-items: center;
     gap: 8px;
     padding: 10px 15px;
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-secondary);
     border: none;
     border-radius: var(--border-radius);
     color: var(--text-primary);
@@ -270,7 +270,7 @@ body.dark-theme .dot-indicator.active {
 .slider {
     flex: 1;
     height: 6px;
-    background: var(--bg-tertiary);
+    background: var(--bg-secondary);
     border-radius: 10px;
     appearance: none;
     -webkit-appearance: none;
@@ -1193,8 +1193,7 @@ input[type="checkbox"]:checked::after {
 .notes-textarea {
     width: 100%;
     min-height: 120px;
-    background-color: var(--bg-tertiary);
-    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
     border: none;
     border-radius: var(--border-radius);
     padding: 15px;

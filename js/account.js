@@ -285,7 +285,18 @@ function initLoginModal() {
         }
         
         // X 버튼 클릭 시 초기화 및 닫기
-        closeBtn.addEventListener('click', resetAndCloseModal);
+        closeBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // 이벤트 버블링 방지
+            resetAndCloseModal();
+        });
+        
+        // ESC 키 눌렀을 때 모달 닫기 추가
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                resetAndCloseModal();
+            }
+        });
         
         // 모달 바깥 클릭 시 초기화 및 닫기
         window.addEventListener('click', function(event) {

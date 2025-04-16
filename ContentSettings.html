@@ -1,0 +1,140 @@
+<!-- ContentSettings.html -->
+<div class="settings-container">
+    <div class="settings-header">
+        <h2>Settings</h2>
+    </div>
+
+    <div class="settings-sections">
+        <!-- 계정 설정 섹션 -->
+        <div class="settings-section">
+            <h3>Account Settings</h3>
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">person</span>
+                    <div class="settings-option-text">
+                        <h4>Profile Information</h4>
+                        <p>Update your profile details and biography</p>
+                    </div>
+                </div>
+                <button class="settings-btn">Edit</button>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">lock</span>
+                    <div class="settings-option-text">
+                        <h4>Password</h4>
+                        <p>Change your password</p>
+                    </div>
+                </div>
+                <button class="settings-btn">Change</button>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">email</span>
+                    <div class="settings-option-text">
+                        <h4>Email</h4>
+                        <p>Update your email address</p>
+                    </div>
+                </div>
+                <button class="settings-btn">Update</button>
+            </div>
+        </div>
+        
+        <!-- 알림 설정 섹션 -->
+        <div class="settings-section">
+            <h3>Notification Settings</h3>
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">notifications</span>
+                    <div class="settings-option-text">
+                        <h4>Push Notifications</h4>
+                        <p>Push Notifications is enabled</p>
+                    </div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">mail</span>
+                    <div class="settings-option-text">
+                        <h4>Email Notifications</h4>
+                        <p>Email Notifications is disabled</p>
+                    </div>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- 앱 설정 섹션 -->
+        <div class="settings-section">
+            <h3>App Settings</h3>
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">language</span>
+                    <div class="settings-option-text">
+                        <h4>Language</h4>
+                        <p>Choose your preferred language</p>
+                    </div>
+                </div>
+                <button class="settings-btn" onclick="toggleLanguage()">Change</button>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">brightness_4</span>
+                    <div class="settings-option-text">
+                        <h4>Theme</h4>
+                        <p>Switch between light and dark mode</p>
+                    </div>
+                </div>
+                <button class="settings-btn" onclick="toggleTheme()">Toggle</button>
+            </div>
+        </div>
+        
+        <!-- 기타 섹션 -->
+        <div class="settings-section">
+            <h3>Other</h3>
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">help_outline</span>
+                    <div class="settings-option-text">
+                        <h4>Help Center</h4>
+                        <p>Get help with using the app</p>
+                    </div>
+                </div>
+                <button class="settings-btn">Visit</button>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">privacy_tip</span>
+                    <div class="settings-option-text">
+                        <h4>Privacy Policy</h4>
+                        <p>Read about how we handle your data</p>
+                    </div>
+                </div>
+                <button class="settings-btn">View</button>
+            </div>
+            
+            <div class="settings-option">
+                <div class="settings-option-info">
+                    <span class="material-icons">logout</span>
+                    <div class="settings-option-text">
+                        <h4>Sign Out</h4>
+                        <p>Log out of your account</p>
+                    </div>
+                </div>
+                <button class="settings-btn signout-btn" onclick="handleLogout()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+</div> 
