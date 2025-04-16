@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 네비게이션 탭 버튼 초기화 함수
 function initNavTabs() {
-    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabButtons = document.querySelectorAll('.tab-button, .sidebar-button');
     
     // 초기 활성 탭 설정
     const initialActivePage = 'home';
@@ -30,7 +30,7 @@ function initNavTabs() {
 
 // 활성 탭 업데이트 함수
 function updateActiveTab(activePage) {
-    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabButtons = document.querySelectorAll('.tab-button, .sidebar-button');
     
     // 모든 탭에서 활성 클래스 제거
     tabButtons.forEach(button => {
@@ -38,9 +38,15 @@ function updateActiveTab(activePage) {
     });
     
     // 현재 페이지에 해당하는 탭에 활성 클래스 추가
-    const activeButton = document.querySelector(`.tab-button[data-page="${activePage}"]`);
-    if (activeButton) {
-        activeButton.classList.add('active');
+    const activeTabButton = document.querySelector(`.tab-button[data-page="${activePage}"]`);
+    if (activeTabButton) {
+        activeTabButton.classList.add('active');
+    }
+    
+    // 사이드바의 버튼에도 활성 클래스 추가
+    const activeSidebarButton = document.querySelector(`.sidebar-button[data-page="${activePage}"]`);
+    if (activeSidebarButton) {
+        activeSidebarButton.classList.add('active');
     }
 }
 
@@ -73,28 +79,49 @@ async function navigateTo(page) {
 // 테마 초기화 함수
 function initTheme() {
     const currentTheme = localStorage.getItem('theme');
-    console.log('저장된 테마:', currentTheme); // 디버깅용 로그
     
     if (currentTheme === 'light') {
         document.documentElement.classList.add('light-mode');
         document.querySelector('.theme-toggle .icon').textContent = 'dark_mode';
+        
+        // 사이드바 토글 버튼 아이콘 설정
+        const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+        if (sidebarToggle) {
+            sidebarToggle.textContent = 'dark_mode';
+        }
     } else if (currentTheme === 'dark') {
         document.documentElement.classList.remove('light-mode');
         document.querySelector('.theme-toggle .icon').textContent = 'light_mode';
+        
+        // 사이드바 토글 버튼 아이콘 설정
+        const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+        if (sidebarToggle) {
+            sidebarToggle.textContent = 'light_mode';
+        }
     } else {
-        // 저장된 테마가 없으면 브라우저의 기본 테마 설정을 확인
+        // 기본 설정 (시스템 설정 따르기)
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            // 브라우저가 다크 모드를 선호하는 경우
+            // 시스템이 다크 모드인 경우
             document.documentElement.classList.remove('light-mode');
             localStorage.setItem('theme', 'dark');
             document.querySelector('.theme-toggle .icon').textContent = 'light_mode';
-            console.log('브라우저 기본 테마(다크)로 설정됨');
+            
+            // 사이드바 토글 버튼 아이콘 설정
+            const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+            if (sidebarToggle) {
+                sidebarToggle.textContent = 'light_mode';
+            }
         } else {
-            // 브라우저가 라이트 모드를 선호하는 경우
+            // 시스템이 라이트 모드인 경우
             document.documentElement.classList.add('light-mode');
             localStorage.setItem('theme', 'light');
             document.querySelector('.theme-toggle .icon').textContent = 'dark_mode';
-            console.log('브라우저 기본 테마(라이트)로 설정됨');
+            
+            // 사이드바 토글 버튼 아이콘 설정
+            const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+            if (sidebarToggle) {
+                sidebarToggle.textContent = 'dark_mode';
+            }
         }
     }
 }
@@ -102,16 +129,26 @@ function initTheme() {
 // 테마 전환 함수
 function toggleTheme() {
     if (document.documentElement.classList.contains('light-mode')) {
-        // 라이트 모드 -> 다크 모드
+        // 다크 모드로 전환
         document.documentElement.classList.remove('light-mode');
         localStorage.setItem('theme', 'dark');
         document.querySelector('.theme-toggle .icon').textContent = 'light_mode';
-        console.log('다크 모드로 변경됨'); // 디버깅용 로그
+        
+        // 사이드바 토글 버튼 아이콘 변경
+        const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+        if (sidebarToggle) {
+            sidebarToggle.textContent = 'light_mode';
+        }
     } else {
-        // 다크 모드 -> 라이트 모드
+        // 라이트 모드로 전환
         document.documentElement.classList.add('light-mode');
         localStorage.setItem('theme', 'light');
         document.querySelector('.theme-toggle .icon').textContent = 'dark_mode';
-        console.log('라이트 모드로 변경됨'); // 디버깅용 로그
+        
+        // 사이드바 토글 버튼 아이콘 변경
+        const sidebarToggle = document.querySelector('.theme-toggle-sidebar .material-icons');
+        if (sidebarToggle) {
+            sidebarToggle.textContent = 'dark_mode';
+        }
     }
 }

@@ -5,6 +5,10 @@
         width: 0;
         display: none;
     }
+
+    .sidebar-button {
+        display: none;
+    }
     
     /* Firefox */
     html {
@@ -14,12 +18,23 @@
     /* IE and Edge */
     body {
         -ms-overflow-style: none;
+        padding-bottom: 60px; /* 탭 네비게이션 높이만큼 여백 추가 */
     }
     
     body { padding: 0px; }
     h1 { font-size: 2rem; }
-    .tab-container { padding: 0px 0px; }
-    .container, .tattoo-container, .account-container { padding-bottom: 60px; }
+    .tab-container { 
+        padding: 0px 0px;
+        display: flex; /* 모바일에서 탭 네비게이션 표시 */
+    }
+
+    .container {
+        width: 100%;
+        max-width: var(--content-width);
+        margin: 0 auto;
+        padding: 20px;
+        padding-bottom: 60px;
+    }
     .area-container { padding-bottom: 80px; }
     .font-category-container { min-width: 100%; }
     .social-buttons { flex-direction: column; }
@@ -99,6 +114,10 @@
 @media (max-width: 480px) {
     .gallery-tab {
         font-size: 12px;
+    }
+
+    .sidebar-button {
+        display: none;
     }
 
     h1 { 

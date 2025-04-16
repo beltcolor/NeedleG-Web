@@ -3,7 +3,6 @@
     width: 100%;
     max-width: var(--content-width);
     margin: 0 auto;
-    padding-top: 3rem;
     padding-left: 0rem;
     padding-right: 0rem;
 }
@@ -156,10 +155,6 @@
     display: flex;
     align-items: center;
     gap: 30px;
-}
-
-.profile-details {
-    flex: 1;
 }
 
 .profile-name-section {
@@ -425,25 +420,10 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-    .profile-header {
-        justify-content: center;
-        flex-wrap: wrap;
-        text-align: center;
-    }
-    
-    .profile-info-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        width: 100%;
-        margin-left: 16px;
-        margin-right: 16px;
-    }
+@media (max-width: 768px) {    
     
     .profile-details {
         text-align: left;
-        width: 100%;
     }
     
     .profile-name-section {
@@ -745,10 +725,6 @@
 }
 
 @media (max-width: 480px) {
-    .profile-header {
-        flex-direction: column;
-        align-items: center;
-    }
     
     .tab-btn {
         padding: 12px 16px;
@@ -760,12 +736,6 @@
         right: 15px;
         background-color: transparent;
     }
-}
-
-/* 인증 탭 스타일 */
-.tab-container {
-    display: flex;
-    margin-bottom: 20px;
 }
 
 .auth-tab {

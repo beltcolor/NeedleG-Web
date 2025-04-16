@@ -10,11 +10,12 @@
     --text-tertiary: #ccb5de;
     --accent-color: #8DA593;
     --accent-secondary: #B8AB7F;
-    --border-color: none;
     --input-height: 42px;
     --border-radius: 20px;
+    --border-color: #313131;
     --button-color: #1a1a1a;
     --content-width: 100%;
+
 }
 
 /* 라이트 모드 변수 */
@@ -30,7 +31,7 @@
     --border-color: #999;
     --accent-secondary: #a16ae0;
     --button-color: #f5f5f5;
-    --border-color: none;
+    --border-color: #c4c4c4;
 }
 
 /* 기본 리셋 및 공통 스타일 --------------------------------------------------------------------------------------*/
@@ -58,12 +59,14 @@ html {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    padding-top: 0px;
+    transition: background-color 0.3s, color 0.3s;
+    padding-left: 40px; /* 사이드바 너비만큼 패딩 추가 */
     padding-bottom: 1rem;
-    padding-left: 1rem;
     padding-right: 1rem;
     display: flex;
     flex-direction: column;
@@ -74,6 +77,13 @@ body {
     margin-top: 0px;
 }
 
+@media (max-width: 768px) {
+    body {
+        padding-left: 0; /* 모바일에서는 좌측 패딩 제거 */
+        padding-bottom: 60px; /* 하단 탭 네비게이션 높이만큼 패딩 추가 */
+        padding-top: 10px; /* 모바일에서는 상단 여백 축소 */
+    }
+}
 
 /* 유틸리티 클래스 */
 .text-center {
@@ -85,17 +95,7 @@ body {
     width: 100%;
     max-width: var(--content-width);
     margin: 0 auto;
-    padding: 0rem;
-    padding-bottom: 60px;
-}
-
-.tattoo-container, .account-container {
-    width: 100%;
-    max-width: var(--content-width);
-    margin: 0 auto;
-    padding-top: 3rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 30px;
     padding-bottom: 60px;
 }
 
@@ -162,6 +162,10 @@ input, select {
 
 input:focus {
     border-color: var(--accent-color);
+}
+
+.material-icons {
+    font-size: 20px !important;
 }
 
 
