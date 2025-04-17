@@ -9,13 +9,13 @@
     flex-direction: column;
     background-color: var(--bg-secondary);
     z-index: 999;
-    padding: 0px 5px;
+    padding: 0px 2px;
     height: 100vh;
     padding-top: 0px;
     border: none;
     border-right: 1px solid var(--border-color);
     justify-content: space-between;
-    width: 50px;
+    width: 43px;
     transition: width 0.3s ease, background-color 0.3s, color 0.3s, border-color 0.3s;
     overflow: hidden;
 }
@@ -27,7 +27,7 @@
 
 /* 사이드바 확장 끄기 설정 시 hover 효과 제거 */
 .sidebar-expand-disabled .sidebar:hover {
-    width: 50px;
+    width: 43px !important;
 }
 
 /* 사이드바 메뉴 아이템 텍스트 효과 */
@@ -99,7 +99,7 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    font-size: 12px;
+    font-size: 10px;
     pointer-events: none;
 }
 
@@ -166,7 +166,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 5px;
     position: relative;
     z-index: 1000;
 }
@@ -177,7 +177,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: auto; /* 상단 버튼과의 간격을 최대화 */
-    margin-bottom: 20px; /* 하단 여백 추가 */
+    margin-bottom: 5px; /* 하단 여백 추가 */
     justify-content: flex-end;
     position: relative;
     z-index: 1000;
@@ -189,16 +189,10 @@
     font-size: 16px;
     border: none;
     cursor: pointer !important;
-    padding: 25px 10px;
+    padding: 20px 10px;
     margin: 5px 0;
     text-align: left; /* 왼쪽 정렬로 변경 */
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    -webkit-appearance: none;
-    appearance: none;
-    outline: none;
     transition: transform 0.2s ease;
     display: flex;
     justify-content: flex-start; /* 왼쪽부터 시작 */
@@ -211,6 +205,13 @@
     pointer-events: auto !important;
 }
 
+.sidebar-button:hover {
+    background-color: var(--bg-tertiary);
+    border-radius: 5px;
+
+}
+
+
 /* 버튼 내 아이콘 설정 */
 .sidebar-button .material-icons,
 .sidebar-button .language-icon {
@@ -221,6 +222,7 @@
 .sidebar-button .button-text {
     opacity: 0; /* 기본 상태에서는 투명 */
     transition: opacity 0.3s ease; /* 부드러운 등장 */
+    font-size: 14px;
 }
 
 /* 사이드바 호버 시 텍스트 표시 */

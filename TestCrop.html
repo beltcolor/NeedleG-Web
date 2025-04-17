@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이미지 크롭 테스트</title>
+    <style>
+        :root {
+            --accent-color: #8a6bff;
+            --accent-secondary: #6f5acf;
+            --border-radius: 12px;
+            --bg-color: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-color: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #3a3a3a;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .test-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .upload-section, .preview-section {
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .upload-box {
+            height: 300px;
+            border: 2px dashed var(--border-color);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .preview-box {
+            height: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-crop-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .original-image {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .crop-box {
+            position: absolute;
+            border: 3px dashed var(--accent-color);
+            background-color: rgba(255, 255, 255, 0.15);
+            pointer-events: all;
+            z-index: 10;
+            border-radius: var(--border-radius);
+            cursor: move;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: var(--accent-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            z-index: 20;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .handle-nw {
+            top: -9px;
+            left: -9px;
+            cursor: nw-resize;
+        }
+        .handle-ne {
+            top: -9px;
+            right: -9px;
+            cursor: ne-resize;
+        }
+        .handle-sw {
+            bottom: -9px;
+            left: -9px;
+            cursor: sw-resize;
+        }
+        .handle-se {
+            bottom: -9px;
+            right: -9px;
+            cursor: se-resize;
+        }
+
+        .handle-n {
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: n-resize;
+        }
+        .handle-e {
+            top: 50%;
+            right: -9px;
+            transform: translateY(-50%);
+            cursor: e-resize;
+        }
+        .handle-s {
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: s-resize;
+        }
+        .handle-w {
+            top: 50%;
+            left: -9px;
+            transform: translateY(-50%);
+            cursor: w-resize;
+        }
+
+        .apply-crop-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            z-index: 20;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .apply-crop-btn:hover {
+            background-color: var(--accent-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: var(--accent-secondary);
+        }
+
+        .console-log {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>이미지 크롭 테스트</h1>
+        
+        <div class="test-area">
+            <div class="upload-section">
+                <h2>이미지 업로드 & 크롭</h2>
+                <div class="upload-box" id="upload-box">
+                    <div class="upload-placeholder" id="upload-placeholder">
+                        <div class="upload-icon">📷</div>
+                        <p>이미지를 여기에 끌어다 놓거나 클릭하여 업로드</p>
+                    </div>
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
+                <button id="upload-btn">이미지 선택</button>
+            </div>
+            
+            <div class="preview-section">
+                <h2>크롭 결과 미리보기</h2>
+                <div class="preview-box" id="preview-box"></div>
+            </div>
+        </div>
+        
+        <div class="console-log" id="console-log">로그 메시지가 여기에 표시됩니다...</div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let originalImage = null;
+        let cropperActive = false;
+        let cropStartX = 0;
+        let cropStartY = 0;
+        let cropBox = null;
+        let imageContainer = null;
+
+        // 로그 출력 함수
+        function log(message) {
+            const consoleLog = document.getElementById('console-log');
+            const timestamp = new Date().toLocaleTimeString();
+            consoleLog.innerHTML += `[${timestamp}] ${message}\n`;
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+            console.log(message);
+        }
+
+        // 이벤트 리스너 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadBox = document.getElementById('upload-box');
+            const fileInput = document.getElementById('file-input');
+            const uploadBtn = document.getElementById('upload-btn');
+            
+            // 업로드 박스 클릭 핸들러 함수 정의
+            const uploadBoxClickHandler = function() {
+                fileInput.click();
+            };
+            
+            // 업로드 박스에 클릭 이벤트 추가
+            uploadBox.addEventListener('click', uploadBoxClickHandler);
+            
+            uploadBtn.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function(event) {
+                handleFileSelect(event);
+                
+                // 이미지가 업로드되면 업로드 박스의 클릭 이벤트 제거
+                uploadBox.removeEventListener('click', uploadBoxClickHandler);
+            });
+            
+            // 드래그 앤 드롭 설정
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadBox.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadBox.addEventListener(eventName, function() {
+                    uploadBox.style.borderColor = 'var(--accent-color)';
+                    uploadBox.style.backgroundColor = 'var(--bg-tertiary)';
+                }, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadBox.addEventListener(eventName, function() {
+                    uploadBox.style.borderColor = 'var(--border-color)';
+                    uploadBox.style.backgroundColor = 'var(--bg-secondary)';
+                }, false);
+            });
+            
+            uploadBox.addEventListener('drop', function(e) {
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleFile(file);
+                    
+                    // 이미지가 업로드되면 업로드 박스의 클릭 이벤트 제거
+                    uploadBox.removeEventListener('click', uploadBoxClickHandler);
+                }
+            }, false);
+        });
+
+        // 파일 선택 핸들러
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleFile(file);
+            }
+        }
+
+        // 파일 처리
+        function handleFile(file) {
+            log(`이미지 파일 선택됨: ${file.name}`);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalImage = e.target.result;
+                log('이미지 로드 완료, 크롭퍼 설정 시작');
+                setupImageCropper(originalImage);
+                
+                // 이미지 업로드 완료 메시지 표시
+                log('이미지 업로드 완료! 이제 크롭 영역을 조절하거나 새로 그릴 수 있습니다.');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 이미지 크롭퍼 설정
+        function setupImageCropper(imageURL) {
+            log('setupImageCropper 호출됨');
+            
+            const uploadBox = document.getElementById('upload-box');
+            const placeholder = document.getElementById('upload-placeholder');
+            
+            log(`업로드 박스: ${uploadBox ? '찾음' : '못찾음'}`);
+            log(`플레이스홀더: ${placeholder ? '찾음' : '못찾음'}`);
+            
+            if (uploadBox && placeholder) {
+                // 플레이스홀더 숨기기
+                placeholder.style.display = 'none';
+                
+                // 업로드 버튼 숨기기
+                const uploadBtn = document.getElementById('upload-btn');
+                if (uploadBtn) {
+                    uploadBtn.style.display = 'none';
+                }
+                
+                // 이미지 컨테이너 생성
+                if (!imageContainer) {
+                    log('새 이미지 컨테이너 생성');
+                    imageContainer = document.createElement('div');
+                    imageContainer.className = 'image-crop-container';
+                    imageContainer.style.position = 'relative';
+                    imageContainer.style.width = '100%';
+                    imageContainer.style.height = '100%';
+                    imageContainer.style.overflow = 'hidden';
+                    uploadBox.appendChild(imageContainer);
+                } else {
+                    log('기존 이미지 컨테이너 재사용');
+                    imageContainer.innerHTML = '';
+                }
+                
+                // 이미지 요소 생성
+                const img = document.createElement('img');
+                img.src = imageURL;
+                img.className = 'original-image';
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '100%';
+                img.style.display = 'block';
+                img.style.margin = '0 auto';
+                
+                // 이미지 로드 완료 후 크롭 기능 설정
+                img.onload = function() {
+                    log('이미지 로드 완료, DOM에 추가');
+                    imageContainer.appendChild(img);
+                    
+                    // 이미지 위치 정보 가져오기
+                    setTimeout(() => {
+                        const imgRect = img.getBoundingClientRect();
+                        const containerRect = imageContainer.getBoundingClientRect();
+                        
+                        // 이미지 위치 상대 계산
+                        const imgLeft = imgRect.left - containerRect.left;
+                        const imgTop = imgRect.top - containerRect.top;
+                        const imgWidth = imgRect.width;
+                        const imgHeight = imgRect.height;
+                        
+                        log(`이미지 정보: left=${imgLeft}, top=${imgTop}, width=${imgWidth}, height=${imgHeight}`);
+                        
+                        // 전체 이미지를 포함하는 초기 크롭 영역 생성
+                        createInitialCropBox(imgLeft, imgTop, imgWidth, imgHeight);
+                        
+                        // 이미지 컨테이너에 새로운 크롭 영역 선택을 위한 이벤트 리스너 추가
+                        setupCropEvents();
+                        
+                        // 초기 프리뷰 업데이트 (전체 이미지)
+                        updatePreview(imageURL);
+                    }, 100);
+                };
+            } else {
+                log('오류: 업로드 박스 또는 플레이스홀더를 찾을 수 없습니다');
+            }
+        }
+
+        // 초기 크롭 박스 생성 (전체 이미지 크기)
+        function createInitialCropBox(left, top, width, height) {
+            log('초기 크롭 박스 생성');
+            
+            // 기존 크롭 박스가 있다면 제거
+            if (cropBox) {
+                cropBox.remove();
+                cropBox = null;
+            }
+            
+            // 크롭 박스 생성
+            cropBox = document.createElement('div');
+            cropBox.className = 'crop-box';
+            cropBox.style.position = 'absolute';
+            cropBox.style.border = '3px dashed var(--accent-color)';
+            cropBox.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            cropBox.style.left = left + 'px';
+            cropBox.style.top = top + 'px';
+            cropBox.style.width = width + 'px';
+            cropBox.style.height = height + 'px';
+            cropBox.style.borderRadius = 'var(--border-radius)';
+            cropBox.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.3)';
+            
+            imageContainer.appendChild(cropBox);
+            
+            // 크롭 핸들 추가
+            addCropHandles(cropBox);
+            
+            // 크롭 박스에 이동 이벤트 리스너 추가
+            cropBox.addEventListener('mousedown', startMove);
+            
+            // 실시간 미리보기 업데이트
+            setTimeout(() => {
+                updateCropPreview();
+            }, 100);
+            
+            // 적용 버튼 표시
+            showApplyButton();
+        }
+
+        // 크롭 핸들 추가
+        function addCropHandles(cropBox) {
+            log('크롭 핸들 추가');
+            
+            // 8개의 핸들 생성 (4 모서리 + 4 변)
+            const handlePositions = ['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'];
+            
+            handlePositions.forEach(pos => {
+                const handle = document.createElement('div');
+                handle.className = `crop-handle handle-${pos}`;
+                handle.setAttribute('data-position', pos);
+                cropBox.appendChild(handle);
+                
+                // 핸들에 이벤트 리스너 추가
+                handle.addEventListener('mousedown', startResize);
+            });
+            
+            // 크롭 박스에 이동 이벤트 리스너 추가
+            cropBox.addEventListener('mousedown', startMove);
+        }
+
+        // 크롭 이벤트 리스너 설정
+        function setupCropEvents() {
+            log('setupCropEvents 호출됨');
+            
+            if (!imageContainer) {
+                log('오류: 이미지 컨테이너가 없습니다');
+                return;
+            }
+            
+            // 이미지 컨테이너에 mousedown 이벤트 추가 (새로운 선택 시작용)
+            imageContainer.addEventListener('mousedown', function(e) {
+                // 이벤트가 크롭 박스나 핸들에서 시작된 경우는 무시
+                if (e.target !== imageContainer && e.target !== imageContainer.querySelector('img')) {
+                    return;
+                }
+                
+                // 이벤트 전파 중지
+                e.preventDefault();
+                e.stopPropagation();
+                
+                startCrop(e);
+            });
+            
+            // 이미지 컨테이너의 이벤트 버블링 중지 - 파일 업로드 트리거 방지
+            imageContainer.addEventListener('click', function(e) {
+                if (e.target === imageContainer || e.target === imageContainer.querySelector('img') || 
+                    e.target === cropBox || e.target.classList.contains('crop-handle')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }
+
+        // 핸들로 크기 조절 시작
+        function startResize(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            log('크기 조절 시작');
+            
+            const handle = e.target;
+            const position = handle.getAttribute('data-position');
+            
+            // 현재 상태 저장
+            const initialCropBoxRect = cropBox.getBoundingClientRect();
+            const initialMouseX = e.clientX;
+            const initialMouseY = e.clientY;
+            
+            // 현재 크롭 박스 위치 및 크기
+            const initialLeft = parseInt(cropBox.style.left);
+            const initialTop = parseInt(cropBox.style.top);
+            const initialWidth = parseInt(cropBox.style.width);
+            const initialHeight = parseInt(cropBox.style.height);
+            
+            // 이동 함수
+            function handleResize(moveEvent) {
+                const deltaX = moveEvent.clientX - initialMouseX;
+                const deltaY = moveEvent.clientY - initialMouseY;
+                
+                const containerRect = imageContainer.getBoundingClientRect();
+                const imgRect = imageContainer.querySelector('img').getBoundingClientRect();
+                
+                // 이미지 내부 위치 계산
+                const imgLeft = imgRect.left - containerRect.left;
+                const imgTop = imgRect.top - containerRect.top;
+                const imgRight = imgLeft + imgRect.width;
+                const imgBottom = imgTop + imgRect.height;
+                
+                // 새로운 크롭 박스 위치 및 크기
+                let newLeft = initialLeft;
+                let newTop = initialTop;
+                let newWidth = initialWidth;
+                let newHeight = initialHeight;
+                
+                // 최소 크기
+                const MIN_SIZE = 20;
+                
+                // 위치에 따라 다른 처리
+                switch (position) {
+                    case 'nw': // 좌상단
+                        // 너비 변경 (왼쪽 변경)
+                        newLeft = Math.max(imgLeft, Math.min(initialLeft + deltaX, initialLeft + initialWidth - MIN_SIZE));
+                        newWidth = initialWidth - (newLeft - initialLeft);
+                        
+                        // 높이 변경 (위쪽 변경)
+                        newTop = Math.max(imgTop, Math.min(initialTop + deltaY, initialTop + initialHeight - MIN_SIZE));
+                        newHeight = initialHeight - (newTop - initialTop);
+                        break;
+                        
+                    case 'n': // 상단 중앙
+                        // 높이만 변경 (위쪽)
+                        newTop = Math.max(imgTop, Math.min(initialTop + deltaY, initialTop + initialHeight - MIN_SIZE));
+                        newHeight = initialHeight - (newTop - initialTop);
+                        break;
+                        
+                    case 'ne': // 우상단
+                        // 너비 변경 (오른쪽 변경)
+                        newWidth = Math.max(MIN_SIZE, Math.min(initialWidth + deltaX, imgRight - initialLeft));
+                        
+                        // 높이 변경 (위쪽 변경)
+                        newTop = Math.max(imgTop, Math.min(initialTop + deltaY, initialTop + initialHeight - MIN_SIZE));
+                        newHeight = initialHeight - (newTop - initialTop);
+                        break;
+                        
+                    case 'e': // 우측 중앙
+                        // 너비만 변경 (오른쪽)
+                        newWidth = Math.max(MIN_SIZE, Math.min(initialWidth + deltaX, imgRight - initialLeft));
+                        break;
+                        
+                    case 'se': // 우하단
+                        // 너비 변경 (오른쪽 변경)
+                        newWidth = Math.max(MIN_SIZE, Math.min(initialWidth + deltaX, imgRight - initialLeft));
+                        
+                        // 높이 변경 (아래쪽 변경)
+                        newHeight = Math.max(MIN_SIZE, Math.min(initialHeight + deltaY, imgBottom - initialTop));
+                        break;
+                        
+                    case 's': // 하단 중앙
+                        // 높이만 변경 (아래쪽)
+                        newHeight = Math.max(MIN_SIZE, Math.min(initialHeight + deltaY, imgBottom - initialTop));
+                        break;
+                        
+                    case 'sw': // 좌하단
+                        // 너비 변경 (왼쪽 변경)
+                        newLeft = Math.max(imgLeft, Math.min(initialLeft + deltaX, initialLeft + initialWidth - MIN_SIZE));
+                        newWidth = initialWidth - (newLeft - initialLeft);
+                        
+                        // 높이 변경 (아래쪽 변경)
+                        newHeight = Math.max(MIN_SIZE, Math.min(initialHeight + deltaY, imgBottom - initialTop));
+                        break;
+                        
+                    case 'w': // 좌측 중앙
+                        // 너비만 변경 (왼쪽)
+                        newLeft = Math.max(imgLeft, Math.min(initialLeft + deltaX, initialLeft + initialWidth - MIN_SIZE));
+                        newWidth = initialWidth - (newLeft - initialLeft);
+                        break;
+                }
+                
+                // 크롭 박스 업데이트
+                cropBox.style.left = newLeft + 'px';
+                cropBox.style.top = newTop + 'px';
+                cropBox.style.width = newWidth + 'px';
+                cropBox.style.height = newHeight + 'px';
+                
+                // 실시간 크롭 미리보기 업데이트
+                updateCropPreview();
+            }
+            
+            // 크기 조절 종료
+            function endResize() {
+                document.removeEventListener('mousemove', handleResize);
+                document.removeEventListener('mouseup', endResize);
+                log('크기 조절 종료');
+                
+                // 최종 크롭 미리보기 업데이트
+                updateCropPreview();
+            }
+            
+            // 이벤트 리스너 추가
+            document.addEventListener('mousemove', handleResize);
+            document.addEventListener('mouseup', endResize);
+        }
+
+        // 크롭 박스 이동 시작
+        function startMove(e) {
+            // 핸들에서의 이벤트는 무시 (이미 핸들 이벤트에서 처리됨)
+            if (e.target.classList.contains('crop-handle')) {
+                return;
+            }
+            
+            e.preventDefault();
+            e.stopPropagation();
+            log('크롭 박스 이동 시작');
+            
+            // 현재 상태 저장
+            const initialCropBoxRect = cropBox.getBoundingClientRect();
+            const initialMouseX = e.clientX;
+            const initialMouseY = e.clientY;
+            
+            // 이동 함수
+            function handleMove(moveEvent) {
+                const deltaX = moveEvent.clientX - initialMouseX;
+                const deltaY = moveEvent.clientY - initialMouseY;
+                
+                const containerRect = imageContainer.getBoundingClientRect();
+                const imgRect = imageContainer.querySelector('img').getBoundingClientRect();
+                
+                // 이미지 내부 위치 계산
+                const imgLeft = imgRect.left - containerRect.left;
+                const imgTop = imgRect.top - containerRect.top;
+                const imgRight = imgLeft + imgRect.width;
+                const imgBottom = imgTop + imgRect.height;
+                
+                // 새 위치 계산 (이미지 영역 내로 제한)
+                let newLeft = Math.max(imgLeft, Math.min(initialCropBoxRect.left - containerRect.left + deltaX, imgRight - initialCropBoxRect.width));
+                let newTop = Math.max(imgTop, Math.min(initialCropBoxRect.top - containerRect.top + deltaY, imgBottom - initialCropBoxRect.height));
+                
+                // 크롭 박스 업데이트
+                cropBox.style.left = newLeft + 'px';
+                cropBox.style.top = newTop + 'px';
+                
+                // 실시간 크롭 미리보기 업데이트
+                updateCropPreview();
+            }
+            
+            // 이동 종료
+            function endMove() {
+                document.removeEventListener('mousemove', handleMove);
+                document.removeEventListener('mouseup', endMove);
+                log('크롭 박스 이동 종료');
+                
+                // 최종 크롭 미리보기 업데이트
+                updateCropPreview();
+            }
+            
+            // 이벤트 리스너 추가
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('mouseup', endMove);
+        }
+
+        // 크롭 프리뷰 업데이트
+        function updateCropPreview() {
+            if (!cropBox || !imageContainer || !originalImage) return;
+            
+            const img = imageContainer.querySelector('img');
+            if (!img) return;
+            
+            // 이미지와 컨테이너의 위치 정보
+            const imgRect = img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+            
+            // 크롭 박스 위치 및 크기 (이미지 컨테이너 기준)
+            const cropLeft = parseInt(cropBox.style.left);
+            const cropTop = parseInt(cropBox.style.top);
+            const cropWidth = parseInt(cropBox.style.width);
+            const cropHeight = parseInt(cropBox.style.height);
+            
+            // 이미지 내에서의 상대적 위치 계산
+            const imgLeft = imgRect.left - containerRect.left;
+            const imgTop = imgRect.top - containerRect.top;
+            
+            // 상대적 크롭 위치
+            const relCropLeft = (cropLeft - imgLeft) / img.offsetWidth;
+            const relCropTop = (cropTop - imgTop) / img.offsetHeight;
+            const relCropWidth = cropWidth / img.offsetWidth;
+            const relCropHeight = cropHeight / img.offsetHeight;
+            
+            // 캔버스 생성 및 크롭 수행
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const tempImg = new Image();
+            tempImg.src = originalImage;
+            
+            tempImg.onload = function() {
+                // 원본 이미지 크기 기준으로 크롭 계산
+                const srcX = Math.max(0, Math.floor(relCropLeft * tempImg.width));
+                const srcY = Math.max(0, Math.floor(relCropTop * tempImg.height));
+                const srcWidth = Math.min(tempImg.width - srcX, Math.floor(relCropWidth * tempImg.width));
+                const srcHeight = Math.min(tempImg.height - srcY, Math.floor(relCropHeight * tempImg.height));
+                
+                // 캔버스 크기 설정
+                canvas.width = srcWidth;
+                canvas.height = srcHeight;
+                
+                // 이미지 크롭 및 그리기
+                ctx.drawImage(
+                    tempImg,
+                    srcX, srcY, srcWidth, srcHeight,
+                    0, 0, srcWidth, srcHeight
+                );
+                
+                // 크롭된 이미지 URL 생성
+                const croppedImageURL = canvas.toDataURL('image/png');
+                
+                // 프리뷰 업데이트
+                updatePreview(croppedImageURL);
+            };
+        }
+
+        // 크롭 적용 버튼 표시
+        function showApplyButton() {
+            log('크롭 적용 버튼 표시');
+            
+            // 기존 버튼 있으면 제거
+            const existingBtn = document.querySelector('.apply-crop-btn');
+            if (existingBtn) {
+                existingBtn.remove();
+            }
+            
+            // 버튼 생성
+            const applyBtn = document.createElement('button');
+            applyBtn.className = 'apply-crop-btn';
+            applyBtn.textContent = '크롭 적용하기';
+            
+            // 이미지 컨테이너에 버튼 추가
+            if (imageContainer) {
+                imageContainer.appendChild(applyBtn);
+            } else {
+                log('오류: 이미지 컨테이너가 없어서 버튼을 추가할 수 없습니다');
+                return;
+            }
+            
+            // 버튼 클릭 이벤트 설정
+            applyBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                log('크롭 적용 버튼 클릭됨');
+                applyCrop();
+            });
+        }
+
+        // 이미지 크롭 및 적용
+        function cropImage() {
+            if (!cropBox || !imageContainer || !originalImage) {
+                log('크롭 실패: 필요한 요소가 없음');
+                return;
+            }
+            
+            const img = imageContainer.querySelector('img');
+            if (!img) return;
+            
+            log('이미지 크롭 시작');
+            
+            // 이미지와 컨테이너의 위치 정보
+            const imgRect = img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+            
+            // 크롭 박스 위치 및 크기 (이미지 컨테이너 기준)
+            const cropLeft = parseInt(cropBox.style.left);
+            const cropTop = parseInt(cropBox.style.top);
+            const cropWidth = parseInt(cropBox.style.width);
+            const cropHeight = parseInt(cropBox.style.height);
+            
+            log(`크롭 박스 위치: left=${cropLeft}, top=${cropTop}, width=${cropWidth}, height=${cropHeight}`);
+            
+            // 이미지 내에서의 상대적 위치 계산
+            const imgLeft = imgRect.left - containerRect.left;
+            const imgTop = imgRect.top - containerRect.top;
+            
+            // 상대적 크롭 위치
+            const relCropLeft = (cropLeft - imgLeft) / img.offsetWidth;
+            const relCropTop = (cropTop - imgTop) / img.offsetHeight;
+            const relCropWidth = cropWidth / img.offsetWidth;
+            const relCropHeight = cropHeight / img.offsetHeight;
+            
+            log(`상대적 크롭 위치: left=${relCropLeft.toFixed(3)}, top=${relCropTop.toFixed(3)}, width=${relCropWidth.toFixed(3)}, height=${relCropHeight.toFixed(3)}`);
+            
+            // 캔버스 생성 및 크롭 수행
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const tempImg = new Image();
+            tempImg.src = originalImage;
+            
+            tempImg.onload = function() {
+                log(`원본 이미지 크기: ${tempImg.width}x${tempImg.height}`);
+                
+                // 원본 이미지 크기 기준으로 크롭 계산
+                const srcX = Math.max(0, Math.floor(relCropLeft * tempImg.width));
+                const srcY = Math.max(0, Math.floor(relCropTop * tempImg.height));
+                const srcWidth = Math.min(tempImg.width - srcX, Math.floor(relCropWidth * tempImg.width));
+                const srcHeight = Math.min(tempImg.height - srcY, Math.floor(relCropHeight * tempImg.height));
+                
+                log(`크롭 영역 계산: x=${srcX}, y=${srcY}, width=${srcWidth}, height=${srcHeight}`);
+                
+                // 캔버스 크기 설정
+                canvas.width = srcWidth;
+                canvas.height = srcHeight;
+                
+                // 이미지 크롭 및 그리기
+                ctx.drawImage(
+                    tempImg,
+                    srcX, srcY, srcWidth, srcHeight,
+                    0, 0, srcWidth, srcHeight
+                );
+                
+                // 크롭된 이미지 URL 생성
+                const croppedImageURL = canvas.toDataURL('image/png');
+                
+                log('크롭 완료, 이미지 URL 생성됨');
+                
+                // 원본 이미지 업데이트
+                originalImage = croppedImageURL;
+                
+                // 이미지 업로드 박스 업데이트
+                setupImageCropper(croppedImageURL);
+            };
+        }
+
+        // 프리뷰 업데이트
+        function updatePreview(imageURL) {
+            log('프리뷰 업데이트');
+            const previewBox = document.getElementById('preview-box');
+            if (previewBox) {
+                previewBox.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = imageURL;
+                previewBox.appendChild(img);
+            }
+        }
+
+        // 페이지 로드 시에 적용 버튼 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            // 기존 이벤트 리스너 설정 이후...
+            
+            // 초기 적용 버튼 표시
+            setTimeout(() => {
+                if (imageContainer) {
+                    showApplyButton();
+                }
+            }, 500);
+        });
+
+        // 크롭 시작 (마우스 다운 이벤트)
+        function startCrop(e) {
+            e.preventDefault();
+            log('크롭 시작 (mousedown)');
+            
+            // 이미지 영역 내에서만 크롭 가능하도록
+            const img = imageContainer.querySelector('img');
+            if (!img) return;
+            
+            const imgRect = img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+            
+            // 마우스 포지션 계산 (이미지 컨테이너 기준)
+            const mouseX = e.clientX - containerRect.left;
+            const mouseY = e.clientY - containerRect.top;
+            
+            log(`마우스 위치: x=${mouseX}, y=${mouseY}`);
+            
+            // 크롭 시작 위치 저장
+            cropStartX = mouseX;
+            cropStartY = mouseY;
+            
+            // 이미 있는 크롭 박스가 있다면 제거
+            if (cropBox) {
+                cropBox.remove();
+            }
+            
+            // 새 크롭 박스 생성
+            cropBox = document.createElement('div');
+            cropBox.className = 'crop-box';
+            cropBox.style.position = 'absolute';
+            cropBox.style.border = '3px dashed var(--accent-color)';
+            cropBox.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+            cropBox.style.zIndex = '10';
+            cropBox.style.borderRadius = 'var(--border-radius)';
+            cropBox.style.left = cropStartX + 'px';
+            cropBox.style.top = cropStartY + 'px';
+            cropBox.style.width = '0px';
+            cropBox.style.height = '0px';
+            cropBox.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.3)';
+            
+            imageContainer.appendChild(cropBox);
+            
+            // 크롭 활성화 상태 설정
+            cropperActive = true;
+            
+            // mousemove와 mouseup 이벤트 리스너 추가
+            document.addEventListener('mousemove', handleNewCrop);
+            document.addEventListener('mouseup', endNewCrop);
+        }
+
+        // 새 크롭 영역 핸들링 (마우스 무브 이벤트)
+        function handleNewCrop(e) {
+            if (!cropperActive || !cropBox || !imageContainer) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const containerRect = imageContainer.getBoundingClientRect();
+            const img = imageContainer.querySelector('img');
+            if (!img) return;
+            
+            const imgRect = img.getBoundingClientRect();
+            
+            // 이미지 내부 위치 계산
+            const imgLeft = imgRect.left - containerRect.left;
+            const imgTop = imgRect.top - containerRect.top;
+            const imgRight = imgLeft + imgRect.width;
+            const imgBottom = imgTop + imgRect.height;
+            
+            // 마우스 포지션 계산 (이미지 컨테이너 기준)
+            let mouseX = e.clientX - containerRect.left;
+            let mouseY = e.clientY - containerRect.top;
+            
+            // 이미지 영역 내로 제한
+            mouseX = Math.max(imgLeft, Math.min(mouseX, imgRight));
+            mouseY = Math.max(imgTop, Math.min(mouseY, imgBottom));
+            
+            // 크롭 박스 크기 및 위치 계산
+            const width = Math.abs(mouseX - cropStartX);
+            const height = Math.abs(mouseY - cropStartY);
+            const left = Math.min(cropStartX, mouseX);
+            const top = Math.min(cropStartY, mouseY);
+            
+            // 크롭 박스 업데이트
+            if (width > 0 && height > 0) {
+                cropBox.style.width = width + 'px';
+                cropBox.style.height = height + 'px';
+                cropBox.style.left = left + 'px';
+                cropBox.style.top = top + 'px';
+            }
+            
+            // 실시간 미리보기 업데이트 (영역이 충분히 클 때만)
+            if (width > 20 && height > 20) {
+                updateCropPreview();
+            }
+        }
+
+        // 새 크롭 종료 (마우스 업 이벤트)
+        function endNewCrop() {
+            if (!cropperActive || !cropBox || !imageContainer) return;
+            
+            log('크롭 종료 (mouseup)');
+            
+            // 크롭 영역이 너무 작으면 무시
+            const width = parseInt(cropBox.style.width);
+            const height = parseInt(cropBox.style.height);
+            
+            // 최소 크기 제한 (10px)
+            const MIN_CROP_SIZE = 10;
+            
+            if (width < MIN_CROP_SIZE || height < MIN_CROP_SIZE) {
+                log(`크롭 영역이 너무 작습니다. 크기: ${width}x${height}, 최소 크기: ${MIN_CROP_SIZE}x${MIN_CROP_SIZE}`);
+                cropBox.remove();
+                cropBox = null;
+                
+                // 원본 이미지 크기의 크롭 박스 다시 생성
+                const img = imageContainer.querySelector('img');
+                if (img) {
+                    const imgRect = img.getBoundingClientRect();
+                    const containerRect = imageContainer.getBoundingClientRect();
+                    const imgLeft = imgRect.left - containerRect.left;
+                    const imgTop = imgRect.top - containerRect.top;
+                    
+                    createInitialCropBox(imgLeft, imgTop, imgRect.width, imgRect.height);
+                }
+            } else {
+                // 성공적인 크롭 - 핸들 추가
+                addCropHandles(cropBox);
+                
+                // 크롭 박스에 이동 이벤트 리스너 추가
+                cropBox.addEventListener('mousedown', startMove);
+                
+                // 미리보기 업데이트
+                updateCropPreview();
+            }
+            
+            // 크롭 상태 초기화
+            cropperActive = false;
+            
+            // 이벤트 리스너 제거
+            document.removeEventListener('mousemove', handleNewCrop);
+            document.removeEventListener('mouseup', endNewCrop);
+            
+            // 적용 버튼 표시
+            showApplyButton();
+        }
+
+        // applyCrop 함수 추가
+        function applyCrop() {
+            log('크롭 적용 시작');
+            
+            if (!cropBox || !imageContainer || !originalImage) {
+                log('크롭 실패: 필요한 요소가 없음');
+                return;
+            }
+            
+            // 현재 크롭 영역으로 이미지 자르기
+            cropImage();
+            
+            // 성공 메시지
+            log('크롭이 성공적으로 적용되었습니다.');
+        }
+    </script>
+</body>
+</html> 

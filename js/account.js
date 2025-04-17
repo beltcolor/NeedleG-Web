@@ -129,17 +129,29 @@ function initMenuDropdown() {
         // 메뉴 항목 클릭 시 메뉴 닫기
         const menuItems = menuDropdown.querySelectorAll('a');
         menuItems.forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function(e) {
                 const isMobile = window.innerWidth <= 768;
                 
                 if (isMobile) {
                     menuDropdown.classList.remove('fullscreen-menu');
                     document.body.style.overflow = '';
+                    menuDropdown.style.display = 'none';
                     
                     // 메뉴 아이콘 원래대로
                     updateMenuIcon(false);
                 } else {
                     menuDropdown.style.display = 'none';
+                }
+
+                // 특별한 처리가 필요한 항목은 제외하고 페이지 이동 처리
+                const itemId = this.id;
+                // login-link, logout-link, dark-mode-toggle는 특별 처리가 있으므로 제외
+                if (!itemId && this.getAttribute('href').startsWith('#')) {
+                    const pageName = this.getAttribute('href').substring(1); // '#' 제거
+                    if (pageName && typeof handleNavigate === 'function') {
+                        e.preventDefault();
+                        handleNavigate(pageName);
+                    }
                 }
             });
         });
@@ -1328,5 +1340,26 @@ function updateMenuIcon(isOpen) {
         if (menuIcon) {
             menuIcon.textContent = isOpen ? 'close' : 'menu';
         }
+    }
+}
+
+// 페이지 이동 함수
+function handleNavigate(page) {
+    if (page) {
+        // URL 해시 변경을 통해 페이지 이동
+        window.location.hash = page;
+        
+        // 메뉴 드롭다운 닫기
+        const menuDropdown = document.getElementById('menu-dropdown');
+        if (menuDropdown) {
+            menuDropdown.style.display = 'none';
+            menuDropdown.classList.remove('fullscreen-menu');
+        }
+        
+        // 메뉴 아이콘 원래대로
+        updateMenuIcon(false);
+        
+        // 스크롤 복원
+        document.body.style.overflow = '';
     }
 }

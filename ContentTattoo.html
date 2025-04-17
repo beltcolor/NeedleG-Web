@@ -92,11 +92,11 @@
             <section class="style-section">
                 <h2>Tattoo Type</h2>
                 <div class="style-header">
-                    <h3>Artwork</h3>
                     <div class="checkbox-container">
                         <input type="checkbox" id="useImageryStyle">
                         <span class="checkmark"></span>
                     </div>
+                    <h3><label for="useImageryStyle">Artwork</label></h3>
                 </div>
                 
                 <div class="style-selector-container" style="display: none;">
@@ -182,11 +182,11 @@
             <!-- Lettering Section -->
             <section class="lettering-section">
                 <div class="style-header">
-                    <h3>Lettering</h3>
                     <div class="checkbox-container">
                         <input type="checkbox" id="useCustomFont">
                         <span class="checkmark"></span>
                     </div>
+                    <h3><label for="useCustomFont">Lettering</label></h3>
                 </div>
 
                 <div class="text-input-container" style="display: none;">
@@ -201,11 +201,11 @@
             <!-- Cover-up 섹션 추가 -->
             <section class="coverup-section">
                 <div class="style-header">
-                    <h3>Cover-up</h3>
                     <div class="checkbox-container">
                         <input type="checkbox" id="useCoverup">
                         <span class="checkmark"></span>
                     </div>
+                    <h3><label for="useCoverup">Cover-up</label></h3>
                 </div>
 
                 <div class="coverup-container" style="display: none;">
@@ -344,9 +344,9 @@
                                 </select>
                             </div>
                             
-                            <textarea id="skin-tone-notes" 
-                                      class="notes-textarea" 
-                                      placeholder="Any additional notes about your skin tone or tanning habits that may affect your tattoo (e.g., 'I tan easily', 'I burn easily', etc.)"></textarea>
+                            <div class="skin-tone-notes">
+                                <textarea id="skin-tone-notes" placeholder="Any additional notes about your skin tone or tanning habits that may affect your tattoo (e.g., 'I tan easily', 'I burn easily', etc.)"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -391,17 +391,22 @@
                         <h3 class="style-heading">Tattoo Type</h3>
                         <div class="review-content">
                             <!-- Artwork (표시 여부는 JS로 제어) -->
-                            <div id="review-artwork-enabled" class="review-status" style="display: none;">Artwork</div>
-                            <div id="review-artwork-style" class="review-detail" style="display: none;">Type: Not Selected</div>
-                            <div id="review-artwork-colorvibe" class="review-detail" style="display: none;">Color Vibe: Not Selected</div>
-                            <div id="review-reference-image" class="review-detail" style="display: none;">Reference Image: Not Uploaded</div>
-                            <div id="review-reference-image-container" class="review-image-container" style="display: none;"></div>
-                            
+                            <div class="review-artwork-section">
+                                <div class="review-text-group">
+                                    <div id="review-artwork-enabled" class="review-status" style="display: none;">Artwork</div>
+                                    <div id="review-artwork-style" class="review-detail" style="display: none;">Type: Not Selected</div>
+                                    <div id="review-artwork-colorvibe" class="review-detail" style="display: none;">Color Vibe: Not Selected</div>
+                                    <div id="review-reference-image" class="review-detail" style="display: none;">Reference Image: Not Uploaded</div>
+                                </div>
+                                <div id="review-reference-image-container" class="review-image-container" style="display: none;"></div>
+                            </div>
                             <!-- Lettering (표시 여부는 JS로 제어) -->
                             <div class="review-lettering-section">
-                                <div id="review-lettering-enabled" class="review-status" style="display: none;">Lettering</div>
-                                <div id="review-lettering-text" class="review-detail" style="display: none;">Text: Not Entered</div>
-                                <div id="review-lettering-font" class="review-detail" style="display: none;">Font: Not Selected</div>
+                                <div class="review-text-group">
+                                    <div id="review-lettering-enabled" class="review-status" style="display: none;">Lettering</div>
+                                    <div id="review-lettering-text" class="review-detail" style="display: none;">Text: Not Entered</div>
+                                    <div id="review-lettering-font" class="review-detail" style="display: none;">Font: Not Selected</div>
+                                </div>
                                 <div id="review-font-preview-container" class="review-font-preview-container" style="display: none;">
                                     <div id="review-font-preview" class="review-font-preview"></div>
                                 </div>
@@ -409,9 +414,11 @@
                             
                             <!-- Cover-up (표시 여부는 JS로 제어) -->
                             <div class="review-coverup-section">
-                                <div id="review-coverup-enabled" class="review-status" style="display: none;">Cover-up</div>
-                                <div id="review-coverup-notes" class="review-detail" style="display: none;">Notes: Not provided</div>
-                                <div id="review-coverup-image" class="review-detail" style="display: none;">Cover-up Image: Not Uploaded</div>
+                                <div class="review-text-group">
+                                    <div id="review-coverup-enabled" class="review-status" style="display: none;">Cover-up</div>
+                                    <div id="review-coverup-notes" class="review-detail" style="display: none;">Notes: Not provided</div>
+                                    <div id="review-coverup-image" class="review-detail" style="display: none;">Cover-up Image: Not Uploaded</div>
+                                </div>
                                 <div id="review-coverup-image-container" class="review-image-container" style="display: none;"></div>
                             </div>
                         </div>
@@ -428,7 +435,7 @@
     <!-- Navigation Buttons -->
     <section class="navigation-buttons">
         <div class="nav-left">
-            <button id="prev-button" class="navigation-button">PREVIOUS</button>
+            <button id="prev-button" class="btn-secondary">PREVIOUS</button>
         </div>
         <div id="page-indicator" class="page-indicator">
             <div class="dot-indicator" data-page="1"></div>
@@ -439,7 +446,7 @@
             <div class="dot-indicator" data-page="6"></div>
         </div>
         <div class="nav-right">
-            <button id="next-button" class="navigation-button">NEXT</button>
+            <button id="next-button" class="btn-primary">NEXT</button>
         </div>
     </section>
 </div>

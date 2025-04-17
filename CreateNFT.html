@@ -1,24 +1,40 @@
 <div class="createNFT-container">
-    <div class="page-header">
-        <h1 class="page-title">Create NFT</h1>
-        <p class="page-description">Create and mint your own unique NFT artwork</p>
-    </div>
-
     <div class="createNFT-content">
-        <div class="nft-upload-section">
-            <div class="nft-upload-box">
-                <div class="upload-placeholder">
-                    <span class="material-icons">cloud_upload</span>
-                    <p>Drag & drop your artwork here or click to browse</p>
-                </div>
-                <input type="file" id="nft-artwork-upload" accept="image/*" hidden>
-            </div>
-            <button class="upload-btn" id="upload-artwork-btn">Upload Artwork</button>
-        </div>
-
         <div class="nft-details-section">
-            <h2>NFT Details</h2>
+            <h3>NFT Details</h3>
+            <div class="nft-upload-section">
+                <button class="upload-btn" id="upload-artwork-btn">
+                    <span class="material-icons">upload_file</span>
+                    <div class="upload-text">
+                        <span class="upload-title">Choose a file</span>
+                        <span class="upload-subtitle">PNG, JPG, GIF (Max 100MB)</span>
+                    </div>
+                </button>
+                <input type="file" id="nft-artwork-upload" accept="image/*" hidden>
+                <div class="uploaded-file-info" style="display: none;">
+                    <div class="file-info">
+                        <span class="material-icons">image</span>
+                        <span class="file-name"></span>
+                    </div>
+                    <button class="delete-file-btn">
+                        <span class="material-icons">delete</span>
+                    </button>
+                </div>
+            </div>
             <div class="nft-form">
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="put-on-marketplace">
+                        <span>Put on marketplace</span>
+                    </label>
+                    <p class="input-hint">Enter price to allow users to instantly purchase your NFT</p>
+                </div>
+                <div class="marketplace-options" style="display: none;">
+                    <div class="form-group">
+                        <label for="nft-price">Price (ETH)</label>
+                        <input type="number" id="nft-price" placeholder="0.01" step="0.001" min="0">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="nft-name">NFT Name</label>
                     <input type="text" id="nft-name" placeholder="Enter a name for your NFT">
@@ -28,8 +44,30 @@
                     <textarea id="nft-description" placeholder="Describe your NFT artwork"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="nft-price">Price (ETH)</label>
-                    <input type="number" id="nft-price" placeholder="0.01" step="0.001" min="0">
+                    <label>Tags</label>
+                    <div class="tags-container">
+                        <div class="tags-input-container">
+                            <input type="text" id="tag-input" placeholder="Add tags (Press Enter to add)">
+                            <button class="add-tag-btn">
+                                <span class="material-icons">add</span>
+                            </button>
+                        </div>
+                        <div class="tags-list">
+                            <!-- 태그들이 여기에 동적으로 추가됨 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nft-category">Category</label>
+                    <select id="nft-category">
+                        <option value="">Select category</option>
+                        <option value="art">Art</option>
+                        <option value="music">Music</option>
+                        <option value="photography">Photography</option>
+                        <option value="sports">Sports</option>
+                        <option value="gaming">Gaming</option>
+                        <option value="collectibles">Collectibles</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="nft-collection">Collection</label>
@@ -42,11 +80,60 @@
                     <label for="nft-royalty">Royalty (%)</label>
                     <input type="number" id="nft-royalty" placeholder="10" min="0" max="50">
                 </div>
+                <div class="form-group">
+                    <div class="creation-process">
+                        <h3>Creation Process</h3>
+                        <div class="process-section">
+                            <label class="sub-label">Tools & Software Used</label>
+                            <div class="tools-container">
+                                <div class="tools-input">
+                                    <input type="text" id="tools-input" placeholder="e.g. Photoshop, Illustrator">
+                                    <button class="add-tool-btn">
+                                        <span class="material-icons">add</span>
+                                    </button>
+                                </div>
+                                <div class="tools-list">
+                                    <!-- 도구들이 여기에 동적으로 추가됨 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="process-section">
+                            <label class="sub-label">Process Verification</label>
+                            <div class="process-verification">
+                                <div class="verification-upload">
+                                    <button class="upload-btn process-upload-btn">
+                                        <span class="material-icons">add_photo_alternate</span>
+                                        <div class="upload-text">
+                                            <span class="upload-title">Add process images</span>
+                                            <span class="upload-subtitle">Show your work progress (max 5 images)</span>
+                                        </div>
+                                    </button>
+                                    <input type="file" id="process-images" accept="image/*" multiple hidden>
+                                </div>
+                                <div class="process-images-preview">
+                                    <!-- 프로세스 이미지들이 여기에 동적으로 추가됨 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="process-section">
+                            <label class="sub-label">Creation Story</label>
+                            <textarea id="creation-story" placeholder="Share the story behind your creation process, inspiration, and techniques used"></textarea>
+                        </div>
+
+                        <div class="ai-declaration">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="no-ai-declaration">
+                                <span>I declare that this artwork was created entirely by me without the use of AI generation tools</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="nft-preview-section">
-            <h2>Preview</h2>
+            <h3>Preview</h3>
             <div class="nft-preview-card">
                 <div class="nft-preview-image">
                     <span class="material-icons">image</span>

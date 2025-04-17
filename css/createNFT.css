@@ -1,19 +1,6 @@
 /* CreateNFT 페이지 스타일 */
 .createNFT-container {
-    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-}
-
-.page-header {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.page-title {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--text-color);
 }
 
 .page-description {
@@ -29,7 +16,9 @@
 
 @media (min-width: 768px) {
     .createNFT-content {
-        grid-template-columns: 1fr 1fr;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        gap: 30px;
     }
     
     .nft-details-section {
@@ -38,68 +27,109 @@
     
     .nft-preview-section {
         grid-column: 2;
-        grid-row: span 2;
+        align-self: start;
     }
     
     .nft-actions {
         grid-column: 1 / -1;
+        margin-top: 30px;
     }
 }
 
 /* 업로드 섹션 스타일 */
 .nft-upload-section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    margin-bottom: 30px;
 }
 
-.nft-upload-box {
-    height: 250px;
-    border: 2px dashed var(--border-color);
-    border-radius: 10px;
+.uploaded-file-info {
     display: flex;
-    justify-content: center;
     align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: var(--background-color-secondary);
+    justify-content: space-between;
+    padding: 12px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
 }
 
-.nft-upload-box:hover {
-    border-color: var(--accent-color);
-}
-
-.upload-placeholder {
+.file-info {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    padding: 20px;
+    gap: 8px;
 }
 
-.upload-placeholder .material-icons {
-    font-size: 3rem;
-    margin-bottom: 15px;
+.file-info .material-icons {
     color: var(--accent-color);
 }
 
-.upload-placeholder p {
-    color: var(--secondary-text-color);
+.file-name {
+    color: var(--text-color);
+    font-size: 14px;
 }
 
-.upload-btn {
-    padding: 10px 20px;
+.delete-file-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+}
+
+.delete-file-btn:hover {
+    color: #ff4444;
+}
+
+/* 이미지 크롭 관련 스타일 */
+.image-crop-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.original-image {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+.crop-box {
+    position: absolute;
+    border: 2px dashed var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+    z-index: 10;
+    border-radius: var(--border-radius);
+}
+
+.apply-crop-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 20;
     background-color: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius);
+    padding: 8px 15px;
     cursor: pointer;
     font-weight: 500;
-    transition: background-color 0.3s;
+    transition: all 0.2s ease;
 }
 
-.upload-btn:hover {
-    background-color: var(--accent-color-dark);
+.apply-crop-btn:hover {
+    background-color: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+/* 이미지 업로드 박스가 활성화되었을 때 */
+.nft-upload-box.highlight {
+    border-color: var(--accent-secondary);
+    background-color: var(--bg-tertiary);
+    box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.3);
 }
 
 /* NFT 상세 정보 폼 스타일 */
@@ -125,52 +155,36 @@
 .form-group label {
     font-weight: 500;
     color: var(--text-color);
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 10px 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-background);
-    color: var(--text-color);
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    border-color: var(--accent-color);
-    outline: none;
-}
-
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
+    font-size: 14px;
 }
 
 /* NFT 프리뷰 스타일 */
+.nft-preview-section {
+    width: 100%;
+}
+
 .nft-preview-card {
-    border-radius: 15px;
+
+    border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg-secondary);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.nft-preview-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-}
-
 .nft-preview-image {
-    height: 250px;
-    background-color: var(--background-color);
+    width: 100%;
+    min-height: 100px;
+    background-color: var(--bg-secondary);
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.nft-preview-image img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .nft-preview-image .material-icons {
@@ -180,6 +194,7 @@
 
 .nft-preview-details {
     padding: 20px;
+    background-color: var(--bg-secondary);
 }
 
 .nft-preview-name {
@@ -191,7 +206,7 @@
 .nft-preview-creator {
     font-size: 0.9rem;
     margin-bottom: 15px;
-    color: var(--secondary-text-color);
+    color: var(--text-secondary);
 }
 
 .nft-preview-price {
@@ -215,36 +230,6 @@
     margin-top: 20px;
 }
 
-.btn-secondary {
-    padding: 12px 25px;
-    background-color: transparent;
-    color: var(--accent-color);
-    border: 2px solid var(--accent-color);
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s;
-}
-
-.btn-secondary:hover {
-    background-color: rgba(var(--accent-color-rgb), 0.1);
-}
-
-.btn-primary {
-    padding: 12px 25px;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: var(--accent-color-dark);
-}
-
 /* 다크 모드 대응 */
 html.light-mode .nft-upload-box {
     background-color: #f7f9fc;
@@ -252,4 +237,252 @@ html.light-mode .nft-upload-box {
 
 html.light-mode .nft-preview-card {
     background-color: white;
+}
+
+/* Properties 스타일 */
+.properties-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.property-item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.property-type,
+.property-value {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.remove-property {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.remove-property:hover {
+    color: #ff4444;
+}
+
+.add-property-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: var(--bg-color);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+}
+
+.add-property-btn:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-color);
+}
+
+/* Sale Type 스타일 */
+.sale-type-options {
+    display: flex;
+    gap: 20px;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"] {
+    margin: 0;
+}
+
+/* Auction 스타일 */
+.auction-duration {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.auction-duration input {
+    flex: 1;
+}
+
+/* 태그 시스템 스타일 */
+.tags-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tags-input-container {
+    display: flex;
+    gap: 10px;
+}
+
+.tags-input-container input {
+    flex: 1;
+}
+
+.add-tag-btn,
+.add-tool-btn {
+    padding: 8px;
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+
+.tag-item .material-icons {
+    font-size: 16px !important;
+    cursor: pointer;
+}
+
+.input-hint {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+
+.process-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sub-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.tools-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tools-input {
+    display: flex;
+    gap: 10px;
+}
+
+.tools-input input {
+    flex: 1;
+}
+
+.tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.creation-time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.creation-time input {
+    width: 120px;
+}
+
+.time-label {
+    color: var(--text-secondary);
+}
+
+.process-verification {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.process-upload-btn {
+    height: auto;
+    min-height: 100px;
+}
+
+.process-images-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.process-image-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.process-image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.process-image-item .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.ai-declaration {
+    margin-top: 10px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.checkbox-label span {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* 모바일 반응형 스타일 */
+@media screen and (max-width: 768px) {
+    
 } 

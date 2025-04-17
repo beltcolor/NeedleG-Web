@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (typeof pages.createNFT?.init === 'function') {
                 pages.createNFT.init();
             }
-        }, 100); // 약간의 지연 추가
+        }, 100);
     }
 });
 
@@ -62,82 +62,223 @@ function initCreateNFTPage() {
 // CreateNFT 페이지 정리 함수
 function destroyCreateNFTPage() {
     console.log('CreateNFT 페이지 정리');
-    // 페이지 전환 시 필요한 정리 작업 수행
+    // 이벤트 리스너 제거
+    const fileInput = document.getElementById('nft-artwork-upload');
+    const uploadBtn = document.getElementById('upload-artwork-btn');
+    const deleteFileBtn = document.querySelector('.delete-file-btn');
     
-    // 이벤트 리스너 제거 등 필요한 정리 작업
-    const uploadBox = document.querySelector('.nft-upload-box');
-    if (uploadBox) {
-        uploadBox.removeEventListener('click', handleUploadBoxClick);
+    if (fileInput) {
+        fileInput.removeEventListener('change', null);
     }
     
-    const uploadInput = document.getElementById('nft-artwork-upload');
-    if (uploadInput) {
-        uploadInput.removeEventListener('change', handleFileSelect);
+    if (uploadBtn) {
+        uploadBtn.removeEventListener('click', null);
+    }
+    
+    if (deleteFileBtn) {
+        deleteFileBtn.removeEventListener('click', null);
     }
 }
 
 // CreateNFT 페이지 이벤트 설정
 function setupCreateNFTEvents() {
-    // 업로드 박스 클릭 이벤트
-    const uploadBox = document.querySelector('.nft-upload-box');
-    const uploadInput = document.getElementById('nft-artwork-upload');
+    setupFileUpload();
+    setupTagSystem();
+    setupToolsSystem();
+    setupProcessImages();
+    setupNFTPreview();
+    setupMarketplaceOptions();
+}
+
+// 파일 업로드 관련 설정
+function setupFileUpload() {
     const uploadBtn = document.getElementById('upload-artwork-btn');
+    const fileInput = document.getElementById('nft-artwork-upload');
+    const uploadedFileInfo = document.querySelector('.uploaded-file-info');
+    const fileName = document.querySelector('.file-name');
+    const deleteFileBtn = document.querySelector('.delete-file-btn');
     
-    if (uploadBox && uploadInput) {
-        uploadBox.addEventListener('click', handleUploadBoxClick);
-        uploadInput.addEventListener('change', handleFileSelect);
+    let selectedFile = null;
+    
+    if (uploadBtn && fileInput) {
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
     }
     
-    if (uploadBtn) {
-        uploadBtn.addEventListener('click', handleUploadBoxClick);
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                selectedFile = file;
+                fileName.textContent = file.name;
+                uploadedFileInfo.style.display = 'flex';
+                uploadBtn.style.display = 'none';
+                
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        updateImagePreview(e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
     }
     
-    // 폼 입력값 변경 시 프리뷰 업데이트
-    const nftNameInput = document.getElementById('nft-name');
-    const nftPriceInput = document.getElementById('nft-price');
-    
-    if (nftNameInput) {
-        nftNameInput.addEventListener('input', updateNFTPreview);
+    if (deleteFileBtn) {
+        deleteFileBtn.addEventListener('click', () => {
+            selectedFile = null;
+            fileInput.value = '';
+            uploadedFileInfo.style.display = 'none';
+            uploadBtn.style.display = 'flex';
+            
+            const previewImage = document.querySelector('.nft-preview-image');
+            if (previewImage) {
+                previewImage.innerHTML = '<span class="material-icons">image</span>';
+            }
+        });
     }
-    
-    if (nftPriceInput) {
-        nftPriceInput.addEventListener('input', updateNFTPreview);
-    }
-    
-    // 버튼 클릭 이벤트
-    const saveDraftBtn = document.getElementById('save-draft-btn');
-    const createNFTBtn = document.getElementById('create-nft-btn');
-    
-    if (saveDraftBtn) {
-        saveDraftBtn.addEventListener('click', handleSaveDraft);
-    }
-    
-    if (createNFTBtn) {
-        createNFTBtn.addEventListener('click', handleCreateNFT);
-    }
-    
-    // 드래그 앤 드롭 기능 설정
-    setupDragAndDrop();
 }
 
-// 업로드 박스 클릭 이벤트 핸들러
-function handleUploadBoxClick() {
-    const uploadInput = document.getElementById('nft-artwork-upload');
-    if (uploadInput) {
-        uploadInput.click();
+// 태그 시스템 설정
+function setupTagSystem() {
+    const tagInput = document.getElementById('tag-input');
+    const addTagBtn = document.querySelector('.add-tag-btn');
+    const tagsList = document.querySelector('.tags-list');
+    let tags = new Set();
+
+    function addTag(tagText) {
+        if (!tagText) return;
+        
+        // # 기호가 없으면 추가
+        if (!tagText.startsWith('#')) {
+            tagText = '#' + tagText;
+        }
+        
+        // 이미 존재하는 태그인지 확인
+        if (tags.has(tagText)) return;
+        
+        // 태그 추가
+        tags.add(tagText);
+        
+        // 태그 요소 생성
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag-item';
+        tagElement.innerHTML = `
+            <span>${tagText}</span>
+            <span class="material-icons" role="button">close</span>
+        `;
+        
+        // 삭제 버튼 이벤트
+        tagElement.querySelector('.material-icons').addEventListener('click', () => {
+            tags.delete(tagText);
+            tagElement.remove();
+        });
+        
+        tagsList.appendChild(tagElement);
+        tagInput.value = '';
     }
+
+    // Enter 키로 태그 추가
+    tagInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTag(tagInput.value.trim());
+        }
+    });
+
+    // 추가 버튼으로 태그 추가
+    addTagBtn.addEventListener('click', () => {
+        addTag(tagInput.value.trim());
+    });
 }
 
-// 파일 선택 핸들러
-function handleFileSelect(event) {
-    const file = event.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            // 프리뷰 이미지 업데이트
-            updateImagePreview(e.target.result);
-        };
-        reader.readAsDataURL(file);
+// 도구 목록 시스템 설정
+function setupToolsSystem() {
+    const toolsInput = document.getElementById('tools-input');
+    const addToolBtn = document.querySelector('.add-tool-btn');
+    const toolsList = document.querySelector('.tools-list');
+    let tools = new Set();
+
+    function addTool(toolName) {
+        if (!toolName) return;
+        if (tools.has(toolName)) return;
+        
+        tools.add(toolName);
+        
+        const toolElement = document.createElement('div');
+        toolElement.className = 'tag-item'; // 태그와 같은 스타일 사용
+        toolElement.innerHTML = `
+            <span>${toolName}</span>
+            <span class="material-icons" role="button">close</span>
+        `;
+        
+        toolElement.querySelector('.material-icons').addEventListener('click', () => {
+            tools.delete(toolName);
+            toolElement.remove();
+        });
+        
+        toolsList.appendChild(toolElement);
+        toolsInput.value = '';
+    }
+
+    toolsInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addTool(toolsInput.value.trim());
+        }
+    });
+
+    addToolBtn.addEventListener('click', () => {
+        addTool(toolsInput.value.trim());
+    });
+}
+
+// 작업 과정 이미지 설정
+function setupProcessImages() {
+    const processUploadBtn = document.querySelector('.process-upload-btn');
+    const processImagesInput = document.getElementById('process-images');
+    const processImagesPreview = document.querySelector('.process-images-preview');
+    let processImages = new Set();
+
+    if (processUploadBtn && processImagesInput) {
+        processUploadBtn.addEventListener('click', () => {
+            processImagesInput.click();
+        });
+
+        processImagesInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            
+            // 최대 5개까지만 허용
+            if (processImages.size + files.length > 5) {
+                alert('최대 5개의 이미지만 업로드할 수 있습니다.');
+        return;
+    }
+    
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageElement = document.createElement('div');
+                        imageElement.className = 'process-image-item';
+                        imageElement.innerHTML = `
+                            <img src="${e.target.result}" alt="Process Image">
+                            <span class="material-icons remove-image">close</span>
+                        `;
+                        
+                        imageElement.querySelector('.remove-image').addEventListener('click', () => {
+                            processImages.delete(file);
+                            imageElement.remove();
+                        });
+                        
+                        processImages.add(file);
+                        processImagesPreview.appendChild(imageElement);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
     }
 }
 
@@ -148,20 +289,42 @@ function updateImagePreview(imageURL) {
         previewImage.innerHTML = '';
         const img = document.createElement('img');
         img.src = imageURL;
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
         previewImage.appendChild(img);
     }
 }
 
+// NFT 프리뷰 설정
+function setupNFTPreview() {
+    const nftNameInput = document.getElementById('nft-name');
+    const nftPriceInput = document.getElementById('nft-price');
+    const nftDescriptionInput = document.getElementById('nft-description');
+    
+    // 입력 필드의 변경사항을 실시간으로 프리뷰에 반영
+    if (nftNameInput) {
+        nftNameInput.addEventListener('input', updateNFTPreview);
+    }
+    
+    if (nftPriceInput) {
+        nftPriceInput.addEventListener('input', updateNFTPreview);
+    }
+    
+    if (nftDescriptionInput) {
+        nftDescriptionInput.addEventListener('input', updateNFTPreview);
+    }
+    
+    // 초기 프리뷰 업데이트
+    updateNFTPreview();
+}
+
 // NFT 프리뷰 업데이트
 function updateNFTPreview() {
-    const nftName = document.getElementById('nft-name').value || 'NFT Name';
-    const nftPrice = document.getElementById('nft-price').value || '0.01';
+    const nftName = document.getElementById('nft-name')?.value || 'NFT Name';
+    const nftPrice = document.getElementById('nft-price')?.value || '0.01';
+    const nftDescription = document.getElementById('nft-description')?.value || '';
     
     const previewName = document.querySelector('.nft-preview-name');
     const previewPrice = document.querySelector('.price-value');
+    const previewDescription = document.querySelector('.nft-preview-description');
     
     if (previewName) {
         previewName.textContent = nftName;
@@ -170,149 +333,20 @@ function updateNFTPreview() {
     if (previewPrice) {
         previewPrice.textContent = nftPrice;
     }
-}
-
-// 드래그 앤 드롭 설정
-function setupDragAndDrop() {
-    const dropZone = document.querySelector('.nft-upload-box');
-    if (!dropZone) return;
     
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, preventDefaults, false);
-    });
-    
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-    
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, highlight, false);
-    });
-    
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, unhighlight, false);
-    });
-    
-    function highlight() {
-        dropZone.classList.add('highlight');
-    }
-    
-    function unhighlight() {
-        dropZone.classList.remove('highlight');
-    }
-    
-    dropZone.addEventListener('drop', handleDrop, false);
-    
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const file = dt.files[0];
-        
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                updateImagePreview(e.target.result);
-            };
-            reader.readAsDataURL(file);
-            
-            // 파일 입력 필드에도 파일 설정
-            const fileInput = document.getElementById('nft-artwork-upload');
-            if (fileInput) {
-                // 파일 입력 필드에 파일 할당은 보안상 직접 설정할 수 없으므로
-                // 대신 파일 정보만 표시
-                const fileName = document.createElement('div');
-                fileName.textContent = `선택된 파일: ${file.name}`;
-                fileName.className = 'selected-file-name';
-                
-                const placeholder = document.querySelector('.upload-placeholder');
-                if (placeholder) {
-                    placeholder.innerHTML = '';
-                    placeholder.appendChild(fileName);
-                }
-            }
-        }
+    if (previewDescription) {
+        previewDescription.textContent = nftDescription;
     }
 }
 
-// 드래프트 저장 핸들러
-function handleSaveDraft() {
-    // 드래프트 저장 로직
-    console.log('NFT 드래프트 저장');
-    showNotification('NFT 드래프트가 저장되었습니다.');
-}
-
-// NFT 생성 핸들러
-function handleCreateNFT() {
-    // NFT 생성 로직
-    console.log('NFT 생성 시작');
+// 마켓플레이스 옵션 설정
+function setupMarketplaceOptions() {
+    const marketplaceCheckbox = document.getElementById('put-on-marketplace');
+    const marketplaceOptions = document.querySelector('.marketplace-options');
     
-    // 폼 유효성 검사
-    const nftName = document.getElementById('nft-name').value;
-    const nftDescription = document.getElementById('nft-description').value;
-    const nftPrice = document.getElementById('nft-price').value;
-    
-    if (!nftName || !nftDescription || !nftPrice) {
-        showNotification('모든 필수 정보를 입력해주세요.', 'error');
-        return;
-    }
-    
-    // NFT 생성 성공 시뮬레이션 (실제로는 블록체인 트랜잭션 등이 필요)
-    showLoadingSpinner();
-    
-    setTimeout(() => {
-        hideLoadingSpinner();
-        showNotification('NFT가 성공적으로 생성되었습니다!', 'success');
-    }, 2000);
-}
-
-// 알림 표시 함수
-function showNotification(message, type = 'info') {
-    // 기존 알림 시스템 사용 (있는 경우)
-    if (typeof showToast === 'function') {
-        showToast(message, type);
-        return;
-    }
-    
-    // 기존 알림 시스템이 없는 경우 간단한 알림 생성
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.classList.add('show');
-        
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }, 3000);
-    }, 10);
-}
-
-// 로딩 스피너 표시/숨기기
-function showLoadingSpinner() {
-    let spinner = document.querySelector('.loading-spinner');
-    
-    if (!spinner) {
-        spinner = document.createElement('div');
-        spinner.className = 'loading-spinner';
-        spinner.innerHTML = '<div class="spinner"></div>';
-        document.body.appendChild(spinner);
-    }
-    
-    spinner.classList.add('show');
-}
-
-function hideLoadingSpinner() {
-    const spinner = document.querySelector('.loading-spinner');
-    if (spinner) {
-        spinner.classList.remove('show');
-        
-        setTimeout(() => {
-            spinner.remove();
-        }, 300);
+    if (marketplaceCheckbox && marketplaceOptions) {
+        marketplaceCheckbox.addEventListener('change', function() {
+            marketplaceOptions.style.display = this.checked ? 'block' : 'none';
+        });
     }
 } 

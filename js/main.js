@@ -30,9 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 네비게이션 탭 버튼에 클릭 이벤트 리스너 설정
     setupNavTabs();
-    
-    // 언어 팝업 초기화
-    setupLanguagePopup();
 });
 
 // 네비게이션 탭 버튼 설정 함수
@@ -221,48 +218,16 @@ function updateLanguageDisplay(lang) {
     if (languageText) {
         languageText.textContent = getTranslation('language', lang);
     }
-}
-
-// 언어 팝업 설정
-function setupLanguagePopup() {
-    const languageToggle = document.querySelector('.language-toggle');
-    const languagePopup = document.getElementById('language-popup');
     
-    if (languageToggle && languagePopup) {
-        // 언어 토글 버튼 클릭 시 팝업 표시
-        languageToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            languagePopup.style.display = 'block';
-        });
-        
-        // 팝업 닫기 버튼
-        const closePopupBtn = document.getElementById('close-language-popup');
-        if (closePopupBtn) {
-            closePopupBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                languagePopup.style.display = 'none';
-            });
+    // 활성 언어 클래스 업데이트
+    const options = document.querySelectorAll('.language-option');
+    options.forEach(option => {
+        if (option.getAttribute('data-lang') === lang) {
+            option.classList.add('active');
+        } else {
+            option.classList.remove('active');
         }
-        
-        // 언어 옵션 클릭 이벤트
-        const languageOptions = document.querySelectorAll('.language-option');
-        languageOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                const lang = this.getAttribute('data-lang');
-                changeLanguage(lang);
-                languagePopup.style.display = 'none';
-            });
-        });
-        
-        // 팝업 외부 클릭 시 닫기
-        document.addEventListener('click', function(e) {
-            if (languagePopup.style.display === 'block' && 
-                !languagePopup.contains(e.target) && 
-                e.target !== languageToggle) {
-                languagePopup.style.display = 'none';
-            }
-        });
-    }
+    });
 }
 
 // 언어 변경 함수
@@ -279,6 +244,20 @@ function changeLanguage(lang) {
     // 언어 변경 커스텀 이벤트 발생
     const languageChangedEvent = new Event('languageChanged');
     document.dispatchEvent(languageChangedEvent);
+}
+
+// 언어 토글 함수 (팝업 표시/숨김)
+function toggleLanguage() {
+    const languagePopup = document.getElementById('language-popup');
+    
+    if (languagePopup) {
+        // 현재 표시 상태 확인 후 반전
+        if (languagePopup.style.display === 'block') {
+            languagePopup.style.display = 'none';
+        } else {
+            languagePopup.style.display = 'block';
+        }
+    }
 }
 
 

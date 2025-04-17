@@ -10,6 +10,7 @@ const translations = {
         account: "Account",
         tattoo: "Get Tattoo",
         createNFT: "Create NFT",
+        membership: "Membership",
         help: "Help",
         settings: "Settings",
         
@@ -66,6 +67,7 @@ const translations = {
         createNFT: "NFT 생성",
         help: "도움말",
         settings: "설정",
+        membership: "멤버십",
         
         // 테마 관련
         lightMode: "라이트 모드",
@@ -120,6 +122,7 @@ const translations = {
         createNFT: "Stwórz NFT",
         help: "Pomoc",
         settings: "Ustawienia",
+        membership: "Członkostwo",
         
         // 테마 관련
         lightMode: "Tryb jasny",

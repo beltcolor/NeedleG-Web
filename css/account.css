@@ -179,7 +179,7 @@
 
 /* Menu Settings */
 .menu-settings {
-    position: relative;
+    display: none; /* 기본적으로 숨김 */
 }
 
 .menu-btn {
@@ -217,16 +217,17 @@
 
 /* 메뉴 드롭다운 기본 스타일 - 데스크톱 */
 .menu-dropdown {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0;
+    height: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 0;
     display: none;
-    position: fixed;
-    background-color: var(--bg-color);
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1002;
-    overflow: hidden;
-    min-width: 200px;
-    width: auto;
-    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 /* 메뉴 항목 기본 스타일 - 데스크톱 */
@@ -397,10 +398,29 @@
         justify-content: left;
     }
     
+    .menu-settings {
+        display: block; /* 모바일에서만 표시 */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 100;
+    }
+    
     .menu-btn {
-        top: 3rem;
-        right: 15px;
-        background-color: transparent;
+        background: transparent;
+        border: none;
+        color: var(--text-primary);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .menu-btn:active {
+        background-color: var(--bg-tertiary);
     }
     
     .gallery-grid {
@@ -435,25 +455,38 @@
         display: flex !important;
         width: 100% !important;
         height: 100vh !important;
-        opacity: 1;
-        padding-top: 80px;
-        align-items: flex-start;
+        flex-direction: column;
         justify-content: center;
-        z-index: 1000;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1001;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 0;
+        margin: 0;
+        padding: 0;
+        opacity: 1;
+        overflow-y: auto;
+        backdrop-filter: blur(5px);
     }
     
-    .menu-dropdown ul {
-        width: 100%;
+    .menu-dropdown.fullscreen-menu ul {
+        background-color: var(--bg-color);
+        width: 85%;
         max-width: 400px;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 0.3s ease-in forwards;
     }
     
-    .menu-dropdown li {
-        margin-bottom: 10px;
+    .menu-dropdown.fullscreen-menu li {
+        margin-bottom: 12px;
         opacity: 0;
         transform: translateY(20px);
         animation: fadeInUp 0.3s forwards;
-        animation-delay: calc(0.1s * var(--item-index, 0));
-        display: block;
+        animation-delay: calc(0.05s * var(--item-index, 0));
     }
     
     @keyframes fadeInUp {
@@ -463,17 +496,42 @@
         }
     }
     
-    .menu-dropdown a {
+    .menu-dropdown.fullscreen-menu a {
+        display: flex;
+        align-items: center;
         padding: 15px 20px;
-        font-size: 18px;
+        background-color: var(--bg-secondary);
         border-radius: var(--border-radius);
-        width: 100%;
+        color: var(--text-primary);
+        font-size: 16px;
+        transition: all 0.2s ease;
     }
     
-    .menu-dropdown i {
+    .menu-dropdown.fullscreen-menu a:hover {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .menu-dropdown.fullscreen-menu i {
         margin-right: 15px;
-        font-size: 24px;
+        font-size: 22px;
         color: var(--accent-color);
+    }
+    
+    /* 로그인/로그아웃 버튼 특별 스타일 */
+    .menu-dropdown.fullscreen-menu #login-link,
+    .menu-dropdown.fullscreen-menu #logout-link {
+        background-color: var(--accent-color);
+        color: white;
+    }
+    
+    .menu-dropdown.fullscreen-menu #login-link i,
+    .menu-dropdown.fullscreen-menu #logout-link i {
+        color: white;
+    }
+    
+    .menu-dropdown.fullscreen-menu #login-link:hover,
+    .menu-dropdown.fullscreen-menu #logout-link:hover {
+        opacity: 0.9;
     }
     
     .success-notification {
@@ -1079,34 +1137,77 @@
         width: 100%;
         height: 100vh;
         z-index: 1001;
-        background-color: var(--bg-primary);
+        background-color: rgba(0, 0, 0, 0.7);
         border-radius: 0;
         margin: 0;
         padding: 0;
         overflow-y: auto;
+        backdrop-filter: blur(5px);
     }
     
-    /* 모바일 화면에서의 모달 스타일 */
-    .modal {
-        z-index: 1010;
+    /* 메뉴 항목 스타일 개선 */
+    .menu-dropdown.fullscreen-menu ul {
+        background-color: var(--bg-color);
+        width: 85%;
+        max-width: 400px;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 0.3s ease-in forwards;
     }
     
-    .modal.fullscreen-menu {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: var(--bg-primary);
-    }
-    
-    .modal.fullscreen-menu ~ .menu-settings .menu-btn,
-    .modal.fullscreen-menu ~ .menu-settings .menu-wrapper {
+    .menu-dropdown.fullscreen-menu li {
+        margin-bottom: 12px;
         opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
+        transform: translateY(20px);
+        animation: fadeInUp 0.3s forwards;
+        animation-delay: calc(0.05s * var(--item-index, 0));
     }
     
-    /* 다른 모바일 스타일 */
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .menu-dropdown.fullscreen-menu a {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: var(--bg-secondary);
+        border-radius: var(--border-radius);
+        color: var(--text-primary);
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+    
+    .menu-dropdown.fullscreen-menu a:hover {
+        background-color: var(--bg-tertiary);
+    }
+    
+    .menu-dropdown.fullscreen-menu i {
+        margin-right: 15px;
+        font-size: 22px;
+        color: var(--accent-color);
+    }
+    
+    /* 로그인/로그아웃 버튼 특별 스타일 */
+    .menu-dropdown.fullscreen-menu #login-link,
+    .menu-dropdown.fullscreen-menu #logout-link {
+        background-color: var(--accent-color);
+        color: white;
+    }
+    
+    .menu-dropdown.fullscreen-menu #login-link i,
+    .menu-dropdown.fullscreen-menu #logout-link i {
+        color: white;
+    }
+    
+    .menu-dropdown.fullscreen-menu #login-link:hover,
+    .menu-dropdown.fullscreen-menu #logout-link:hover {
+        opacity: 0.9;
+    }
 }
 
 /* 모바일 화면에서의 모달 내용 조정 */

@@ -87,6 +87,10 @@
                 <span class="material-icons">toll</span>
                 <span class="button-text">Create NFT</span>
             </button>
+            <button class="sidebar-button" data-page="membership" onclick="handleSidebarButtonClick('membership'); window.location.hash='membership'">
+                <span class="material-icons">stars</span>
+                <span class="button-text">Membership</span>
+            </button>
             <button class="sidebar-button" data-page="help" onclick="handleSidebarButtonClick('help'); window.location.hash='help'">
                 <span class="material-icons">help_outline</span>
                 <span class="button-text">Help</span>
@@ -98,7 +102,7 @@
                 <span class="material-icons">brightness_4</span>
                 <span class="button-text">Theme</span>
             </button>
-            <button class="sidebar-button language-toggle">
+            <button class="sidebar-button language-toggle" onclick="toggleLanguage()">
                 <img src="assets/flags/en.png" alt="Language" class="language-icon" id="current-language-icon">
                 <span class="button-text">Language</span>
             </button>
@@ -110,21 +114,21 @@
     </div>
 
     <!-- 언어 선택 팝업 -->
-    <div class="modal" id="language-popup">
+    <div class="modal" id="language-popup" onclick="if(event.target === this) toggleLanguage()">
         <div class="modal-content">
-            <span class="close-modal" id="close-language-popup">&times;</span>
+            <span class="close-modal" id="close-language-popup" onclick="toggleLanguage()">&times;</span>
             <div class="language-section">
                 <h3 class="language-popup-title">Language</h3>
                 <div class="language-options">
-                    <div class="language-option" data-lang="en">
+                    <div class="language-option" data-lang="en" onclick="changeLanguage('en'); toggleLanguage()">
                         <img src="assets/flags/en.png" alt="English" class="language-option-flag">
                         <span>English</span>
                     </div>
-                    <div class="language-option" data-lang="ko">
+                    <div class="language-option" data-lang="ko" onclick="changeLanguage('ko'); toggleLanguage()">
                         <img src="assets/flags/ko.png" alt="Korean" class="language-option-flag">
                         <span>한국어</span>
                     </div>
-                    <div class="language-option" data-lang="pl">
+                    <div class="language-option" data-lang="pl" onclick="changeLanguage('pl'); toggleLanguage()">
                         <img src="assets/flags/pl.png" alt="Polish" class="language-option-flag">
                         <span>Polski</span>
                     </div>
