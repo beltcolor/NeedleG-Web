@@ -1,0 +1,221 @@
+/* Loyalty Program Styles */
+.loyalty-container {
+
+}
+
+.loyalty-container h2 {
+
+}
+
+.page-description {
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.loyalty-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+
+@media (min-width: 992px) {
+    .loyalty-content {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.loyalty-levels, .loyalty-points {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.loyalty-levels h3, .loyalty-points h3 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: var(--text-primary);
+}
+
+.loyalty-level-card {
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.loyalty-level-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.loyalty-level-header .material-icons {
+    font-size: 28px;
+    margin-right: 10px;
+    color: var(--accent-color);
+}
+
+.loyalty-level-header h4 {
+    font-size: 20px;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.loyalty-level-benefits ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.loyalty-level-benefits li {
+    color: var(--text-primary);
+    padding: 5px 0;
+}
+
+.loyalty-level-requirement {
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.loyalty-level-requirement p {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.loyalty-level-requirement ul {
+    list-style-type: circle;
+    padding-left: 20px;
+}
+
+.loyalty-level-requirement li {
+    color: var(--text-secondary);
+    padding: 3px 0;
+}
+
+.loyalty-note {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.loyalty-status {
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.loyalty-current-level {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.loyalty-current-level .material-icons {
+    font-size: 28px;
+    margin-right: 15px;
+    color: var(--accent-color);
+}
+
+.loyalty-level-info h4 {
+    margin: 0 0 5px 0;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.loyalty-level-info p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.loyalty-progress-container {
+    margin-top: 15px;
+}
+
+.loyalty-progress-bar {
+    height: 10px;
+    background-color: var(--bg-secondary);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.loyalty-progress {
+    height: 100%;
+    background-color: var(--accent-color);
+    border-radius: 5px;
+}
+
+.loyalty-progress-container p {
+    text-align: right;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.loyalty-actions h4 {
+    margin: 0 0 15px 0;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.earning-methods {
+    list-style-type: none;
+    padding: 0;
+}
+
+.earning-methods li {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.earning-methods .material-icons {
+    font-size: 24px;
+    margin-right: 15px;
+    color: var(--accent-color);
+}
+
+.earning-method-info h5 {
+    margin: 0 0 5px 0;
+    color: var(--text-primary);
+    font-size: 16px;
+}
+
+.earning-method-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .loyalty-container {
+        padding: 15px;
+    }
+    
+    .loyalty-container h2 {
+        font-size: 24px;
+    }
+    
+    .loyalty-levels, .loyalty-points {
+        padding: 15px;
+    }
+    
+    .loyalty-level-card {
+        padding: 15px;
+    }
+    
+    .loyalty-status {
+        padding: 15px;
+    }
+}

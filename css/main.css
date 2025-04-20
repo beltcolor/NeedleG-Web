@@ -17,6 +17,7 @@
     --content-width: 100%;
     --sidebar-context: #919191;
     --red-color: #d32f2f;
+    --base-color: #000000;
     --transition: background-color 0.3s, color 0.3s;
 }
 
@@ -36,7 +37,9 @@
     --border-color: #31313128;
     --sidebar-context: #505050;
     --red-color: #d32f2f;
+    --base-color: #ffffff;
     --transition: background-color 0.3s, color 0.3s;
+
 
 }
 
@@ -74,7 +77,6 @@ body {
     transition: background-color 0.3s, color 0.3s;
     padding-left: 43px; /* 사이드바 초기 너비(50px)*/
     padding-bottom: 1rem;
-    padding-right: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -123,6 +125,7 @@ h1 {
 }
 
 h2 {
+    font-size: 28px;
     margin-top: 0.5rem;
     color: var(--accent-secondary);
     font-family: 'Arial', sans-serif;
@@ -472,6 +475,7 @@ button {
     color: var(--text-primary);
 }
 
+
 /* 업로드 버튼 스타일 -----------------------------------------------------------------*/
 .upload-btn {
     width: 100%;
@@ -513,4 +517,5 @@ button {
     color: var(--text-secondary);
     font-size: 13px;
 }
+
 

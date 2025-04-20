@@ -11,6 +11,7 @@ const translations = {
         tattoo: "Get Tattoo",
         createNFT: "Create NFT",
         membership: "Membership",
+        loyalty: "Loyalty",
         help: "Help",
         settings: "Settings",
         
@@ -68,7 +69,7 @@ const translations = {
         help: "도움말",
         settings: "설정",
         membership: "멤버십",
-        
+        loyalty: "로열티",
         // 테마 관련
         lightMode: "라이트 모드",
         darkMode: "다크 모드",
@@ -123,6 +124,7 @@ const translations = {
         help: "Pomoc",
         settings: "Ustawienia",
         membership: "Członkostwo",
+        loyalty: "Loyalty",
         
         // 테마 관련
         lightMode: "Tryb jasny",

@@ -1,8 +1,6 @@
 /* Browse 페이지 스타일 */
 .browse-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+
 }
 
 /* 헤더 스타일 */
@@ -10,12 +8,6 @@
     margin-bottom: 30px;
 }
 
-.browse-header h1 {
-    font-size: 2.2rem;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    font-weight: 600;
-}
 
 /* 필터 컨트롤 스타일 */
 .browse-filters {
@@ -24,9 +16,10 @@
     gap: 15px;
     align-items: center;
     margin-bottom: 20px;
-    background-color: var(--background-color-secondary);
+    background-color: var(--bg-secondary);
     padding: 15px;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -40,9 +33,9 @@
     flex: 1;
     padding: 12px 15px;
     border: 1px solid var(--border-color);
-    border-radius: 5px 0 0 5px;
-    background-color: var(--input-background);
-    color: var(--text-color);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
     font-size: 1rem;
     transition: border-color 0.3s;
 }
@@ -57,13 +50,13 @@
     background-color: var(--accent-color);
     color: white;
     border: none;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .search-btn:hover {
-    background-color: var(--accent-color-dark, #0056b3);
+    background-color: var(--accent-secondary);
 }
 
 .filter-controls {
@@ -75,9 +68,9 @@
 .filter-controls select {
     padding: 12px 15px;
     border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--input-background);
-    color: var(--text-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
     font-size: 0.95rem;
     cursor: pointer;
     transition: border-color 0.3s;
@@ -106,10 +99,11 @@
     grid-column: 1 / -1;
     padding: 50px;
     text-align: center;
-    color: var(--secondary-text-color);
+    color: var(--text-secondary);
     font-size: 1.2rem;
-    background-color: var(--background-color-secondary);
-    border-radius: 10px;
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
     margin: 20px 0;
 }
 
@@ -121,10 +115,11 @@
 }
 
 .nft-item {
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     overflow: hidden;
-    background-color: var(--background-color-secondary);
-    box-shadow: var(--card-shadow, 0 4px 10px rgba(0, 0, 0, 0.1));
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
 }
@@ -132,6 +127,7 @@
 .nft-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    border-color: var(--accent-color);
 }
 
 .nft-image {
@@ -139,6 +135,19 @@
     width: 100%;
     overflow: hidden;
     position: relative;
+    background-color: var(--bg-tertiary);
+}
+
+.nft-image::before {
+    content: "NFT";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #666;
+    font-weight: bold;
+    z-index: 1;
 }
 
 .nft-image img {
@@ -146,6 +155,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    opacity: 0; /* 실제 이미지를 숨기고 배경색과 텍스트만 표시 */
 }
 
 .nft-item:hover .nft-image img {
@@ -154,18 +164,19 @@
 
 .nft-info {
     padding: 15px;
+
 }
 
 .nft-info h3 {
     font-size: 1.2rem;
     margin-bottom: 8px;
-    color: var(--text-color);
+    color: var(--text-primary);
     font-weight: 600;
 }
 
 .nft-creator {
     font-size: 0.9rem;
-    color: var(--secondary-text-color);
+    color: var(--text-secondary);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -193,7 +204,7 @@
 }
 
 .pagination-btn {
-    background: transparent;
+    background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 40px;
@@ -202,7 +213,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    color: var(--text-color);
+    color: var(--text-primary);
     transition: all 0.3s ease;
 }
 
@@ -226,17 +237,20 @@
     cursor: pointer;
     border-radius: 50%;
     margin: 0 5px;
-    color: var(--text-color);
+    color: var(--text-primary);
     transition: all 0.3s ease;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
 }
 
 .page-number.active {
     background-color: var(--accent-color);
     color: white;
+    border-color: var(--accent-color);
 }
 
 .page-number:not(.active):hover {
-    background-color: var(--background-color-tertiary, #f0f0f0);
+    background-color: var(--bg-tertiary);
 }
 
 /* 다크 모드 조정 */
@@ -268,7 +282,7 @@ html.light-mode .nft-item {
     }
     
     .nft-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-template-columns: 1fr;
     }
     
     .nft-image {
@@ -282,4 +296,534 @@ html.light-mode .nft-item {
     .pagination {
         flex-wrap: wrap;
     }
-} 
+}
+
+/* NFT 상세 정보 모달 스타일 */
+
+.nft-detail-modal .modal-content {
+  max-width: 800px;
+}
+
+.nft-detail-modal .nft-details-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 30px;
+}
+
+.nft-detail-modal .nft-detail-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nft-detail-modal .nft-detail-image .nft-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #444;
+  position: relative;
+}
+
+.nft-detail-modal .nft-detail-image .placeholder-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.nft-detail-modal .nft-detail-image .placeholder-image::before {
+  content: "NFT";
+}
+
+.nft-detail-modal .nft-detail-info {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nft-detail-modal .nft-detail-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+  color: var(--text-primary);
+}
+
+.nft-detail-modal .nft-detail-info .nft-creator {
+  color: var(--accent-color);
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.nft-detail-modal .nft-detail-info .nft-price {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.nft-detail-modal .nft-description h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.nft-detail-modal .nft-description p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.nft-detail-modal .nft-details-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.nft-detail-modal .nft-details-actions button {
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nft-detail-modal .btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+}
+
+.nft-detail-modal .btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.nft-detail-modal .btn-secondary {
+  background-color: transparent;
+  color: var(--accent-color);
+}
+
+.nft-detail-modal .btn-secondary:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.1);
+}
+
+/* 반응형 모달 */
+@media (max-width: 768px) {
+  .nft-detail-modal .nft-details-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .nft-detail-modal .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+/* 모바일 화면에서의 모달 내용 조정 */
+@media (max-width: 768px) {
+    .nft-detail-modal.fullscreen-menu .modal-content {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-width: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* 모달 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* 모바일에서 메뉴 전체화면 스타일 */
+.nft-detail-modal {
+    z-index: 1010;
+}
+
+.nft-detail-modal.fullscreen-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bg-primary);
+}
+
+/* 모달이 열렸을 때 메뉴 버튼 숨김 */
+.nft-detail-modal.fullscreen-menu ~ .menu-settings .menu-btn,
+.nft-detail-modal.fullscreen-menu ~ .menu-settings .menu-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* 아티스트 유형 탭 스타일 */
+.artist-type-tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.artist-tab {
+  padding: 10px 20px;
+  margin-right: 5px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.artist-tab:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.artist-tab.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+/* 아티스트 유형 배지 스타일 */
+.artist-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.artist-badge.verified {
+  background-color: transparent;
+}
+
+.artist-badge.verified .material-icons {
+  font-size: 24px;
+  color: var(--accent-color);
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* 인증된 아티스트 이름 옆의 아이콘 */
+.artist-verified-icon {
+  font-size: 14px !important;
+  color: var(--accent-color);
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 768px) {
+  .artist-type-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 5px;
+  }
+  
+  .artist-tab {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+  
+  .artist-badge.verified .material-icons {
+    font-size: 20px;
+  }
+  
+  .artist-verified-icon {
+    font-size: 12px !important;
+  }
+}
+
+/* NFT 상호작용 버튼 스타일 */
+.nft-interactions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.left-interactions {
+  display: flex;
+  gap: 15px;
+}
+
+.right-interactions {
+  margin-left: auto;
+}
+
+.interaction-btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+}
+
+.interaction-btn:hover {
+  color: var(--accent-color);
+  background-color: rgba(var(--accent-color-rgb), 0.1);
+}
+
+.interaction-btn .material-icons {
+  font-size: 18px;
+}
+
+.interaction-count {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.like-btn.active {
+  color: #e91e63;
+}
+
+.like-btn.active .material-icons {
+  content: "favorite";
+}
+
+.bookmark-btn.active, 
+.bookmark-btn[data-bookmarked="true"] {
+  color: var(--accent-color);
+}
+
+/* 댓글 모달 스타일 */
+.comment-modal-title, .share-modal-title {
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.comments-container {
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  display: flex;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comment-avatar {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  color: var(--text-secondary);
+}
+
+.comment-avatar .material-icons {
+  font-size: 40px;
+}
+
+.comment-content {
+  flex-grow: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.comment-time {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.comment-text {
+  color: var(--text-primary);
+}
+
+.comment-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.comment-like, .comment-reply {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.comment-like:hover, .comment-reply:hover {
+  color: var(--accent-color);
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  resize: vertical;
+  min-height: 80px;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.post-comment-btn {
+  align-self: flex-end;
+  padding: 8px 15px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.post-comment-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+/* 공유 모달 스타일 */
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.share-option:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.share-icon {
+  width: 20px;
+  height: 20px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.twitter-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%231DA1F2"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/></svg>');
+}
+
+.facebook-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233b5998"><path d="M20 3H4a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8.61v-6.97h-2.34V11.3h2.34V9.31c0-2.33 1.42-3.6 3.5-3.6 1 0 1.84.08 2.1.12v2.43h-1.44c-1.13 0-1.35.53-1.35 1.32v1.73h2.69l-.35 2.72h-2.34V21H20a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z"/></svg>');
+}
+
+.telegram-icon {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2327a7e7"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>');
+}
+
+.share-link-container {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.share-link-container p {
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.copy-link-input {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.copy-link-input input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.copy-link-btn {
+  padding: 10px;
+  border: none;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.copy-link-btn:hover {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+/* 모바일 반응형 스타일 */
+@media (max-width: 768px) {
+  .nft-interactions {
+    margin-top: 10px;
+    padding-top: 8px;
+  }
+  
+  .interaction-btn .material-icons {
+    font-size: 16px;
+  }
+  
+  .interaction-count {
+    font-size: 11px;
+  }
+  
+  .share-options {
+    grid-template-columns: 1fr;
+  }
+}

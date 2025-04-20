@@ -105,6 +105,9 @@ async function navigateTo(page) {
             case 'createNFT':
                 await loadCreateNFTContent();
                 break;
+            case 'loyalty':
+                await loadLoyaltyContent();
+                break;
             default:
                 console.error('알 수 없는 페이지:', page);
                 container.innerHTML = '<p>요청한 페이지를 찾을 수 없습니다.</p>';
@@ -259,6 +262,7 @@ function toggleLanguage() {
         }
     }
 }
+
 
 
 
