@@ -1,0 +1,555 @@
+/* 피드 페이지 스타일 */
+.feed-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    transition: opacity 0.15s ease;
+  }
+  
+  /* 프로필 링크 스타일 */
+  .feed-post-avatar-link,
+  .feed-post-username-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  
+  .feed-post-avatar-link:hover,
+  .feed-post-username-link:hover {
+    opacity: 0.8;
+  }
+  
+  .feed-post-username-link {
+    text-decoration: none;
+  }
+  
+  .feed-post-username-link .feed-post-username {
+    color: var(--text-primary);
+  }
+  
+  /* 프로필 페이지 애니메이션 */
+  .profile-transition {
+    animation: fadeIn 0.15s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .feed-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .feed-post {
+    background-color: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  .feed-post-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+  }
+  
+  .feed-post-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  
+  .feed-post-user {
+    flex-grow: 1;
+  }
+  
+  .feed-post-username {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  
+  .feed-post-location {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .feed-post-options {
+    color: var(--text-primary);
+  }
+  
+  .feed-post-image {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 1/1;
+    background-color: var(--bg-tertiary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .feed-post-image::before {
+    content: "NFT";
+    color: var(--text-tertiary);
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .feed-post-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+  }
+  
+  .feed-post-left-actions {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .feed-post-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .feed-post-action-btn.liked {
+    color: #e53935;
+  }
+  
+  .feed-post-likes {
+    padding: 0 16px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+  
+  .feed-post-caption {
+    padding: 0 16px;
+    margin-bottom: 8px;
+  }
+  
+  .feed-post-caption-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+  
+  .feed-post-caption-username {
+    font-weight: 600;
+  }
+  
+  .feed-post-comments {
+    padding: 0 16px;
+  }
+  
+  .feed-post-view-comments {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  
+  .feed-post-timestamp {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    padding: 0 16px 16px;
+  }
+  
+  .feed-post-add-comment {
+    display: flex;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .feed-post-add-comment input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: var(--text-primary);
+  }
+  
+  .feed-post-add-comment button {
+    background: none;
+    border: none;
+    color: var(--accent-color);
+    font-weight: 600;
+    cursor: pointer;
+    opacity: 0.5;
+  }
+  
+  .feed-post-add-comment button.active {
+    opacity: 1;
+  }
+  
+  /* Stories 스타일 */
+  .feed-stories {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    scrollbar-width: none; /* Firefox */
+    position: relative;
+  }
+  
+  .feed-stories::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  
+  .feed-story {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+  }
+  
+  .feed-story-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 2px solid var(--accent-color);
+    padding: 3px;
+    margin-bottom: 6px;
+  }
+  
+  .feed-story-avatar.seen {
+    border-color: var(--border-color);
+  }
+  
+  .feed-story-username {
+    font-size: 12px;
+    color: var(--text-primary);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 68px;
+  }
+  
+  /* 피드 로딩 스피너 */
+  .feed-loading {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    color: var(--text-secondary);
+  }
+  
+  /* 모바일 반응형 */
+  @media (max-width: 768px) {
+    .feed-container {
+      padding: 0px;
+      max-width: none;
+      width: 100%;
+    }
+    
+    body:has(.feed-container) .container {
+      padding: 0;
+    }
+    
+    .feed-header {
+      padding: 0 15px;
+    }
+    
+    .feed-post {
+      border-radius: 0;
+      margin-bottom: 10px;
+    }
+  }
+  
+  /* 피드 페이지에서만 적용되는 컨테이너 패딩 조정 */
+  body:has(.feed-container) .container {
+    padding: 0;
+  }
+  
+  /* 위로 당겨서 새로고침 인디케이터 스타일 */
+  .refresh-indicator {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(0);
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    z-index: 100;
+    pointer-events: none;
+  }
+  
+  .refresh-indicator .material-icons {
+    font-size: 24px;
+    color: var(--accent-color);
+  }
+  
+  .refresh-indicator .material-icons.rotating {
+    animation: rotate 1s linear infinite;
+  }
+  
+  /* 터치 상호작용 개선을 위한 스타일 */
+  @media (max-width: 768px) {
+    body {
+      overscroll-behavior-y: contain;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -468px 0;
+    }
+    100% {
+      background-position: 468px 0;
+    }
+  }
+  
+  .feed-loading-new {
+    animation: shimmer 1.5s linear infinite;
+    background: linear-gradient(to right, rgba(var(--bg-color-rgb), 0.1) 8%, rgba(var(--bg-color-rgb), 0.2) 18%, rgba(var(--bg-color-rgb), 0.1) 33%);
+    background-size: 800px 104px;
+    border-radius: var(--border-radius);
+  }
+  
+  /* 프로필 페이지 스타일 */
+  .profile-container {
+    animation: fadeIn 0.15s ease-out;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .profile-back {
+    width: 40px;
+  }
+  
+  .profile-back-btn {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  .profile-username {
+    flex-grow: 1;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-primary);
+  }
+  
+  .profile-options {
+    width: 40px;
+    text-align: right;
+    color: var(--text-primary);
+  }
+  
+  .profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-right: 30px;
+    position: relative;
+  }
+  
+  .profile-verified {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .profile-verified .material-icons {
+    font-size: 14px !important;
+    color: white;
+  }
+  
+  .profile-stats {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
+  }
+  
+  .profile-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-number {
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--text-primary);
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .profile-bio {
+    margin-bottom: 20px;
+  }
+  
+  .profile-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+  
+  .profile-bio-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    line-height: 1.4;
+  }
+  
+  .profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-follow-btn, .profile-message-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+  }
+  
+  .profile-follow-btn {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  
+  .profile-follow-btn.following {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+  
+  .profile-message-btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+  
+  .profile-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid var(--border-color);
+    margin-bottom: 10px;
+  }
+  
+  .profile-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 15px 0;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+  }
+  
+  .profile-tab.active {
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--accent-color);
+  }
+  
+  .profile-posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 5px;
+  }
+  
+  .profile-empty-posts {
+    grid-column: span 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+  
+  .profile-empty-posts .material-icons {
+    font-size: 48px !important;
+    margin-bottom: 10px;
+  }
+  
+  /* 모바일 반응형 */
+  @media (max-width: 768px) {
+    .profile-container {
+      padding: 10px;
+    }
+  }
+  

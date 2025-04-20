@@ -30,6 +30,48 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 네비게이션 탭 버튼에 클릭 이벤트 리스너 설정
     setupNavTabs();
+
+    // 메뉴 항목 클릭 시 메뉴 모달 닫기
+    document.addEventListener('click', function(e) {
+        // 메뉴 항목 클릭 시 닫기
+        if (e.target.closest('.menu-list a')) {
+            const menuModal = document.getElementById('menu-modal');
+            if (menuModal) {
+                menuModal.style.display = 'none';
+                // 메뉴 버튼 아이콘 업데이트
+                const menuButton = document.getElementById('menu-button');
+                if (menuButton) {
+                    const menuIcon = menuButton.querySelector('i');
+                    if (menuIcon) {
+                        menuIcon.textContent = 'menu';
+                    }
+                }
+            }
+        }
+    });
+    
+    // 다크 모드 토글 버튼 이벤트 리스너
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', function() {
+            toggleTheme();
+            
+            // 모달 닫기
+            const menuModal = document.getElementById('menu-modal');
+            if (menuModal) {
+                menuModal.style.display = 'none';
+                
+                // 메뉴 버튼 아이콘 업데이트
+                const menuButton = document.getElementById('menu-button');
+                if (menuButton) {
+                    const menuIcon = menuButton.querySelector('i');
+                    if (menuIcon) {
+                        menuIcon.textContent = 'menu';
+                    }
+                }
+            }
+        });
+    }
 });
 
 // 네비게이션 탭 버튼 설정 함수
@@ -86,6 +128,23 @@ async function navigateTo(page) {
     const container = document.getElementById('main-content');
     try {
         let content;
+        // 프로필 페이지 라우팅 처리
+        if (page.startsWith('profile/')) {
+            const username = page.split('/')[1];
+            if (username) {
+                // 피드가 로드되었는지 확인하고, 로드되지 않았다면 로드
+                if (typeof navigateToProfile === 'function') {
+                    // 프로필 페이지로 즉시 이동
+                    navigateToProfile(username);
+                } else {
+                    // feed.js가 로드되지 않은 경우, 로드 후 즉시 이동
+                    await loadFeedContent();
+                    navigateToProfile(username);
+                }
+                return;
+            }
+        }
+        
         switch(page) {
             case 'home':
                 await loadHomeContent();
@@ -107,6 +166,12 @@ async function navigateTo(page) {
                 break;
             case 'loyalty':
                 await loadLoyaltyContent();
+                break;
+            case 'feed':
+                await loadFeedContent();
+                break;
+            case 'help':
+                await loadHelpContent();
                 break;
             default:
                 console.error('알 수 없는 페이지:', page);
@@ -260,6 +325,63 @@ function toggleLanguage() {
         } else {
             languagePopup.style.display = 'block';
         }
+    }
+}
+
+// 페이지 라우팅 함수
+function loadPageContent(page) {
+    console.log('Loading page:', page);
+
+    // 모든 탭 버튼에서 active 클래스 제거
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // 클릭된 탭에 active 클래스 추가
+    const currentTabButton = document.querySelector(`.tab-button[data-page="${page}"]`);
+    if (currentTabButton) {
+        currentTabButton.classList.add('active');
+    }
+
+    // 사이드바 버튼에서도 active 클래스 제거 및 추가
+    document.querySelectorAll('.sidebar-button').forEach(button => {
+        button.classList.remove('active');
+    });
+    const currentSidebarButton = document.querySelector(`.sidebar-button[data-page="${page}"]`);
+    if (currentSidebarButton) {
+        currentSidebarButton.classList.add('active');
+    }
+
+    switch(page) {
+        case 'home':
+            loadHomeContent();
+            break;
+        case 'feed':
+            loadFeedContent();
+            break;
+        case 'browse':
+            loadBrowseContent();
+            break;
+        case 'tattoo':
+            loadTattooContent();
+            break;
+        case 'account':
+            loadAccountContent();
+            break;
+        case 'settings':
+            loadSettingsContent();
+            break;
+        case 'createNFT':
+            loadCreateNFTContent();
+            break;
+        case 'loyalty':
+            loadLoyaltyContent();
+            break;
+        case 'help':
+            loadHelpContent();
+            break;
+        default:
+            loadHomeContent();
     }
 }
 

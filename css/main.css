@@ -8,7 +8,7 @@
     --text-primary: #ffffff;
     --text-secondary: #b1b1b1;
     --text-tertiary: #ccb5de;
-    --accent-color: #8DA593;
+    --accent-color: #8DA593;/*#8c73c1*/
     --accent-secondary: #B8AB7F;
     --input-height: 42px;
     --border-radius: 20px;
@@ -18,7 +18,7 @@
     --sidebar-context: #919191;
     --red-color: #d32f2f;
     --base-color: #000000;
-    --transition: background-color 0.3s, color 0.3s;
+    --transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 
 /* 라이트 모드 변수 */
@@ -38,7 +38,7 @@
     --sidebar-context: #505050;
     --red-color: #d32f2f;
     --base-color: #ffffff;
-    --transition: background-color 0.3s, color 0.3s;
+    --transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 
 
 }
@@ -195,7 +195,6 @@ textarea::placeholder {
 }
 
 /* 특정 타입의 입력 필드 스타일 */
-input[type="text"],
 input[type="number"],
 input[type="email"],
 textarea {
@@ -217,7 +216,6 @@ textarea {
 }
 
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
-input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
@@ -517,5 +515,6 @@ button {
     color: var(--text-secondary);
     font-size: 13px;
 }
+
 
 

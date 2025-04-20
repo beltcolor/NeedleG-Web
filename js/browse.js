@@ -404,6 +404,17 @@ function showNFTDetails(nftItem) {
     const modalContent = document.createElement('div');
     modalContent.className = 'modal-content';
     
+    // 모바일 대응을 위한 스타일 추가
+    if (window.innerWidth <= 768) {
+        modalContent.style.width = '100vw';
+        modalContent.style.height = '100vh';
+        modalContent.style.maxWidth = 'none';
+        modalContent.style.margin = '0';
+        modalContent.style.padding = '0';
+        modalContent.style.borderRadius = '0';
+        modalContent.style.overflowY = 'auto';
+    }
+    
     // 닫기 버튼
     const closeBtn = document.createElement('span');
     closeBtn.className = 'close-modal';
@@ -456,6 +467,23 @@ function showNFTDetails(nftItem) {
     
     // 문서에 모달 추가
     document.body.appendChild(modalWrapper);
+    
+    // 모바일에서 body 스크롤 방지
+    if (window.innerWidth <= 768) {
+        document.body.style.overflow = 'hidden';
+    }
+    
+    // 모달이 닫힐 때 body 스크롤 복원
+    closeBtn.addEventListener('click', function() {
+        document.body.style.overflow = '';
+    });
+    
+    // 모달 배경 클릭 시에도 body 스크롤 복원
+    modalWrapper.addEventListener('click', function(event) {
+        if (event.target === modalWrapper || event.target === modal) {
+            document.body.style.overflow = '';
+        }
+    });
 }
 
 // 솔라나 구현을 위한 더미 함수 (나중에 구현 예정)

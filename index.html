@@ -28,6 +28,7 @@
     
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/navi.css">
+    <link rel="stylesheet" href="css/feed.css">
     <link rel="stylesheet" href="css/tattoo.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/account.css">
@@ -54,6 +55,9 @@
         <button class="tab-button" data-page="home">
             <span class="material-icons">home</span>
         </button>
+        <button class="tab-button" data-page="feed">
+            <span class="material-icons">rss_feed</span>
+        </button>
         <button class="tab-button" data-page="browse">
             <span class="material-icons">grid_view</span>
         </button>
@@ -71,6 +75,10 @@
             <button class="sidebar-button" data-page="home" onclick="handleSidebarButtonClick('home'); window.location.hash='home'">
                 <span class="material-icons">home</span>
                 <span class="button-text">Home</span>
+            </button>
+            <button class="sidebar-button" data-page="feed" onclick="handleSidebarButtonClick('feed'); window.location.hash='feed'">
+                <span class="material-icons">rss_feed</span>
+                <span class="button-text">Feed</span>
             </button>
             <button class="sidebar-button" data-page="browse" onclick="handleSidebarButtonClick('browse'); window.location.hash='browse'">
                 <span class="material-icons">grid_view</span>
@@ -149,5 +157,6 @@
     <script src="js/settings.js" defer></script>
     <script src="js/createNFT.js" defer></script>
     <script src="js/loyalty.js" defer></script>
+    <script src="js/feed.js" defer></script>
 </body>
 </html>

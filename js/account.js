@@ -19,14 +19,14 @@ function initAccountPage() {
     // Check login status
     const isLoggedIn = localStorage.getItem('needleG_login') === 'true';
     
-    // Initialize menu dropdown
-    initMenuDropdown();
-    
     // Initialize content tabs
     initContentTabs();
     
     // Initialize login modal
     initLoginModal();
+    
+    // Initialize menu button
+    initMenuButton();
     
     // Update UI based on login status
     updateUserProfile(isLoggedIn);
@@ -34,164 +34,6 @@ function initAccountPage() {
     // Load content based on login status
     if (isLoggedIn) {
         loadUserContent();
-    }
-}
-
-// Initialize menu dropdown
-function initMenuDropdown() {
-    const menuButton = document.getElementById('menu-button');
-    const menuDropdown = document.getElementById('menu-dropdown');
-    
-    if (menuButton && menuDropdown) {
-        // 창 크기 변경 이벤트 리스너 추가
-        window.addEventListener('resize', function() {
-            // 창 크기가 변경될 때 메뉴 상태 업데이트
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // 모바일 화면에서는 메뉴가 열려있지 않도록 설정
-                menuDropdown.style.display = 'none';
-                document.body.style.overflow = '';
-                
-                // 모바일 메뉴의 위치 재설정
-                menuDropdown.style.position = 'fixed';
-                menuDropdown.style.top = '0';
-                menuDropdown.style.left = '0';
-                menuDropdown.style.width = '100%';
-                menuDropdown.style.height = '100vh';
-                
-                // 메뉴 아이콘 원래대로
-                updateMenuIcon(false);
-            } else {
-                // 데스크톱 화면에서는 fullscreen-menu 클래스 제거
-                menuDropdown.classList.remove('fullscreen-menu');
-                document.body.style.overflow = '';
-                
-                // 데스크톱 메뉴의 위치 재설정
-                const buttonRect = menuButton.getBoundingClientRect();
-                menuDropdown.style.position = 'fixed';
-                menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
-                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
-                menuDropdown.style.left = 'auto';
-                menuDropdown.style.width = 'auto';
-                menuDropdown.style.height = 'auto';
-            }
-        });
-        
-        menuButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            // 현재 창 크기에 따라 다른 동작 구현
-            const isMobile = window.innerWidth <= 768;
-            
-            if (isMobile) {
-                // 모바일 화면: 전체 화면 메뉴
-                
-                // 메뉴 아이콘 변경 (메뉴/닫기)
-                const isMenuOpen = menuDropdown.classList.contains('fullscreen-menu');
-                updateMenuIcon(!isMenuOpen);
-                
-                // 모바일 메뉴의 위치 재설정
-                menuDropdown.style.position = 'fixed';
-                menuDropdown.style.top = '0';
-                menuDropdown.style.left = '0';
-                menuDropdown.style.width = '100%';
-                menuDropdown.style.height = '100vh';
-                
-                // 드롭다운을 전체 화면으로 표시
-                menuDropdown.classList.toggle('fullscreen-menu');
-                
-                // 메뉴가 표시되면 스크롤 방지
-                if (menuDropdown.classList.contains('fullscreen-menu')) {
-                    document.body.style.overflow = 'hidden';
-                    // 모바일 메뉴가 표시되면 display 속성 설정
-                    menuDropdown.style.display = 'flex';
-                } else {
-                    document.body.style.overflow = '';
-                    menuDropdown.style.display = 'none';
-                }
-            } else {
-                // 데스크톱 화면: 일반 드롭다운 메뉴
-                
-                // 드롭다운 위치 조정
-                const buttonRect = menuButton.getBoundingClientRect();
-                menuDropdown.style.position = 'fixed';
-                menuDropdown.style.top = (buttonRect.bottom + 5) + 'px';
-                menuDropdown.style.right = (window.innerWidth - buttonRect.right) + 'px';
-                menuDropdown.style.left = 'auto';
-                
-                // 드롭다운 표시/숨김 토글
-                const isVisible = menuDropdown.style.display === 'block';
-                menuDropdown.style.display = isVisible ? 'none' : 'block';
-            }
-        });
-        
-        // 메뉴 항목 클릭 시 메뉴 닫기
-        const menuItems = menuDropdown.querySelectorAll('a');
-        menuItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                const isMobile = window.innerWidth <= 768;
-                
-                if (isMobile) {
-                    menuDropdown.classList.remove('fullscreen-menu');
-                    document.body.style.overflow = '';
-                    menuDropdown.style.display = 'none';
-                    
-                    // 메뉴 아이콘 원래대로
-                    updateMenuIcon(false);
-                } else {
-                    menuDropdown.style.display = 'none';
-                }
-
-                // 특별한 처리가 필요한 항목은 제외하고 페이지 이동 처리
-                const itemId = this.id;
-                // login-link, logout-link, dark-mode-toggle는 특별 처리가 있으므로 제외
-                if (!itemId && this.getAttribute('href').startsWith('#')) {
-                    const pageName = this.getAttribute('href').substring(1); // '#' 제거
-                    if (pageName && typeof handleNavigate === 'function') {
-                        e.preventDefault();
-                        handleNavigate(pageName);
-                    }
-                }
-            });
-        });
-        
-        // 바깥 영역 클릭 시 메뉴 닫기
-        document.addEventListener('click', function(e) {
-            if (!menuButton.contains(e.target) && !menuDropdown.contains(e.target)) {
-                const isMobile = window.innerWidth <= 768;
-                
-                if (isMobile) {
-                    menuDropdown.classList.remove('fullscreen-menu');
-                    document.body.style.overflow = '';
-                    
-                    // 메뉴 아이콘 원래대로
-                    updateMenuIcon(false);
-                } else {
-                    menuDropdown.style.display = 'none';
-                }
-            }
-        });
-        
-        // Dark/Light mode toggle
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        if (darkModeToggle) {
-            darkModeToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                toggleTheme();
-                
-                const isMobile = window.innerWidth <= 768;
-                if (isMobile) {
-                    menuDropdown.classList.remove('fullscreen-menu');
-                    document.body.style.overflow = '';
-                    
-                    // 메뉴 아이콘 원래대로
-                    updateMenuIcon(false);
-                } else {
-                    menuDropdown.style.display = 'none';
-                }
-            });
-        }
     }
 }
 
@@ -1332,6 +1174,101 @@ function showLogoutNotification(title, message) {
     }, 3000);
 }
 
+// 메뉴 버튼 초기화 함수
+function initMenuButton() {
+    const menuButton = document.getElementById('menu-button');
+    const menuModal = document.getElementById('menu-modal');
+    const closeBtn = menuModal ? menuModal.querySelector('.close-modal') : null;
+    
+    if (menuButton && menuModal) {
+        // 메뉴 버튼 클릭 시 모달 열기
+        menuButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 현재 창 크기에 따라 다른 동작 구현
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                // 모바일 화면: 전체 화면 메뉴로 표시
+                menuModal.classList.add('fullscreen-menu');
+                menuModal.style.display = 'flex';
+                
+                // 스크롤 방지
+                document.body.style.overflow = 'hidden';
+            } else {
+                // 데스크톱 화면: 일반 모달로 표시
+                menuModal.classList.remove('fullscreen-menu');
+                menuModal.style.display = 'block';
+            }
+            
+            // 메뉴 아이콘 변경
+            updateMenuIcon(true);
+        });
+        
+        // 닫기 버튼 클릭 시 모달 닫기
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // 모달 닫기
+                menuModal.style.display = 'none';
+                menuModal.classList.remove('fullscreen-menu');
+                
+                // 스크롤 복원
+                document.body.style.overflow = '';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            });
+        }
+        
+        // 모달 바깥 클릭 시 닫기
+        window.addEventListener('click', function(event) {
+            if (event.target === menuModal) {
+                menuModal.style.display = 'none';
+                menuModal.classList.remove('fullscreen-menu');
+                
+                // 스크롤 복원
+                document.body.style.overflow = '';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            }
+        });
+        
+        // ESC 키 눌렀을 때 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && menuModal.style.display === 'block' || menuModal.style.display === 'flex') {
+                menuModal.style.display = 'none';
+                menuModal.classList.remove('fullscreen-menu');
+                
+                // 스크롤 복원
+                document.body.style.overflow = '';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            }
+        });
+        
+        // 메뉴 항목 클릭 시 모달 닫기
+        const menuLinks = menuModal.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuModal.style.display = 'none';
+                menuModal.classList.remove('fullscreen-menu');
+                
+                // 스크롤 복원
+                document.body.style.overflow = '';
+                
+                // 메뉴 아이콘 원래대로
+                updateMenuIcon(false);
+            });
+        });
+    }
+}
+
 // 메뉴 아이콘 변경 함수
 function updateMenuIcon(isOpen) {
     const menuButton = document.getElementById('menu-button');
@@ -1349,11 +1286,11 @@ function handleNavigate(page) {
         // URL 해시 변경을 통해 페이지 이동
         window.location.hash = page;
         
-        // 메뉴 드롭다운 닫기
-        const menuDropdown = document.getElementById('menu-dropdown');
-        if (menuDropdown) {
-            menuDropdown.style.display = 'none';
-            menuDropdown.classList.remove('fullscreen-menu');
+        // 메뉴 모달 닫기
+        const menuModal = document.getElementById('menu-modal');
+        if (menuModal) {
+            menuModal.style.display = 'none';
+            menuModal.classList.remove('fullscreen-menu');
         }
         
         // 메뉴 아이콘 원래대로
@@ -1363,3 +1300,9 @@ function handleNavigate(page) {
         document.body.style.overflow = '';
     }
 }
+
+// 페이지 로드 시 초기화 함수 호출
+document.addEventListener('DOMContentLoaded', function() {
+    // 계정 페이지 초기화
+    initAccountPage();
+});

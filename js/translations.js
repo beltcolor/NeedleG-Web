@@ -14,6 +14,7 @@ const translations = {
         loyalty: "Loyalty",
         help: "Help",
         settings: "Settings",
+        feed: "Feed",
         
         // 테마 관련
         lightMode: "Light Mode",
@@ -70,6 +71,8 @@ const translations = {
         settings: "설정",
         membership: "멤버십",
         loyalty: "로열티",
+        feed: "피드",
+
         // 테마 관련
         lightMode: "라이트 모드",
         darkMode: "다크 모드",
@@ -125,6 +128,7 @@ const translations = {
         settings: "Ustawienia",
         membership: "Członkostwo",
         loyalty: "Loyalty",
+        feed: "Feed",
         
         // 테마 관련
         lightMode: "Tryb jasny",
