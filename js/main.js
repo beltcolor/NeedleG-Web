@@ -224,11 +224,17 @@ function toggleTheme() {
 // 테마 설정 함수
 function setTheme(theme) {
     const rootElement = document.documentElement;
+    const themeColorMeta = document.getElementById('theme-color');
     
     if (theme === 'light') {
         rootElement.classList.add('light-mode');
         rootElement.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
+        
+        // 상태 표시줄 색상 변경 (라이트 모드)
+        if (themeColorMeta) {
+            themeColorMeta.content = '#f5f5f5';
+        }
         
         // 테마 토글 버튼의 아이콘 변경
         const themeToggleIcon = document.querySelector('.theme-toggle .icon');
@@ -245,6 +251,11 @@ function setTheme(theme) {
         rootElement.classList.add('dark-mode');
         rootElement.classList.remove('light-mode');
         localStorage.setItem('theme', 'dark');
+        
+        // 상태 표시줄 색상 변경 (다크 모드)
+        if (themeColorMeta) {
+            themeColorMeta.content = '#131313';
+        }
         
         // 테마 토글 버튼의 아이콘 변경
         const themeToggleIcon = document.querySelector('.theme-toggle .icon');
